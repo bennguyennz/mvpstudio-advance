@@ -24,7 +24,7 @@ namespace SeleniumNUnit.Global
             + Path.DirectorySeparatorChar + "TestLibrary/TestData/TestData.xlsx";
         public static string AutoITScriptPath = @""; //Setup your AutoIT path
         public static string ScreenshotPath = System.IO.Directory.GetParent(@"../../../").FullName
-            + Path.DirectorySeparatorChar + "TestLibrary/Screenshot/";
+            + Path.DirectorySeparatorChar + "TestLibrary/Screenshots/";
         #endregion
 
         public static string ExcelPath { get => excelPath; set => excelPath = value; }
