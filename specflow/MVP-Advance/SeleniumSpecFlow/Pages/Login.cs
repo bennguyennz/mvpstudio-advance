@@ -34,7 +34,7 @@ namespace SeleniumSpecFlow.Pages
 
             //Click Login button
             LoginBtn.Click();
-            Thread.Sleep(3);
+
         }
     }
 }

@@ -54,6 +54,7 @@ namespace SeleniumSpecFlow.Utilities
                 //Signin
                 loginObj = new Login();
                 loginObj.LogInSteps();
+                wait(3);
             }
             catch (TimeoutException e)
             {
