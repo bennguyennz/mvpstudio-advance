@@ -128,20 +128,29 @@ namespace SeleniumNUnit.Pages
         #endregion
 
 
-        #region  Edit Web Elements
+        #region  Edit language Web Elements
+        //Populate excel data
         private IWebElement editLangIcon => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody/tr/td[3]/span[1]/i"));
+        //Click on edit language icon
         private IWebElement editLangText => driver.FindElement(By.XPath("//div[@class='five wide field']//input[@type='text']"));
+        //Click on Language level
+        private IWebElement editChooseLang => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody/tr/td//div[2]/select"));
+        //Click on language level from language options
+        private IWebElement editChooseLangOpt => driver.FindElement(By.XPath("//div/section[2]//table/tbody/tr/td//div[2]/select/option[5]"));
+        //Click on update language
+        private IWebElement updateLang => driver.FindElement(By.XPath("//span[@class='buttons-wrapper']//input[@type='button']"));
+        #endregion
 
-        private IWebElement UpdateLanguage => driver.FindElement(By.XPath(""));
+        #region  delete language Web Elements
+         //Click on delete icon
+         private IWebElement deleteLangIcon => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div/table/tbody/tr/td[3]/span[2]/i"));
 
-        private IWebElement editChooseLangopt => driver.FindElement(By.XPath(""));
-        private IWebElement editChooseLang => driver.FindElement(By.XPath(""));
 
+        #endregion
         public void addLanguage(int rowNumber, string Excelsheet)
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
-
 
             Thread.Sleep(1000);
             //Click on Add new to add new Language
@@ -154,7 +163,6 @@ namespace SeleniumNUnit.Pages
             ChooseLang.Click();
 
             Thread.Sleep(1000);
-
             //Click on language level from language options
             ChooseLangOpt.Click();
 
@@ -162,29 +170,41 @@ namespace SeleniumNUnit.Pages
             AddLang.Click();
         }
 
-        public void editLanguage(int rowNumber, string Excelsheet)
+        public void editLanguage(int rowNumber, int rowNumber1, string Excelsheet)
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
-
-
-            Thread.Sleep(1000);
-            //Click on Add new to add new Language
-            AddNewLangBtn.Click();
-
-            //Enter the Language on text box
-            AddLangText.SendKeys(ExcelLib.ReadData(rowNumber, "Language"));
-
-            //Enter the Language on text box
-            ChooseLang.Click();
-
             Thread.Sleep(1000);
 
+            //Read Data from Language page
+            string ExpectedTitle = ExcelLib.ReadData(rowNumber, "Language");
+
+            //Click on edit language icon
+            editLangIcon.Click();
+
+            //Edit the Language on text box
+            editLangText.Clear();
+            editLangText.SendKeys(ExcelLib.ReadData(rowNumber1, "Language"));
+
+            //Click on Language level
+            editChooseLang.Click();
+
+            Thread.Sleep(1000);
             //Click on language level from language options
-            ChooseLangOpt.Click();
+            editChooseLangOpt.Click();
 
-            //Click on Add language
-            AddLang.Click();
+            //Click on update language
+            updateLang.Click();
+
+        }
+        public void deleteLanguage(int rowNumber)
+        {
+            //Read Data from manage listings page
+            string ExpectedTitle = ExcelLib.ReadData(rowNumber, "Language");
+            
+            //Click on delete icon
+            Thread.Sleep(1000); 
+            deleteLangIcon.Click();
         }
     }
 }

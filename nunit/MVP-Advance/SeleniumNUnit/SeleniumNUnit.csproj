@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestLibrary\Screenshot\" />
     <Folder Include="TestLibrary\TestReports\" />
     <Folder Include="TestLibrary\TestData\" />
-    <Folder Include="TestLibrary\Screenshots\" />
   </ItemGroup>
 
 </Project>
