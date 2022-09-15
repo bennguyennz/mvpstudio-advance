@@ -127,7 +127,42 @@ namespace SeleniumNUnit.Pages
 
         #endregion
 
+
+        #region  Edit Web Elements
+        private IWebElement editLangIcon => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody/tr/td[3]/span[1]/i"));
+        private IWebElement editLangText => driver.FindElement(By.XPath("//div[@class='five wide field']//input[@type='text']"));
+
+        private IWebElement UpdateLanguage => driver.FindElement(By.XPath(""));
+
+        private IWebElement editChooseLangopt => driver.FindElement(By.XPath(""));
+        private IWebElement editChooseLang => driver.FindElement(By.XPath(""));
+
         public void addLanguage(int rowNumber, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+
+
+            Thread.Sleep(1000);
+            //Click on Add new to add new Language
+            AddNewLangBtn.Click();
+
+            //Enter the Language on text box
+            AddLangText.SendKeys(ExcelLib.ReadData(rowNumber, "Language"));
+
+            //Enter the Language on text box
+            ChooseLang.Click();
+
+            Thread.Sleep(1000);
+
+            //Click on language level from language options
+            ChooseLangOpt.Click();
+
+            //Click on Add language
+            AddLang.Click();
+        }
+
+        public void editLanguage(int rowNumber, string Excelsheet)
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
