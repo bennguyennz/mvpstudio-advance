@@ -18,13 +18,14 @@ namespace SeleniumNUnit.Global
     {
         #region Constant configuration
         public static int Browser = 2;
+
         public static string IsLogin = "true";
 
         public static string excelPath = System.IO.Directory.GetParent(@"../../../").FullName
             + Path.DirectorySeparatorChar + "TestLibrary/TestData/TestData.xlsx";
         public static string AutoITScriptPath = @""; //Setup your AutoIT path
         public static string ScreenshotPath = System.IO.Directory.GetParent(@"../../../").FullName
-            + Path.DirectorySeparatorChar + "TestLibrary/Screenshot/";
+            + Path.DirectorySeparatorChar + "TestLibrary/Screenshots/";
         #endregion
 
         public static string ExcelPath { get => excelPath; set => excelPath = value; }
@@ -136,8 +137,8 @@ namespace SeleniumNUnit.Global
             }
 
             // Close the driver            
-            driver.Close();
-            driver.Quit();
+            //driver.Close();
+            //driver.Quit();
         }
 
         [OneTimeTearDown]

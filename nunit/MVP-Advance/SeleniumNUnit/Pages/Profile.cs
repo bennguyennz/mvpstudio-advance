@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using SeleniumNUnit.Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,19 +40,19 @@ namespace SeleniumNUnit.Pages
         private IWebElement CityOpt => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[2]/div/div[3]/div/div[2]"));
 
         //Click on Add new to add new Language
-        private IWebElement AddNewLangBtn => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[3]/div/div[2]/div/table/thead/tr/th[3]/div"));
-
+        private IWebElement AddNewLangBtn => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/thead/tr/th[3]/div"));
+                                      
         //Enter the Language on text box
-        private IWebElement AddLangText => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[3]/div/div[2]/div/div/div[1]/input"));
+        private IWebElement AddLangText => driver.FindElement(By.XPath("//div[@class='eight wide column']//input[@type='text']"));
 
-        //Enter the Language on text box
-        private IWebElement ChooseLang => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[3]/div/div[2]/div/div/div[2]/select"));
+        //Click on choose language level
+        private IWebElement ChooseLang => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]//div[2]/select"));
 
-        //Enter the Language on text box
-        private IWebElement ChooseLangOpt => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[3]/div/div[2]/div/div/div[2]/select/option[3]"));
+        //Click on language level from language options
+        private IWebElement ChooseLangOpt => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]//div[2]/select/option[4]"));
 
-        //Add Language
-        private IWebElement AddLang => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[3]/div/div[2]/div/div/div[3]/input[1]"));
+        //Click on Add Language
+        private IWebElement AddLang => driver.FindElement(By.XPath("//div[@class='eight wide column']//input[@type='button']"));
 
         //Click on Add new to add new skill
         private IWebElement AddNewSkillBtn => driver.FindElement(By.XPath("//*[@id='account-profileEdit-section']/div/section[2]/div/div/div/form/div[4]/div/div[2]/div/table/thead/tr/th[3]/div"));
@@ -126,9 +127,29 @@ namespace SeleniumNUnit.Pages
 
         #endregion
 
-        internal void EditProfile()
+        public void addLanguage(int rowNumber, string Excelsheet)
         {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
 
+
+            Thread.Sleep(1000);
+            //Click on Add new to add new Language
+            AddNewLangBtn.Click();
+
+            //Enter the Language on text box
+            AddLangText.SendKeys(ExcelLib.ReadData(rowNumber, "Language"));
+
+            //Enter the Language on text box
+            ChooseLang.Click();
+
+            Thread.Sleep(1000);
+
+            //Click on language level from language options
+            ChooseLangOpt.Click();
+
+            //Click on Add language
+            AddLang.Click();
         }
     }
 }
