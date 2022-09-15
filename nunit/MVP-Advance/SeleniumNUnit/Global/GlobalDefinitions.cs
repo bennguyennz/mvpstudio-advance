@@ -15,19 +15,6 @@ namespace SeleniumNUnit.Global
         //Initialise driver
         public static IWebDriver driver { get; set; }
 
-        #region WaitforElement 
-
-        public static void wait(int second)
-        {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(second);
-        }
-        public static IWebElement WaitForElement(IWebDriver driver, By ByAndlocator, int timeOutinSeconds)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeOutinSeconds));
-            return (wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(ByAndlocator)));
-        }
-        #endregion
-
         #region Excel 
         public class ExcelLib
         {

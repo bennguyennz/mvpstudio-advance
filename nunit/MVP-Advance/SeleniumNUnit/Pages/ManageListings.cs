@@ -1,10 +1,13 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using SeleniumNUnit.Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SeleniumNUnit.Global.GlobalDefinitions;
+using static SeleniumNUnit.Global.WaitHelpers;
 
 namespace SeleniumNUnit.Pages
 {
@@ -36,9 +39,81 @@ namespace SeleniumNUnit.Pages
         private IWebElement btnSave => driver.FindElement(By.XPath("//input[@value='Save']"));
         #endregion
 
-        internal void AddListing()
+        ShareSkill shareSkillObj;
+
+        //Add a skill
+        internal void AddListing(int rowNumber, string worksheet)
+        {
+            shareSkillObj = new ShareSkill();
+            btnShareSkill.Click();
+            wait(2);
+            shareSkillObj.EnterShareSkill(rowNumber, worksheet);
+            wait(3);
+        }
+
+        //Verify add & edit
+        internal void ViewListing(int rowNumber, string worksheet)
         {
 
+            //Click on ManageListing
+            GoToManageListings();
+            wait(2);
+
+            //Read data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
+            string expectedTitle = ExcelLib.ReadData(rowNumber, "Title");
+
+            //Click on button View
+            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[1]";
+            IWebElement btnView = driver.FindElement(By.XPath(e_View));
+            btnView.Click();
+
+            wait(2);
+        }
+
+        //Functions to check title is existing and return title's position in manage listing
+        internal string GetTitleIndex(string expectedTitle)
+        {
+            //Check if there is no listing's title
+            string recordIndex = "";
+            int titleCount = Titles.Count();
+            if (titleCount.Equals(0))
+            {
+                Assert.Ignore("There is no listing record.");
+            }
+            else
+            {
+                //Find title: Break loop when finding a title. Output: recordIndex
+                for (int i = 0; i < titleCount; i++)
+                {
+                    string actualTitle = Titles[i].Text;
+                    if (actualTitle.Equals(expectedTitle))
+                    {
+                        recordIndex = (i + 1).ToString();
+                        break;
+                    }
+                }
+                //If title-to-delete is not found
+                if (recordIndex.Equals(""))
+                {
+                    Assert.Ignore("Listing '" + expectedTitle + "' is not found.");
+                }
+            }
+            return recordIndex;
+        }
+
+        //Click on manage listing
+        internal void GoToManageListings()
+        {
+            try
+            {
+                //Click Manage Listing
+                manageListingsLink.Click();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Manage Listing link is not found.", ex.Message);
+            }
         }
     }
 }

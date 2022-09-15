@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SeleniumSpecFlow.Features_Definitions
+namespace SeleniumSpecFlow.Features_Definitions.ProfileFeatures
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,22 +20,22 @@ namespace SeleniumSpecFlow.Features_Definitions
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Login")]
-    public partial class LoginFeature
+    [NUnit.Framework.DescriptionAttribute("Contact")]
+    public partial class ContactFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-#line 1 "Login.feature"
+#line 1 "Contact.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features-Definitions", "Login", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features-Definitions/ProfileFeatures", "Contact", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,16 +73,35 @@ namespace SeleniumSpecFlow.Features_Definitions
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Login")]
-        [NUnit.Framework.CategoryAttribute("tag1")]
-        public void Login()
+        public virtual void FeatureBackground()
         {
-            string[] tagsOfScenario = new string[] {
-                    "tag1"};
+#line 5
+#line hidden
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("1-Add profile contact details")]
+        [NUnit.Framework.CategoryAttribute("Contact")]
+        [NUnit.Framework.TestCaseAttribute("Binh", "Nguyen", "Part Time", "Less than 30hours a week", "Less than $500 per month", null)]
+        [NUnit.Framework.TestCaseAttribute("Binh", "Nguyeen", "Full Time", "More than 30hours a week", "Between $500 and $1000 per month", null)]
+        [NUnit.Framework.TestCaseAttribute("Binh", "Nguyen", "Full Time", "As needed", "More than $1000 per month", null)]
+        public void _1_AddProfileContactDetails(string firstName, string lastName, string availability, string hours, string earnTarget, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Contact"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+            argumentsOfScenario.Add("First Name", firstName);
+            argumentsOfScenario.Add("Last Name", lastName);
+            argumentsOfScenario.Add("Availability", availability);
+            argumentsOfScenario.Add("Hours", hours);
+            argumentsOfScenario.Add("Earn Target", earnTarget);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1-Add profile contact details", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -92,8 +111,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("I login to the website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 9
+ testRunner.Given(string.Format("I edit my contact details \'{0}\' \'{1}\' \'{2}\' \'{3}\' \'{4}\'", firstName, lastName, availability, hours, earnTarget), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 10
+ testRunner.Then(string.Format("My contact details should be edited as \'{0}\' \'{1}\' \'{2}\' \'{3}\' \'{4}\'", firstName, lastName, availability, hours, earnTarget), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,21 +1,31 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumNUnit.Global;
+using SeleniumSpecFlow.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static SeleniumNUnit.Global.GlobalDefinitions;
-using static SeleniumNUnit.Global.WaitHelpers;
+using static SeleniumSpecFlow.Utilities.CommonDriver;
+using static SeleniumSpecFlow.Utilities.WaitHelpers;
 
-namespace SeleniumNUnit.Pages
+namespace SeleniumSpecFlow.Pages.SkillSwap
 {
-    public class ShareSkill
+    internal class ShareSkill
     {
         #region Page Objects for EnterShareSkill
+
+        //ShareSkill Button
+        private IWebElement btnShareSkill => driver.FindElement(By.LinkText("Share Skill"));
+
+        //Manage Listings
+        private IWebElement manageListingsLink => driver.FindElement(By.XPath("//a[@href='/Home/ListingManagement']"));
+
+        //Title
+        private IList<IWebElement> Titles => driver.FindElements(By.XPath("//div[@id='listing-management-section']//tbody/tr/td[3]"));
+
         //Title textbox
         private IWebElement Title => driver.FindElement(By.Name("title"));
 
@@ -82,6 +92,7 @@ namespace SeleniumNUnit.Pages
 
         //Save button
         private IWebElement Save => driver.FindElement(By.XPath("//input[@value='Save']"));
+
         #endregion
 
         #region Page Objects for VerifyShareSkill
@@ -116,91 +127,63 @@ namespace SeleniumNUnit.Pages
         private IWebElement actualSkillExchange => driver.FindElement(By.XPath("//div[text()='Skills Trade']//following-sibling::div/span"));
         #endregion
 
-        #region Page Objects for error Messages
-
-        //Title message
-        private IWebElement errorTitle => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[1]/div/div[2]/div/div[2]/div"));
-
-        //Description message
-        private IWebElement errorDescription => driver.FindElement(By.XPath("//div[@class='tooltip-target ui grid']//div/div[2]/div[2]/div"));
-
-        //Category message
-        private IWebElement errorCategory => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[3]/div[2]/div[2]"));
-
-        //Subcategory message
-        private IWebElement errorSubcategory => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[3]/div[2]/div/div[2]/div[2]/div"));
-
-        //Tags message
-        private IWebElement errorTags => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[4]/div[2]/div[2]"));
-
-        //StartDate message
-        private IWebElement errorStartDate1 => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[7]/div[2]/div[2]"));
-
-        //StartDate mesage 2
-        private IWebElement errorStartDate2 => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[7]/div[2]/div[3]"));
-
-        //Skill-Exchange tag
-        private IWebElement errorSkillExchangeTags => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[8]/div[4]/div[2]"));
-
-        //Message
-        private IWebElement message => driver.FindElement(By.XPath(e_message));
-        private string e_message = "//div[@class='ns-box-inner']";
-
-        #endregion
-        public void EnterShareSkill(int rowNumber, string worksheet)
+        public void ClickButtonShareSkill()
         {
-            //Initial a struct object and assign values
-            Listing excelData = new Listing();
-            GetExcel(rowNumber, worksheet, out excelData);
+            btnShareSkill.Click();
+            wait(3);
+        }
+        public void EnterShareSkill(string title, string description, string category, string subcategory, string tags, string serviceType,
+            string locationType, string startDate, string endDate, string availableDays, string startTime, string endTime, string skillTrade,
+            string skillExchange, string credit, string active)
+        {
 
             //Enter Title 
-            string title = excelData.title;
             Title.SendKeys(title);
 
             //Enter Description
-            Description.SendKeys(excelData.description);
+            Description.SendKeys(description);
 
             //Select category
             var selectCategory = new SelectElement(CategoryDropDown);
-            selectCategory.SelectByText(excelData.category);
+            selectCategory.SelectByText(category);
 
             //Select Subcategory
             var selectSubcategory = new SelectElement(SubCategoryDropDown);
-            selectSubcategory.SelectByText(excelData.subcategory);
+            selectSubcategory.SelectByText(subcategory);
 
             //Enter tag
             Tags.Click();
-            Tags.SendKeys(excelData.tags);
+            Tags.SendKeys(tags);
             Tags.SendKeys(Keys.Return);
 
             //Select Service type
-            SelectServiceType(excelData.serviceType);
+            SelectServiceType(serviceType);
 
             //Select Location type
-            SelectLocationType(excelData.locationType);
+            SelectLocationType(locationType);
 
             //Enter Start date
-            StartDateDropDown.SendKeys(excelData.startDate);
+            StartDateDropDown.SendKeys(startDate);
 
             //Enter End date
-            EndDateDropDown.SendKeys(excelData.endDate);
+            EndDateDropDown.SendKeys(endDate);
 
             //Enter Available days and hours
-            EnterAvailableDaysAndHours((excelData.availableDays), (excelData.startTime), (excelData.endTime));
+            EnterAvailableDaysAndHours((availableDays), (startTime), (endTime));
 
             //Select Skill Trade: "Credeit" or "Skill-exchange"
-            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
+            SelectSkillTrade(skillTrade, skillExchange, credit);
 
             //Click button Upload Work Samples
             UploadWorkSamples();
 
             //Click Active or Hidden
-            ClickActiveOption(excelData.ActiveOption);
+            ClickActiveOption(active);
 
             //Click on Save
             Save.Click();
+
         }
-        #region Sub-methods for EnterShareSkill
         //Select Service type
         internal void SelectServiceType(string serviceTypeText)
         {
@@ -319,7 +302,7 @@ namespace SeleniumNUnit.Pages
             wait(3);
 
             //Run AutoIT-script to execute file uploading
-            using (Process exeProcess = Process.Start(Base.AutoITScriptPath))
+            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
             {
                 exeProcess.WaitForExit();
             }
@@ -339,7 +322,64 @@ namespace SeleniumNUnit.Pages
                     radioActive[i].Click();
             }
         }
-        #endregion
+
+        internal void ViewMySkillDetails(string title)
+        {
+            //Click on ManageListing
+            GoToManageListings();
+            wait(2);
+
+            //Click on button View
+            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(title) + "]/td[8]/div/button[1]";
+            IWebElement btnView = driver.FindElement(By.XPath(e_View));
+            btnView.Click();
+            wait(2);
+        }
+
+
+        //Click on manage listing
+        internal void GoToManageListings()
+        {
+            try
+            {
+                //Click Manage Listing
+                manageListingsLink.Click();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Manage Listing link is not found.", ex.Message);
+            }
+        }
+
+        internal string GetTitleIndex(string expectedTitle)
+        {
+            //Check if there is no listing's title
+            string recordIndex = "";
+            int titleCount = Titles.Count();
+            if (titleCount.Equals(0))
+            {
+                Assert.Ignore("There is no listing record.");
+            }
+            else
+            {
+                //Find title: Break loop when finding a title. Output: recordIndex
+                for (int i = 0; i < titleCount; i++)
+                {
+                    string actualTitle = Titles[i].Text;
+                    if (actualTitle.Equals(expectedTitle))
+                    {
+                        recordIndex = (i + 1).ToString();
+                        break;
+                    }
+                }
+                //If title-to-delete is not found
+                if (recordIndex.Equals(""))
+                {
+                    Assert.Ignore("Listing '" + expectedTitle + "' is not found.");
+                }
+            }
+            return recordIndex;
+        }
 
         #region struct and sub-methods for assertions
         internal struct Listing
@@ -352,37 +392,6 @@ namespace SeleniumNUnit.Pages
             public string endDate;
             public string serviceType;
             public string locationType;
-            public string skillTrade;
-            public string skillExchange;
-            public string tags;
-            public string availableDays;
-            public string startTime;
-            public string endTime;
-            public string credit;
-            public string ActiveOption;
-            public string isClickSaveFirst;
-        }
-        internal void GetExcel(int rowNumber, string worksheet, out Listing excelData)
-        {
-            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
-
-            excelData.title = ExcelLib.ReadData(rowNumber, "Title");
-            excelData.description = ExcelLib.ReadData(rowNumber, "Description");
-            excelData.category = ExcelLib.ReadData(rowNumber, "Category");
-            excelData.subcategory = ExcelLib.ReadData(rowNumber, "Subcategory");
-            excelData.startDate = ExcelLib.ReadData(rowNumber, "StartDate");
-            excelData.endDate = ExcelLib.ReadData(rowNumber, "EndDate");
-            excelData.serviceType = ExcelLib.ReadData(rowNumber, "ServiceType");
-            excelData.locationType = ExcelLib.ReadData(rowNumber, "LocationType");
-            excelData.skillTrade = ExcelLib.ReadData(rowNumber, "SkillTradeOption");
-            excelData.skillExchange = ExcelLib.ReadData(rowNumber, "SkillExchange");
-            excelData.tags = ExcelLib.ReadData(rowNumber, "Tags");
-            excelData.availableDays = ExcelLib.ReadData(rowNumber, "Days");
-            excelData.startTime = ExcelLib.ReadData(rowNumber, "StartTime");
-            excelData.endTime = ExcelLib.ReadData(rowNumber, "EndTime");
-            excelData.credit = ExcelLib.ReadData(rowNumber, "CreditAmount");
-            excelData.ActiveOption = ExcelLib.ReadData(rowNumber, "ActiveOption");
-            excelData.isClickSaveFirst = ExcelLib.ReadData(rowNumber, "isClickSaveFirst");
 
         }
         internal void GetWeb(out Listing webData)
@@ -391,20 +400,10 @@ namespace SeleniumNUnit.Pages
             webData.description = actualDescription.Text;
             webData.category = actualCategory.Text;
             webData.subcategory = actualSubcategory.Text;
-            webData.startDate = actualStartDate.Text;
-            webData.endDate = actualEndDate.Text;
+            webData.startDate = SplitJointDate(actualStartDate.Text);
+            webData.endDate = SplitJointDate(actualEndDate.Text);
             webData.serviceType = actualServiceType.Text;
             webData.locationType = actualLocationType.Text;
-
-            webData.skillTrade = "dummy";
-            webData.skillExchange = "dummy";
-            webData.tags = "dummy";
-            webData.availableDays = "dummy";
-            webData.startTime = "dummy";
-            webData.endTime = "dummy";
-            webData.credit = "dummy";
-            webData.ActiveOption = "dummy";
-            webData.isClickSaveFirst = "dummy";
         }
         #endregion
 
@@ -415,11 +414,12 @@ namespace SeleniumNUnit.Pages
             else
                 return actualSkillExchange.Text;
         }
-        internal string GetMessage()
+
+        private string SplitJointDate(string date)
         {
-            //Check confirmation message
-            WaitForElement(driver, By.XPath(e_message), 5);
-            return message.Text;
+            string[] arrayDate = date.Split('-');
+            string newDate = arrayDate[2] + '/' + arrayDate[1] + '/' + arrayDate[0];
+            return newDate;
         }
     }
 }

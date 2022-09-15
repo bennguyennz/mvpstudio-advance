@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SeleniumNUnit.Global.GlobalDefinitions;
+using static SeleniumNUnit.Global.WaitHelpers;
 
 namespace SeleniumNUnit.Pages
 {
