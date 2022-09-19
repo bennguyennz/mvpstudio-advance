@@ -128,6 +128,38 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
         private IWebElement actualSkillExchange => driver.FindElement(By.XPath("//div[text()='Skills Trade']//following-sibling::div/span"));
         #endregion
 
+        #region Page Objects for error Messages
+
+        //Title message
+        private IWebElement errorTitle => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[1]/div/div[2]/div/div[2]/div"));
+
+        //Description message
+        private IWebElement errorDescription => driver.FindElement(By.XPath("//div[@class='tooltip-target ui grid']//div/div[2]/div[2]/div"));
+
+        //Category message
+        private IWebElement errorCategory => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[3]/div[2]/div[2]"));
+
+        //Subcategory message
+        private IWebElement errorSubcategory => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[3]/div[2]/div/div[2]/div[2]/div"));
+
+        //Tags message
+        private IWebElement errorTags => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[4]/div[2]/div[2]"));
+
+        //StartDate message
+        private IWebElement errorStartDate1 => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[7]/div[2]/div[2]"));
+
+        //StartDate mesage 2
+        private IWebElement errorStartDate2 => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[7]/div[2]/div[3]"));
+
+        //Skill-Exchange tag
+        private IWebElement errorSkillExchangeTags => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[8]/div[4]/div[2]"));
+
+        //Message
+        private IWebElement message => driver.FindElement(By.XPath(e_message));
+        private string e_message = "//div[@class='ns-box-inner']";
+
+        #endregion
+
         public void ClickButtonShareSkill()
         {
             btnShareSkill.Click();
@@ -454,6 +486,28 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             excelData.isClickSaveFirst = ExcelLib.ReadData(rowNumber, "isClickSaveFirst");
 
         }
+
+        internal void GetPortalMessage(out Listing portal)
+        {
+            portal.title = errorTitle.Text;
+            portal.description = errorDescription.Text;
+            portal.tags = errorTags.Text;
+
+            portal.category = "dummy";
+            portal.subcategory = "dummy";
+            portal.startDate = "dummy";
+            portal.endDate = "dummy";
+            portal.serviceType = "dummy";
+            portal.locationType = "dummy";
+            portal.availableDays = "dummy";
+            portal.startTime = "dummy";
+            portal.endTime = "dummy";
+            portal.skillTrade = "dummy";
+            portal.skillExchange = "dummy";
+            portal.credit = "dummy";
+            portal.ActiveOption = "dummy";
+            portal.isClickSaveFirst = "dummy";
+        }
         #endregion
 
         internal string GetSkillTrade(string skillTradeOption)
@@ -470,5 +524,122 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             string newDate = arrayDate[2] + '/' + arrayDate[1] + '/' + arrayDate[0];
             return newDate;
         }
+
+        //Negative test
+        internal void EnterShareSkill_InvalidData(int testData, string worksheet)
+        {
+            ShareSkill shareSkillObj = new ShareSkill();
+            Listing test = new Listing();
+            shareSkillObj.GetExcel(testData, worksheet, out test);
+
+            //Assert no data
+            if (test.isClickSaveFirst == "Yes")
+            {
+                Save.Click();
+            }
+            //Assert invalid data
+            else if (test.isClickSaveFirst == "No")
+            {
+                //Enter invalid data, depending on excel
+                EnterDataOnConditions(test.title, test.description, test.tags, test.startDate, test.endDate,
+                    test.skillTrade, test.skillExchange, test.credit, test.category, test.subcategory);
+
+                //Click Save button
+                Save.Click();
+            }
+        }
+
+        #region Sub-methods for EnterShareSkill_InvalidData
+        internal void EnterDataOnConditions(string titleText, string descriptionText, string tagsText,
+            string startDateText, string endDateText, string skillTradeText, string skillExchangeText,
+            string creditAmountText, string categoryText, string subCategoryText)
+        {
+            //Enter title
+            if (titleText != "Ignore")
+            {
+                Title.SendKeys(titleText);
+            }
+
+            //Enter Description
+            if (descriptionText != "Ignore")
+            {
+                Description.SendKeys(descriptionText);
+            }
+
+            //Select category 
+            var selectCategory = new SelectElement(CategoryDropDown);
+            if (categoryText != "Ignore")
+            {
+                selectCategory.SelectByText(categoryText);
+            }
+
+            if (subCategoryText == "Ignore")
+            {
+                //Select Subcategory
+                var selectSubcategory = new SelectElement(SubCategoryDropDown);
+                selectSubcategory.SelectByText(subCategoryText);
+            }
+
+            //Enter tags
+            if (tagsText != "Ignore")
+            {
+                Tags.Click();
+                Tags.SendKeys(tagsText);
+                Tags.SendKeys(Keys.Return);
+            }
+
+            //Enter Start date
+            if (startDateText != "Ignore")
+            {
+                StartDateDropDown.SendKeys(startDateText);
+            }
+
+            //Enter End date
+            if (endDateText != "Ignore")
+            {
+                EndDateDropDown.SendKeys(endDateText);
+            }
+
+            //Select "Skill Trade" options
+            if (skillTradeText != "Ignore")
+            {
+                SelectSkillTrade(skillTradeText, skillExchangeText, creditAmountText);
+            }
+        }
+        #endregion
+
+
+        internal string GetMessage()
+        {
+            //Check confirmation message
+            WaitForElement(driver, By.XPath(e_message), 5);
+            return message.Text;
+        }
+
+        internal string GetDateErrorMessage1()
+        {
+            return errorStartDate2.Text;
+        }
+        internal string GetDateErrorMessage2()
+        {
+            return errorStartDate1.Text;
+        }
+        internal string GetCategoryError()
+        {
+            return errorCategory.Text;
+        }
+        internal string GetSubcategoryError()
+        {
+            return errorSubcategory.Text;
+        }
+        internal string GetSkillExchangeError()
+        {
+            return errorSkillExchangeTags.Text;
+        }
+        internal string GetCredit()
+        {
+            return CreditAmount.Text;
+        }
+
     }
 }
