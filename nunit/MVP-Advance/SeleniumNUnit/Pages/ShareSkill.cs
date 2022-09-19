@@ -341,6 +341,89 @@ namespace SeleniumNUnit.Pages
         }
         #endregion
 
+        //Negative test
+        internal void EnterShareSkill_InvalidData(int testData, string worksheet)
+        {
+            ShareSkill shareSkillObj = new ShareSkill();
+            Listing test = new Listing();
+            shareSkillObj.GetExcel(testData, worksheet, out test);
+
+            //Enter no data
+            if (test.isClickSaveFirst == "Yes")
+            {
+                Save.Click();
+            }
+            //Enter invalid data
+            else if (test.isClickSaveFirst == "No")
+            {
+                //Enter invalid data, depending on excel
+                EnterDataOnConditions(test.title, test.description, test.tags, test.startDate, test.endDate,
+                    test.skillTrade, test.skillExchange, test.credit, test.category, test.subcategory);
+
+                //Click Save button
+                Save.Click();
+            }
+        }
+
+        #region Sub-methods for EnterShareSkill_InvalidData
+        internal void EnterDataOnConditions(string titleText, string descriptionText, string tagsText,
+            string startDateText, string endDateText, string skillTradeText, string skillExchangeText,
+            string creditAmountText, string categoryText, string subCategoryText)
+        {
+            //Enter title
+            if (titleText != "Ignore")
+            {
+                Title.SendKeys(titleText);
+            }
+
+            //Enter Description
+            if (descriptionText != "Ignore")
+            {
+                Description.SendKeys(descriptionText);
+            }
+
+            //Select category 
+            var selectCategory = new SelectElement(CategoryDropDown);
+            if (categoryText != "Ignore")
+            {
+                selectCategory.SelectByText(categoryText);
+            }
+
+            if (subCategoryText == "Ignore")
+            {
+                //Select Subcategory
+                var selectSubcategory = new SelectElement(SubCategoryDropDown);
+                selectSubcategory.SelectByText(subCategoryText);
+            }
+
+            //Enter tags
+            if (tagsText != "Ignore")
+            {
+                Tags.Click();
+                Tags.SendKeys(tagsText);
+                Tags.SendKeys(Keys.Return);
+            }
+
+            //Enter Start date
+            if (startDateText != "Ignore")
+            {
+                StartDateDropDown.SendKeys(startDateText);
+            }
+
+            //Enter End date
+            if (endDateText != "Ignore")
+            {
+                EndDateDropDown.SendKeys(endDateText);
+            }
+
+            //Select "Skill Trade" options
+            if (skillTradeText != "Ignore")
+            {
+                SelectSkillTrade(skillTradeText, skillExchangeText, creditAmountText);
+            }
+        }
+        #endregion
+
         #region struct and sub-methods for assertions
         internal struct Listing
         {
@@ -406,6 +489,27 @@ namespace SeleniumNUnit.Pages
             webData.ActiveOption = "dummy";
             webData.isClickSaveFirst = "dummy";
         }
+        internal void GetPortalMessage(out Listing portal)
+        {
+            portal.title = errorTitle.Text;
+            portal.description = errorDescription.Text;
+            portal.tags = errorTags.Text;
+
+            portal.category = "dummy";
+            portal.subcategory = "dummy";
+            portal.startDate = "dummy";
+            portal.endDate = "dummy";
+            portal.serviceType = "dummy";
+            portal.locationType = "dummy";
+            portal.availableDays = "dummy";
+            portal.startTime = "dummy";
+            portal.endTime = "dummy";
+            portal.skillTrade = "dummy";
+            portal.skillExchange = "dummy";
+            portal.credit = "dummy";
+            portal.ActiveOption = "dummy";
+            portal.isClickSaveFirst = "dummy";
+        }
         #endregion
 
         internal string GetSkillTrade(string skillTradeOption)
@@ -420,6 +524,31 @@ namespace SeleniumNUnit.Pages
             //Check confirmation message
             WaitForElement(driver, By.XPath(e_message), 5);
             return message.Text;
+        }
+
+        internal string GetDateErrorMessage1()
+        {
+            return errorStartDate2.Text;
+        }
+        internal string GetDateErrorMessage2()
+        {
+            return errorStartDate1.Text;
+        }
+        internal string GetCategoryError()
+        {
+            return errorCategory.Text;
+        }
+        internal string GetSubcategoryError()
+        {
+            return errorSubcategory.Text;
+        }
+        internal string GetSkillExchangeError()
+        {
+            return errorSkillExchangeTags.Text;
+        }
+        internal string GetCredit()
+        {
+            return CreditAmount.Text;
         }
     }
 }

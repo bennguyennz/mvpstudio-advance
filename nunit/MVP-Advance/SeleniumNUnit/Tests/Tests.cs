@@ -30,6 +30,32 @@ namespace SeleniumNUnit.Tests
             VerifyContactDetails(2, "Profile");
         }
 
+        [Test, Order(7)]
+        public void TC4a_WhenIEnterNoDataThenIAssert()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.EnterShareSkill_Invalid(2, "NegativeTC");
+            AssertNoData(3, 4, "NegativeTC");//No need test data
+        }
+
+        [Test, Order(8)]
+        public void TC4b_WhenIAddInvalidDataThenIAssert()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC"); //test data, esp. past start date
+            AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
+        }
+        [Test, Order(9)]
+        public void TC4c_WhenIAddInvalidDataThenIAssert()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");//Test data, esp. past startdate, startdate>enddate
+            AssertInvalidData(10, 11, 12, "NegativeTC"); //need test data
+        }
+
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {
             //Click on view Listing
@@ -116,6 +142,112 @@ namespace SeleniumNUnit.Tests
 
             //Check Earn Targe
             Assert.AreEqual(earnTarget, profileObj.GetAvailityTarget(), "Actual earn target and Expected earn target do not match.");
+        }
+
+        public void AssertNoData(int excelMessage, int seleniumMessage, string worksheet)
+        {
+            shareSkillObj = new ShareSkill();
+            Listing xMessage = new Listing();
+            Listing selenium = new Listing();
+            Listing portal = new Listing();
+            shareSkillObj.GetExcel(excelMessage, worksheet, out xMessage);
+            shareSkillObj.GetExcel(seleniumMessage, worksheet, out selenium);
+            shareSkillObj.GetPortalMessage(out portal);
+
+            //Assertions
+            Assert.Multiple(() =>
+            {
+                Assert.That(shareSkillObj.GetMessage().Equals(xMessage.isClickSaveFirst), selenium.isClickSaveFirst);
+
+                //Check title message
+                Assert.That((portal.title).Equals(xMessage.title), selenium.title);
+
+                //Check description message
+                Assert.That((portal.description).Equals(xMessage.description), selenium.description);
+
+                //Check Category message
+                Assert.That(shareSkillObj.GetCategoryError().Equals(xMessage.category), selenium.category);
+
+                //Check tags message
+                Assert.That((portal.tags).Equals(xMessage.tags), selenium.tags);
+
+                //Check skill exchange tag message
+                Assert.That(shareSkillObj.GetSkillExchangeError().Equals(xMessage.skillExchange), selenium.skillExchange);
+            });
+        }
+        public void AssertInvalidData(int testdata, int excelMessage, int seleniumMessage, string worksheet)
+        {
+            shareSkillObj = new ShareSkill();
+            Listing test = new Listing();
+            Listing xMessage = new Listing();
+            Listing selenium = new Listing();
+            Listing portal = new Listing();
+            shareSkillObj.GetExcel(testdata, worksheet, out test);
+            shareSkillObj.GetExcel(excelMessage, worksheet, out xMessage);
+            shareSkillObj.GetExcel(seleniumMessage, worksheet, out selenium);
+            shareSkillObj.GetPortalMessage(out portal);
+
+            //Assertions
+            Assert.Multiple(() =>
+            {
+                //Check confirmation message
+                Assert.That(shareSkillObj.GetMessage().Equals(xMessage.isClickSaveFirst), selenium.isClickSaveFirst);
+
+                //Check title
+                Assert.That((portal.title).Equals(xMessage.title), selenium.title);
+
+                //Check description
+                Assert.That((portal.description).Equals(xMessage.description), selenium.description);
+
+                if (test.category == "Ignore")
+                {
+                    //Check category message
+                    Assert.That(shareSkillObj.GetCategoryError().Equals(xMessage.category), selenium.category);
+                }
+                else
+                //Assert subcategory
+                {
+                    Assert.That(shareSkillObj.GetSubcategoryError().Equals(xMessage.subcategory), selenium.subcategory);
+                }
+
+                //Check tags message
+                Assert.That((portal.tags).Equals(xMessage.tags), selenium.tags);
+
+                //Check date message
+                if ((test.startDate != "Ignore") & (test.endDate != "Ignore")) //and startdate < today
+                {
+                    Assert.That(shareSkillObj.GetDateErrorMessage1().Equals(xMessage.startDate), selenium.startDate);
+                    Assert.That(shareSkillObj.GetDateErrorMessage2().Equals(xMessage.endDate), selenium.endDate);
+                }
+                else
+                {
+                    if (test.startDate != "Ignore") //and startDate < today
+                    {
+                        Assert.That(shareSkillObj.GetDateErrorMessage2().Equals(xMessage.startDate), selenium.startDate);
+                    }
+                    if (test.endDate != "Ignore") //and start < enddate
+                    {
+                        Assert.That(shareSkillObj.GetDateErrorMessage2().Equals(xMessage.endDate), selenium.endDate);
+                    }
+                }
+
+                //Check skill exchange tags or credit value
+                if (test.skillTrade.Equals("Skill-exchange"))
+                {
+                    //Check skill exchange tag message
+                    Assert.That(shareSkillObj.GetSkillExchangeError().Equals(xMessage.skillExchange), selenium.skillExchange);
+                }
+                else if (test.skillTrade.Equals("Credit"))
+                {
+                    //Check credit value
+                    Assert.That(shareSkillObj.GetCredit() != test.credit, selenium.credit);
+                }
+                else
+                {
+                    //Check skill exchange tag message
+                    Assert.That(shareSkillObj.GetSkillExchangeError().Equals(xMessage.skillExchange), selenium.skillExchange);
+                }
+            });
         }
     }
 }

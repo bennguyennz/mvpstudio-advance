@@ -83,53 +83,11 @@ namespace SeleniumSpecFlow.Features_Definitions.SkillSwap
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Enter Share Skill")]
         [NUnit.Framework.CategoryAttribute("ShareShill")]
-        [NUnit.Framework.TestCaseAttribute("SpecFlow Feature Demo", "A session discussing about Automated testing using SpecFlow, BDD, POM. Requiremen" +
-            "ts: Visual studio Community version.", "Programming & Tech", "QA", "SpecFlow", "One-off service", "On-site", "20/11/2022", "23/11/2022", "Mon", "1100am", "0100pm", "Credit", "None", "10", "Active", null)]
-        [NUnit.Framework.TestCaseAttribute("ExcelDataReader AutoIT XPath Siblings", "A session about sharing experiences about how to work with ExcelDataReader, AutoI" +
-            "T, XPath Siblings", "Business", "Other", "AutoIT", "Hourly basis service", "Online", "10/12/2022", "28/12/2022", "Wed", "0200pm", "0700pm", "Skill-exchange", "Software Development", "None", "Hidden", null)]
-        public void EnterShareSkill(
-                    string title, 
-                    string description, 
-                    string category, 
-                    string subcategory, 
-                    string tags, 
-                    string serviceType, 
-                    string locationType, 
-                    string startDate, 
-                    string endDate, 
-                    string days, 
-                    string startTime, 
-                    string endTime, 
-                    string skillTrade, 
-                    string skillExchange, 
-                    string credit, 
-                    string active, 
-                    string[] exampleTags)
+        public void EnterShareSkill()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "ShareShill"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Title", title);
-            argumentsOfScenario.Add("Description", description);
-            argumentsOfScenario.Add("Category", category);
-            argumentsOfScenario.Add("Subcategory", subcategory);
-            argumentsOfScenario.Add("Tags", tags);
-            argumentsOfScenario.Add("serviceType", serviceType);
-            argumentsOfScenario.Add("locationType", locationType);
-            argumentsOfScenario.Add("startDate", startDate);
-            argumentsOfScenario.Add("endDate", endDate);
-            argumentsOfScenario.Add("Days", days);
-            argumentsOfScenario.Add("startTime", startTime);
-            argumentsOfScenario.Add("endTime", endTime);
-            argumentsOfScenario.Add("skillTrade", skillTrade);
-            argumentsOfScenario.Add("skillExchange", skillExchange);
-            argumentsOfScenario.Add("Credit", credit);
-            argumentsOfScenario.Add("Active", active);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9
 this.ScenarioInitialize(scenarioInfo);
@@ -148,15 +106,118 @@ this.FeatureBackground();
  testRunner.Given("I click button ShareSkill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
- testRunner.When(string.Format("I enter \'{0}\' \'{1}\' \'{2}\' \'{3}\' \'{4}\' \'{5}\' \'{6}\' \'{7}\' \'{8}\' \'{9}\' \'{10}\' \'{11}\'" +
-                            " \'{12}\' \'{13}\' \'{14}\' \'{15}\'", title, description, category, subcategory, tags, serviceType, locationType, startDate, endDate, days, startTime, endTime, skillTrade, skillExchange, credit, active), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I enter my skill details", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
- testRunner.Then(string.Format("I view my skill details based on \'{0}\'", title), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I view my skill details based on title", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 13
- testRunner.And(string.Format("My skill listing should be created as \'{0}\' \'{1}\' \'{2}\' \'{3}\' \'{4}\' \'{5}\' \'{6}\' \'" +
-                            "{7}\' \'{8}\' \'{9}\' \'{10}\'", title, description, category, subcategory, serviceType, locationType, skillTrade, skillExchange, credit, startDate, endDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("My skill listing should be created properly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Enter Share Skill - No data")]
+        [NUnit.Framework.CategoryAttribute("ShareShill")]
+        public void EnterShareSkill_NoData()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ShareShill"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter Share Skill - No data", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 17
+ testRunner.Given("I click button ShareSkill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.When("I enter my skill details with no data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+ testRunner.Then("I get a warning message to enter the input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Enter Share Skill - Invalid data")]
+        [NUnit.Framework.CategoryAttribute("ShareShill")]
+        public void EnterShareSkill_InvalidData()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ShareShill"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter Share Skill - Invalid data", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 23
+ testRunner.Given("I click button ShareSkill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 24
+ testRunner.When("I enter my skill details with first invalid data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 25
+ testRunner.Then("I get a warning message for first invalid data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Enter Share Skill - Invalid data 2")]
+        [NUnit.Framework.CategoryAttribute("ShareShill")]
+        public void EnterShareSkill_InvalidData2()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ShareShill"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter Share Skill - Invalid data 2", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 28
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 29
+ testRunner.Given("I click button ShareSkill", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 30
+ testRunner.When("I enter my skill details with second invalid data set", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then("I get a warning message for second invalid data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -71,6 +71,18 @@ namespace SeleniumNUnit.Pages
             wait(2);
         }
 
+        internal void EnterShareSkill_Invalid(int testData, string worksheet)
+        {
+            shareSkillObj = new ShareSkill();
+            //Click on button ShareSkill
+            btnShareSkill.Click();
+            wait(1);
+
+            //Enter invalid data
+            shareSkillObj.EnterShareSkill_InvalidData(testData, "NegativeTC");
+            Thread.Sleep(2000);
+        }
+
         //Functions to check title is existing and return title's position in manage listing
         internal string GetTitleIndex(string expectedTitle)
         {

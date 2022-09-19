@@ -12,15 +12,15 @@ using TechTalk.SpecFlow;
 using static SeleniumSpecFlow.Utilities.GlobalDefinitions;
 using static SeleniumSpecFlow.Utilities.WaitHelpers;
 
-[assembly: Parallelizable(ParallelScope.Fixtures)]
-[assembly: LevelOfParallelism(2)]
+//[assembly: Parallelizable(ParallelScope.Fixtures)]
+//[assembly: LevelOfParallelism(2)]
 
 namespace SeleniumSpecFlow.Utilities
 {
     [Binding]
     public class CommonDriver
     {
-        [ThreadStatic]
+        //[ThreadStatic]
         public static IWebDriver driver;
         Login loginObj;
 

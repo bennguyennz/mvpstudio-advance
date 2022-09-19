@@ -6,13 +6,26 @@ So that I am able to add, edit or delete my listing details.
 Background: I logged into the web portal
 
 @ShareShill
-Scenario Outline: Enter Share Skill
+Scenario: Enter Share Skill
 	Given I click button ShareSkill
-	When I enter '<Title>' '<Description>' '<Category>' '<Subcategory>' '<Tags>' '<serviceType>' '<locationType>' '<startDate>' '<endDate>' '<Days>' '<startTime>' '<endTime>' '<skillTrade>' '<skillExchange>' '<Credit>' '<Active>'
-	Then I view my skill details based on '<Title>'
-	And My skill listing should be created as '<Title>' '<Description>' '<Category>' '<Subcategory>' '<serviceType>' '<locationType>' '<skillTrade>' '<skillExchange>' '<Credit>' '<startDate>' '<endDate>' 
+	When I enter my skill details
+	Then I view my skill details based on title
+	And My skill listing should be created properly
 
-	Examples: 
-	| Title                                 | Description                                                                                                           | Category           | Subcategory | Tags     | serviceType          | locationType | startDate  | endDate    | Days | startTime | endTime | skillTrade     | skillExchange        | Credit | Active |
-	| SpecFlow Feature Demo                 | A session discussing about Automated testing using SpecFlow, BDD, POM. Requirements: Visual studio Community version. | Programming & Tech | QA          | SpecFlow | One-off service      | On-site      | 20/11/2022 | 23/11/2022 | Mon  | 1100am    | 0100pm  | Credit         | None                 | 10     | Active |
-	| ExcelDataReader AutoIT XPath Siblings | A session about sharing experiences about how to work with ExcelDataReader, AutoIT, XPath Siblings                    | Business           | Other       | AutoIT   | Hourly basis service | Online       | 10/12/2022 | 28/12/2022 | Wed  | 0200pm    | 0700pm  | Skill-exchange | Software Development | None   | Hidden |
+@ShareShill
+Scenario: Enter Share Skill - No data
+	Given I click button ShareSkill
+	When I enter my skill details with no data
+	Then I get a warning message to enter the input
+
+@ShareShill
+Scenario: Enter Share Skill - Invalid data
+	Given I click button ShareSkill
+	When I enter my skill details with first invalid data
+	Then I get a warning message for first invalid data
+
+@ShareShill
+Scenario: Enter Share Skill - Invalid data 2
+	Given I click button ShareSkill
+	When I enter my skill details with second invalid data set
+	Then I get a warning message for second invalid data
