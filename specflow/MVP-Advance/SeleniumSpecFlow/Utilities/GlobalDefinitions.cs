@@ -83,7 +83,6 @@ namespace SeleniumSpecFlow.Utilities
 
                     //var datas = dataCol.Where(x => x.colName == columnName && x.rowNumber == rowNumber).SingleOrDefault().colValue;
 
-
                     return data.ToString();
                 }
 

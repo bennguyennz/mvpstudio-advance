@@ -16,67 +16,65 @@ namespace SeleniumSpecFlow
             shareSkillObj = new ShareSkill();
             shareSkillObj.ClickButtonShareSkill();
         }
- 
-        [When(@"I enter '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
-        public void WhenIEnter(string title, string description, string category, string subcategory, string tags, string serviceType,
-            string locationType, string startDate, string endDate, string availableDays, string startTime, string endTime, string skillTrade,
-            string skillExchange, string credit, string active)
+
+        [When(@"I enter my skill details")]
+        public void WhenIEnterMySkillDetails()
         {
-            shareSkillObj.EnterShareSkill(title, description, category, subcategory, tags, serviceType,
-           locationType, startDate, endDate, availableDays, startTime, endTime, skillTrade,
-           skillExchange, credit, active);
+            shareSkillObj.EnterShareSkill(2, "ManageListings");
         }
 
-        [Then(@"I view my skill details based on '([^']*)'")]
-        public void ThenIViewMySkillDetailsBasedOn(string title)
+        [Then(@"I view my skill details based on title")]
+        public void ThenIViewMySkillDetailsBasedOnTitle()
         {
-            shareSkillObj.ViewMySkillDetails(title);
+            shareSkillObj.ViewMySkillDetails(2, "ManageListings");
         }
 
-        [Then(@"My skill listing should be created as '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
-        public void ThenMySkillListingShouldBeCreatedAs(string title, string description, string category, string subcategory, string serviceType, string locationType, string skillTrade, string skillExchange, string credit, string startDate, string endDate)
+        [Then(@"My skill listing should be created properly")]
+        public void ThenMySkillListingShouldBeCreatedProperly()
         {
             Listing web = new Listing();
+            Listing excel = new Listing();
             shareSkillObj.GetWeb(out web);
+            shareSkillObj.GetExcel(2, "ManageListings", out excel);
             //Assertions
             Assert.Multiple(() =>
             {
 
                 //Verify expected Title vs actual Title
-                Assert.AreEqual(title, web.title);
+                Assert.AreEqual(excel.title, web.title);
 
                 //Verify expected Description vs actual Description
-                Assert.AreEqual(description, web.description);
+                Assert.AreEqual(excel.description, web.description);
 
                 //Verify expected Category vs actual Category
-                Assert.AreEqual(category, web.category);
+                Assert.AreEqual(excel.category, web.category);
 
                 //Verify expected Subcategory vs actual Subcategory
-                Assert.AreEqual(subcategory, web.subcategory);
+                Assert.AreEqual(excel.subcategory, web.subcategory);
 
                 //Verify expected ServiceType vs actual ServiceType
-                if (serviceType == "One-off service")
-                    serviceType = "One-off";
-                if (serviceType.Equals("Hourly basis service"))
-                    serviceType = "Hourly";
-                Assert.AreEqual(serviceType, web.serviceType);
+                if (excel.serviceType.Equals("One-off service"))
+                    excel.serviceType = "One-off";
+                if (excel.serviceType.Equals("Hourly basis service"))
+                    excel.serviceType = "Hourly";
+                Assert.AreEqual(excel.serviceType, web.serviceType);
 
                 //Verify expected StartDate vs actual StartDate
-                Assert.AreEqual(startDate, web.startDate);
+                Assert.AreEqual(excel.startDate, web.startDate);
 
                 //Verify expected EndDate vs actual EndDate
-                Assert.AreEqual(endDate, web.endDate);
+                Assert.AreEqual(excel.endDate, web.endDate);
 
                 //Verify expected LocationType vs actual LocationType
-                if (locationType.Equals("On-site"))
-                    locationType = "On-Site";
-                Assert.AreEqual(locationType, web.locationType);
+                if (excel.locationType.Equals("On-site"))
+                    excel.locationType = "On-Site";
+                Assert.AreEqual(excel.locationType, web.locationType);
 
                 //Verify Skills Trade
-                if (skillTrade == "Credit")
+                if (excel.skillTrade.Equals("Credit"))
                     Assert.AreEqual("None Specified", shareSkillObj.GetSkillTrade("Credit"));
                 else
-                    Assert.AreEqual(skillExchange, shareSkillObj.GetSkillTrade("Skill-exchange"));
+                    Assert.AreEqual(excel.skillExchange, shareSkillObj.GetSkillTrade("Skill-exchange"));
             });
         }
     }

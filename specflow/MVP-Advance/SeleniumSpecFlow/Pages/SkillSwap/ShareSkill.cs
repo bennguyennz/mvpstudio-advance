@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SeleniumSpecFlow.Utilities.CommonDriver;
+using static SeleniumSpecFlow.Utilities.GlobalDefinitions;
 using static SeleniumSpecFlow.Utilities.WaitHelpers;
 
 namespace SeleniumSpecFlow.Pages.SkillSwap
@@ -132,53 +133,54 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             btnShareSkill.Click();
             wait(3);
         }
-        public void EnterShareSkill(string title, string description, string category, string subcategory, string tags, string serviceType,
-            string locationType, string startDate, string endDate, string availableDays, string startTime, string endTime, string skillTrade,
-            string skillExchange, string credit, string active)
+        public void EnterShareSkill(int rowNumber, string worksheet)
         {
+            //Initial a struct object and assign values
+            Listing excelData = new Listing();
+            GetExcel(rowNumber, worksheet, out excelData);
 
             //Enter Title 
-            Title.SendKeys(title);
+            Title.SendKeys(excelData.title);
 
             //Enter Description
-            Description.SendKeys(description);
+            Description.SendKeys(excelData.description);
 
             //Select category
             var selectCategory = new SelectElement(CategoryDropDown);
-            selectCategory.SelectByText(category);
+            selectCategory.SelectByText(excelData.category);
 
             //Select Subcategory
             var selectSubcategory = new SelectElement(SubCategoryDropDown);
-            selectSubcategory.SelectByText(subcategory);
+            selectSubcategory.SelectByText(excelData.subcategory);
 
             //Enter tag
             Tags.Click();
-            Tags.SendKeys(tags);
+            Tags.SendKeys(excelData.tags);
             Tags.SendKeys(Keys.Return);
 
             //Select Service type
-            SelectServiceType(serviceType);
+            SelectServiceType(excelData.serviceType);
 
             //Select Location type
-            SelectLocationType(locationType);
+            SelectLocationType(excelData.locationType);
 
             //Enter Start date
-            StartDateDropDown.SendKeys(startDate);
+            StartDateDropDown.SendKeys(excelData.startDate);
 
             //Enter End date
-            EndDateDropDown.SendKeys(endDate);
+            EndDateDropDown.SendKeys(excelData.endDate);
 
             //Enter Available days and hours
-            EnterAvailableDaysAndHours((availableDays), (startTime), (endTime));
+            EnterAvailableDaysAndHours(excelData.availableDays, excelData.startTime, excelData.endTime);
 
             //Select Skill Trade: "Credeit" or "Skill-exchange"
-            SelectSkillTrade(skillTrade, skillExchange, credit);
+            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
 
             //Click button Upload Work Samples
             UploadWorkSamples();
 
             //Click Active or Hidden
-            ClickActiveOption(active);
+            ClickActiveOption(excelData.ActiveOption);
 
             //Click on Save
             Save.Click();
@@ -323,8 +325,12 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             }
         }
 
-        internal void ViewMySkillDetails(string title)
+        internal void ViewMySkillDetails(int rowNumber, string worksheet)
         {
+            Listing excelData = new Listing();
+            GetExcel(rowNumber, worksheet, out excelData);
+            string title = excelData.title;
+
             //Click on ManageListing
             GoToManageListings();
             wait(2);
@@ -362,6 +368,7 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             }
             else
             {
+
                 //Find title: Break loop when finding a title. Output: recordIndex
                 for (int i = 0; i < titleCount; i++)
                 {
@@ -392,6 +399,15 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             public string endDate;
             public string serviceType;
             public string locationType;
+            public string skillTrade;
+            public string skillExchange;
+            public string tags;
+            public string availableDays;
+            public string startTime;
+            public string endTime;
+            public string credit;
+            public string ActiveOption;
+            public string isClickSaveFirst;
 
         }
         internal void GetWeb(out Listing webData)
@@ -404,6 +420,39 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             webData.endDate = SplitJointDate(actualEndDate.Text);
             webData.serviceType = actualServiceType.Text;
             webData.locationType = actualLocationType.Text;
+
+            webData.skillTrade = "dummy";
+            webData.skillExchange = "dummy";
+            webData.tags = "dummy";
+            webData.availableDays = "dummy";
+            webData.startTime = "dummy";
+            webData.endTime = "dummy";
+            webData.credit = "dummy";
+            webData.ActiveOption = "dummy";
+            webData.isClickSaveFirst = "dummy";
+        }
+        internal void GetExcel(int rowNumber, string worksheet, out Listing excelData)
+        {
+            ExcelLib.PopulateInCollection(ExcelPath, worksheet);
+
+            excelData.title = ExcelLib.ReadData(rowNumber, "Title");
+            excelData.description = ExcelLib.ReadData(rowNumber, "Description");
+            excelData.category = ExcelLib.ReadData(rowNumber, "Category");
+            excelData.subcategory = ExcelLib.ReadData(rowNumber, "Subcategory");
+            excelData.startDate = ExcelLib.ReadData(rowNumber, "StartDate");
+            excelData.endDate = ExcelLib.ReadData(rowNumber, "EndDate");
+            excelData.serviceType = ExcelLib.ReadData(rowNumber, "ServiceType");
+            excelData.locationType = ExcelLib.ReadData(rowNumber, "LocationType");
+            excelData.skillTrade = ExcelLib.ReadData(rowNumber, "SkillTradeOption");
+            excelData.skillExchange = ExcelLib.ReadData(rowNumber, "SkillExchange");
+            excelData.tags = ExcelLib.ReadData(rowNumber, "Tags");
+            excelData.availableDays = ExcelLib.ReadData(rowNumber, "Days");
+            excelData.startTime = ExcelLib.ReadData(rowNumber, "StartTime");
+            excelData.endTime = ExcelLib.ReadData(rowNumber, "EndTime");
+            excelData.credit = ExcelLib.ReadData(rowNumber, "CreditAmount");
+            excelData.ActiveOption = ExcelLib.ReadData(rowNumber, "ActiveOption");
+            excelData.isClickSaveFirst = ExcelLib.ReadData(rowNumber, "isClickSaveFirst");
+
         }
         #endregion
 
