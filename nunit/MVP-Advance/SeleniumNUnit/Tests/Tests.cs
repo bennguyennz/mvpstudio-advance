@@ -30,6 +30,33 @@ namespace SeleniumNUnit.Tests
             VerifyContactDetails(2, "Profile");
         }
 
+        [Test, Order(1)]
+        public void EnterLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.addLanguage(2, "Profile");
+            VerifyAddLanguage(2, "Profile");
+
+        }
+        [Test, Order(2)]
+        public void EditLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.editLanguage(2, 3, "Profile");
+            VerifyEditLanguage(3, "Profile");
+        }
+        [Test, Order(3)]
+        public void deleteLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.deleteLanguage(3, "Profile");
+            VerifyDeleteLanguage(3, "Profile");
+
+        }
+
         [Test, Order(7)]
         public void TC4a_WhenIEnterNoDataThenIAssert()
         {
@@ -249,5 +276,30 @@ namespace SeleniumNUnit.Tests
                 }
             });
         }
+
+
+        public void VerifyAddLanguage(int rowNumber,string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetNewLanguage() == ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetNewLanguageLevel() == ExcelLib.ReadData(rowNumber, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
+        public void VerifyEditLanguage(int rowNumber1, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetEditNewLanguage() == ExcelLib.ReadData(rowNumber1, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetEditNewLanguageLevel() == ExcelLib.ReadData(rowNumber1, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
+
+        public void VerifyDeleteLanguage(int rowNumber, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
     }
+
+
 }
