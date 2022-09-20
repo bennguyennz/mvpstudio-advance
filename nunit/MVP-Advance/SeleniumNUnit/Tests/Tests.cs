@@ -12,7 +12,44 @@ namespace SeleniumNUnit.Tests
         ShareSkill shareSkillObj;
         Profile profileObj;
 
+
         [Test, Order(1)]
+        public void TC2_WhenIEditContactAndVerifyContact()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.EditMyContactDetails(2, "Profile");
+            VerifyContactDetails(2, "Profile");
+        }
+
+        [Test, Order(2)]
+        public void EnterLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.addLanguage(2, "Profile");
+            VerifyAddLanguage(2, "Profile");
+
+        }
+        [Test, Order(3)]
+        public void EditLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.editLanguage(2, 3, "Profile");
+            VerifyEditLanguage(3, "Profile");
+        }
+        [Test, Order(4)]
+        public void deleteLanguage()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.deleteLanguage(3, "Profile");
+            VerifyDeleteLanguage(3, "Profile");
+
+        }
+
+        [Test, Order(5)]
         public void TC1_WhenIEnterListingAndVerifyListing()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -21,17 +58,9 @@ namespace SeleniumNUnit.Tests
             VerifyListingDetails(2, "ManageListings");
         }
 
-        [Test, Order(2)]
-        public void TC2_WhenIEditContactAndVerifyContact()
-        {
-            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            profileObj = new Profile();
-            profileObj.EditMyContactDetails(2,"Profile");
-            VerifyContactDetails(2, "Profile");
-        }
 
-        [Test, Order(3)]
-        public void TC3a_WhenIEnterNoDataThenIAssert()
+        [Test, Order(6)]
+        public void TC4a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -39,7 +68,7 @@ namespace SeleniumNUnit.Tests
             AssertNoData(3, 4, "NegativeTC");//No need test data
         }
 
-        [Test, Order(4)]
+        [Test, Order(7)]
         public void TC3b_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -47,7 +76,7 @@ namespace SeleniumNUnit.Tests
             manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC"); //test data, esp. past start date
             AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
         }
-        [Test, Order(5)]
+        [Test, Order(8)]
         public void TC3c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -55,6 +84,8 @@ namespace SeleniumNUnit.Tests
             manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");//Test data, esp. past startdate, startdate>enddate
             AssertInvalidData(10, 11, 12, "NegativeTC"); //need test data
         }
+
+ 
 
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {
@@ -249,5 +280,30 @@ namespace SeleniumNUnit.Tests
                 }
             });
         }
+
+
+        public void VerifyAddLanguage(int rowNumber,string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetNewLanguage() == ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetNewLanguageLevel() == ExcelLib.ReadData(rowNumber, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
+        public void VerifyEditLanguage(int rowNumber1, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetEditNewLanguage() == ExcelLib.ReadData(rowNumber1, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetEditNewLanguageLevel() == ExcelLib.ReadData(rowNumber1, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
+
+        public void VerifyDeleteLanguage(int rowNumber, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Assertion
+            Assert.That(profileObj.GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
     }
+
+
 }
