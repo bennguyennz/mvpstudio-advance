@@ -12,25 +12,17 @@ namespace SeleniumNUnit.Tests
         ShareSkill shareSkillObj;
         Profile profileObj;
 
-        [Test]
-        public void WhenIEnterListingAndVerifyListing()
-        {
-            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageListingObj = new ManageListings();
-            manageListingObj.AddListing(2, "ManageListings");
-            VerifyListingDetails(2, "ManageListings");
-        }
 
-        [Test]
-        public void WhenIEditContactAndVerifyContact()
+        [Test, Order(1)]
+        public void TC2_WhenIEditContactAndVerifyContact()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
-            profileObj.EditMyContactDetails(2,"Profile");
+            profileObj.EditMyContactDetails(2, "Profile");
             VerifyContactDetails(2, "Profile");
         }
 
-        [Test, Order(1)]
+        [Test, Order(2)]
         public void EnterLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -39,7 +31,7 @@ namespace SeleniumNUnit.Tests
             VerifyAddLanguage(2, "Profile");
 
         }
-        [Test, Order(2)]
+        [Test, Order(3)]
         public void EditLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -47,7 +39,7 @@ namespace SeleniumNUnit.Tests
             profileObj.editLanguage(2, 3, "Profile");
             VerifyEditLanguage(3, "Profile");
         }
-        [Test, Order(3)]
+        [Test, Order(4)]
         public void deleteLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -57,7 +49,17 @@ namespace SeleniumNUnit.Tests
 
         }
 
-        [Test, Order(7)]
+        [Test, Order(5)]
+        public void TC1_WhenIEnterListingAndVerifyListing()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.AddListing(2, "ManageListings");
+            VerifyListingDetails(2, "ManageListings");
+        }
+
+
+        [Test, Order(6)]
         public void TC4a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
@@ -66,22 +68,24 @@ namespace SeleniumNUnit.Tests
             AssertNoData(3, 4, "NegativeTC");//No need test data
         }
 
-        [Test, Order(8)]
-        public void TC4b_WhenIAddInvalidDataThenIAssert()
+        [Test, Order(7)]
+        public void TC3b_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC"); //test data, esp. past start date
             AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
         }
-        [Test, Order(9)]
-        public void TC4c_WhenIAddInvalidDataThenIAssert()
+        [Test, Order(8)]
+        public void TC3c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");//Test data, esp. past startdate, startdate>enddate
             AssertInvalidData(10, 11, 12, "NegativeTC"); //need test data
         }
+
+ 
 
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {

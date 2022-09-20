@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\mvpstudio-advanceProject\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj": {}
+    "D:\\workspace\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj": {}
   },
   "projects": {
-    "D:\\mvpstudio-advanceProject\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj": {
+    "D:\\workspace\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\mvpstudio-advanceProject\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj",
+        "projectUniqueName": "D:\\workspace\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj",
         "projectName": "SeleniumNUnit",
-        "projectPath": "D:\\mvpstudio-advanceProject\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj",
-        "packagesPath": "C:\\Users\\Siva Kanteti\\.nuget\\packages\\",
-        "outputPath": "D:\\mvpstudio-advanceProject\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\obj\\",
+        "projectPath": "D:\\workspace\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\SeleniumNUnit.csproj",
+        "packagesPath": "C:\\Users\\windows\\.nuget\\packages\\",
+        "outputPath": "D:\\workspace\\mvpstudio-advance\\nunit\\MVP-Advance\\SeleniumNUnit\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Siva Kanteti\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\windows\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -108,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
