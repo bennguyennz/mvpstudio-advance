@@ -15,7 +15,7 @@ namespace SeleniumNUnit.Pages
 {
     internal class Profile
     {
-        #region page elements
+        #region page objec model (POM)
         private IWebElement message => driver.FindElement(By.XPath(e_message));
         private IWebElement editNameDropdown => driver.FindElement(By.XPath(e_buttonEditName));
         private IWebElement firstName => driver.FindElement(By.Name(e_firstName));
@@ -35,6 +35,7 @@ namespace SeleniumNUnit.Pages
         private IWebElement descriptionTextBox => driver.FindElement(By.XPath("//div[@class='field  ']/textarea"));
         private IWebElement saveButton => driver.FindElement(By.XPath("//button[@type='button']"));
         private IWebElement addedDescription => driver.FindElement(By.XPath(e_addedDescription));
+
 
         //Wait elements
         private string e_message = "//div[@class='ns-box-inner']";
@@ -167,6 +168,51 @@ namespace SeleniumNUnit.Pages
 
         #endregion
 
+        #region Language Tab 
+
+        //Identify language Tab and click
+        private IWebElement languageTab => driver.FindElement(By.XPath("//div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
+
+        //Click on Add new to add new Language
+        private IWebElement AddNewLangButton => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/thead/tr/th[3]/div"));
+
+        //Enter the Language on text box
+        private IWebElement AddLanguageText => driver.FindElement(By.XPath("//div[@class='eight wide column']//input[@type='text']"));
+
+        //Click on choose language level
+        private IWebElement ChooseLanguage => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]//div[2]/select"));
+
+        //Click on Add Language
+        private IWebElement AddLanguage => driver.FindElement(By.XPath("//div[@class='eight wide column']//input[@type='button']"));
+
+        //Populate excel data
+        private IWebElement editLangIcon => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody/tr/td[3]/span[1]/i"));
+        //Click on edit language icon
+        private IWebElement editLangText => driver.FindElement(By.XPath("//div[@class='five wide field']//input[@type='text']"));
+        //Click on Language level
+        private IWebElement editChooseLang => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody/tr/td//div[2]/select"));
+
+        //Click on update language
+        private IWebElement updateLang => driver.FindElement(By.XPath("//span[@class='buttons-wrapper']//input[@type='button']"));
+        //Click on delete icon
+        private IWebElement deleteLangIcon => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div/table/tbody/tr/td[3]/span[2]/i"));
+
+        //Assertion
+        //Check if the add language created
+        private IWebElement newAddLanguage => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody[last()]/tr/td[1]"));
+        private IWebElement newLanguageLevel => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody[last()]/tr/td[2]"));
+
+        //Check if the edited language created
+        private IWebElement editNewLanguage => driver.FindElement(By.XPath("//div/section[2]//div/div[3]/form/div[2]//div[2]/div/table/tbody[last()]/tr/td[1]"));      
+        private IWebElement editNewLanguageLevel => driver.FindElement(By.XPath("//div/section[2]//div[3]/form/div[2]//div[2]/div/table/tbody[last()]/tr/td[2]"));
+
+        //Check the edited record present or not in the language tab
+        private IWebElement editedLanguageTab => driver.FindElement(By.XPath("//div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
+        #endregion
+
+
+
+
         internal void EditMyContactDetails(int row, string worksheet)
         {
             //Populate excel data
@@ -298,5 +344,109 @@ namespace SeleniumNUnit.Pages
             WaitHelpers.WaitToBeVisible(driver, "XPath", e_availibilityTarget, 3);
             return availabilityTarget.Text;
         }
+
+
+
+        public void addLanguage(int rowNumber, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Identify language Tab and click
+
+            languageTab.Click();
+
+            wait(2);
+            //Click on Add new to add new Language
+            AddNewLangButton.Click();
+
+            //Enter the Language on text box
+            AddLanguageText.SendKeys(ExcelLib.ReadData(rowNumber, "Language"));
+
+            //Click on language level from language options
+            var selectLanguageDropdown = new SelectElement(ChooseLanguage);
+            selectLanguageDropdown.SelectByValue(ExcelLib.ReadData(rowNumber, "LanguageLevel"));
+
+            //Click on Add language
+            AddLanguage.Click();
+
+        }
+        public string GetNewLanguage()
+        {
+            return newAddLanguage.Text;
+        }
+        public string GetNewLanguageLevel()
+        {
+            return newLanguageLevel.Text;
+
+        }
+
+
+        public void editLanguage(int rowNumber, int rowNumber1, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+
+            //Identify language Tab and click
+            languageTab.Click();
+
+            wait(1);
+            //Go to last page where new language created
+            newAddLanguage.Click();
+
+            //Read Data from Language page
+            string ExpectedTitle = ExcelLib.ReadData(rowNumber, "Language");
+
+            //Click on edit language icon
+            editLangIcon.Click();
+
+            //Edit the Language on text box
+            editLangText.Clear();
+            editLangText.SendKeys(ExcelLib.ReadData(rowNumber1, "Language"));
+            wait(2);
+            //Click on Language level         
+            var selectLanguageDropdown = new SelectElement(editChooseLang);
+            selectLanguageDropdown.SelectByValue(ExcelLib.ReadData(rowNumber1, "LanguageLevel"));
+
+            //Click on update language
+            wait(2);
+            updateLang.Click();
+
+          
+        }
+
+        public string GetEditNewLanguage()
+        {
+            return editNewLanguage.Text;
+        }
+        public string GetEditNewLanguageLevel()
+        {
+            return editNewLanguageLevel.Text;
+        }
+
+        public void deleteLanguage(int rowNumber, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+
+            wait(1);
+            //Identify editedlanguage and click
+            editedLanguageTab.Click();
+            wait(2);
+            //Click on delete icon
+            deleteLangIcon.Click();
+
+            // Assertion          
+            Assert.That(GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+        }
+
+        public string GetDeleteLanguageIcon()
+        {
+            return editedLanguageTab.Text;
+        }
+
+
+
+      // Edit share skills 
+
     }
 }
