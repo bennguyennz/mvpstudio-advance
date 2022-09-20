@@ -12,8 +12,8 @@ namespace SeleniumNUnit.Tests
         ShareSkill shareSkillObj;
         Profile profileObj;
 
-        [Test]
-        public void WhenIEnterListingAndVerifyListing()
+        [Test, Order(1)]
+        public void TC1_WhenIEnterListingAndVerifyListing()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -21,8 +21,8 @@ namespace SeleniumNUnit.Tests
             VerifyListingDetails(2, "ManageListings");
         }
 
-        [Test]
-        public void WhenIEditContactAndVerifyContact()
+        [Test, Order(2)]
+        public void TC2_WhenIEditContactAndVerifyContact()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -30,8 +30,8 @@ namespace SeleniumNUnit.Tests
             VerifyContactDetails(2, "Profile");
         }
 
-        [Test, Order(7)]
-        public void TC4a_WhenIEnterNoDataThenIAssert()
+        [Test, Order(3)]
+        public void TC3a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -39,16 +39,16 @@ namespace SeleniumNUnit.Tests
             AssertNoData(3, 4, "NegativeTC");//No need test data
         }
 
-        [Test, Order(8)]
-        public void TC4b_WhenIAddInvalidDataThenIAssert()
+        [Test, Order(4)]
+        public void TC3b_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC"); //test data, esp. past start date
             AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
         }
-        [Test, Order(9)]
-        public void TC4c_WhenIAddInvalidDataThenIAssert()
+        [Test, Order(5)]
+        public void TC3c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
