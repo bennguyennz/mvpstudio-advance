@@ -20,13 +20,13 @@ namespace SeleniumSpecFlow
         [When(@"I enter my skill details")]
         public void WhenIEnterMySkillDetails()
         {
-            shareSkillObj.EnterShareSkill(2, "ManageListings");
+            shareSkillObj.EnterShareSkill(3, "ManageListings");
         }
 
         [Then(@"I view my skill details based on title")]
         public void ThenIViewMySkillDetailsBasedOnTitle()
         {
-            shareSkillObj.ViewMySkillDetails(2, "ManageListings");
+            shareSkillObj.ViewMySkillDetails(3, "ManageListings");
         }
 
         [Then(@"My skill listing should be created properly")]
@@ -35,7 +35,7 @@ namespace SeleniumSpecFlow
             Listing web = new Listing();
             Listing excel = new Listing();
             shareSkillObj.GetWeb(out web);
-            shareSkillObj.GetExcel(2, "ManageListings", out excel);
+            shareSkillObj.GetExcel(3, "ManageListings", out excel);
             //Assertions
             Assert.Multiple(() =>
             {
