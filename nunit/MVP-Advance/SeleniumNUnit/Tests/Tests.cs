@@ -9,6 +9,7 @@ namespace SeleniumNUnit.Tests
     internal class Tests : Global.Base
     {
         ManageListings manageListingObj;
+        ManageRequests manageRequestsObj;
         ShareSkill shareSkillObj;
         Profile profileObj;
 
@@ -60,7 +61,7 @@ namespace SeleniumNUnit.Tests
 
 
         [Test, Order(6)]
-        public void TC4a_WhenIEnterNoDataThenIAssert()
+        public void TC3a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -73,19 +74,88 @@ namespace SeleniumNUnit.Tests
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
-            manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC"); //test data, esp. past start date
-            AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
+            manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC");
+            AssertInvalidData(6, 7, 8, "NegativeTC");
         }
         [Test, Order(8)]
         public void TC3c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
-            manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");//Test data, esp. past startdate, startdate>enddate
-            AssertInvalidData(10, 11, 12, "NegativeTC"); //need test data
+            manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");
+            AssertInvalidData(10, 11, 12, "NegativeTC");
         }
 
- 
+        [Test]
+        public void WithdrawRequest()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageRequestsObj = new ManageRequests();
+
+            //Send a request from the buyer account
+            manageRequestsObj.SendRequest();
+            VerifySendRequest();
+
+            //Withdraw the request from the same account
+            manageRequestsObj.WithdrawRequest();
+            VerifyWithdrawRequest();
+        }
+        [Test]
+        public void DeclineRequest()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageRequestsObj = new ManageRequests();
+
+            //Send a request from the buyer account
+            manageRequestsObj.SendRequest();
+            VerifySendRequest();
+
+            //Decline the request from the seller account
+            manageRequestsObj.DeclineRequest();
+            VerifyDeclineRequest();
+        }
+        [Test]
+        public void AcceptRequest()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageRequestsObj = new ManageRequests();
+
+            //Send a request from the buyer account
+            manageRequestsObj.SendRequest();
+            VerifySendRequest();
+
+            //Accept the request from the seller account
+            manageRequestsObj.AcceptRequest();
+            VerifyAcceptRequest();
+        }
+
+        [Test]
+        public void CompleteRequest()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageRequestsObj = new ManageRequests();
+
+            //Send a request from the buyer account
+            manageRequestsObj.SendRequest();
+            VerifySendRequest();
+
+            //Accept the request from the seller account
+            manageRequestsObj.AcceptRequest();
+            VerifyAcceptRequest();
+
+            //Complete the request from the seller account
+            manageRequestsObj.CompleteReceivedRequest();
+
+            //Complete the request from the buyer account
+            manageRequestsObj.CompleteSentRequest();
+
+            //Verify sent request as "completed"
+            VerifyCompleteSentRequest();
+
+            //Verify received request as "completed"
+            VerifyCompleteReceivedRequest();
+        }
+
 
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {
@@ -159,7 +229,7 @@ namespace SeleniumNUnit.Tests
             //Check message
             string assertMessage = "Availability updated";
             string message = profileObj.GetMessage();
-            Assert.AreEqual(message,assertMessage, "Actual message and Expected message do not match.");
+            Assert.AreEqual(message, assertMessage, "Actual message and Expected message do not match.");
 
             //Check Full Name
             string fullName = sFirstName + " " + sLastName;
@@ -281,6 +351,52 @@ namespace SeleniumNUnit.Tests
             });
         }
 
+        public void VerifySendRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string title = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetSentRequests();
+            Assert.AreEqual(statusCheck, title, "Actual request and expected request do not match");
+        }
+
+        public void VerifyWithdrawRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string skill = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetSentSkillStatus(skill);
+            Assert.AreEqual(statusCheck, "Withdrawn", "Actual status and expected status do not match");
+        }
+
+        public void VerifyDeclineRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string skill = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetReceivedSkillStatus(skill);
+            Assert.AreEqual(statusCheck, "Declined", "Actual status and expected status do not match.");
+        }
+
+        public void VerifyAcceptRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string skill = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetReceivedSkillStatus(skill);
+            Assert.AreEqual(statusCheck, "Accepted", "Actual status and expected status do not match.");
+        }
+
+        public void VerifyCompleteReceivedRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string skill = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetReceivedSkillStatus(skill);
+            Assert.AreEqual(statusCheck, "Completed", "Actual status and expected status do not match.");
+        }
+        public void VerifyCompleteSentRequest()
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, "ManageRequests");
+            string skill = ExcelLib.ReadData(2, "Title");
+            string statusCheck = manageRequestsObj.GetSentSkillStatus(skill);
+            Assert.AreEqual(statusCheck, "Completed", "Actual status and expected status do not match.");
+        }
 
         public void VerifyAddLanguage(int rowNumber,string Excelsheet)
         {

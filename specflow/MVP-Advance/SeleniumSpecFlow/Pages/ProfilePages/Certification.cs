@@ -83,16 +83,6 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
 
         public string GetCertificate(string certificate)
         {
-            //try
-            //{
-            //    //Get text from last record
-            //    WaitHelpers.WaitToBeVisible(driver, "XPath", e_certificate, 5);
-            //    return certifcate.Text;
-            //}
-            //catch (Exception)
-            //{
-            //    return "Certificate element not found";
-            //}
             string findCertificate = "null";
             int titleCount = certificates.Count();
             if (titleCount.Equals(0))

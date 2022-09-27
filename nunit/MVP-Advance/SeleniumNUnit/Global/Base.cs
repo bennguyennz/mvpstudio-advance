@@ -82,7 +82,7 @@ namespace SeleniumNUnit.Global
             if (IsLogin == "true")
             {
                 SignIn obj = new SignIn();
-                obj.LoginSteps();
+                obj.LoginSteps(2); //Excel row
             }
             else
             {
