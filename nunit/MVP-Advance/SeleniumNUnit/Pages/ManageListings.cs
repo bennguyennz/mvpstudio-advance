@@ -127,5 +127,29 @@ namespace SeleniumNUnit.Pages
                 Assert.Fail("Manage Listing link is not found.", ex.Message);
             }
         }
+
+        
+        internal void EditListing(int rowNumber1, int rowNumber2, string Excelsheet)
+        {
+            //Get the values from shareskill
+            ShareSkill shareSkillObj = new ShareSkill();
+            //Click on manage listings tab
+            Thread.Sleep(2000);
+            manageListingsLink.Click();
+
+            //Populate the Excel sheet
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+
+            //Read Data from manage listings page
+            string ExpectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
+
+            wait(3);
+            edit.Click();
+            wait(1);
+
+            shareSkillObj.EditShareSkills(rowNumber2, Excelsheet);
+        }
+
+        
     }
 }

@@ -85,7 +85,33 @@ namespace SeleniumNUnit.Tests
             AssertInvalidData(10, 11, 12, "NegativeTC"); //need test data
         }
 
- 
+        [Test]
+        public void InvalidLang_1()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.InvalidLanguage_1(2, "LangNegTest");
+            AssertInvalidLang(4, "LangNegTest");
+        }
+
+        [Test]
+        public void InvalidLang_2()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            profileObj = new Profile();
+            profileObj.InvalidLanguage_2(3, "LangNegTest");
+            AssertInvalidLang(4, "LangNegTest");
+        }
+        [Test]
+        public void editListings()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.EditListing(2,4, "ManageListings");
+            VerifyListingDetails(4, "ManageListings");
+        }
+
+
 
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {
@@ -285,24 +311,44 @@ namespace SeleniumNUnit.Tests
         public void VerifyAddLanguage(int rowNumber,string Excelsheet)
         {
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            string language = ExcelLib.ReadData(rowNumber, "Language");
+            string languageLev = ExcelLib.ReadData(rowNumber, "LanguageLevel");
             //Assertion
-            Assert.That(profileObj.GetNewLanguage() == ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
-            Assert.That(profileObj.GetNewLanguageLevel() == ExcelLib.ReadData(rowNumber, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetNewLanguage() == language, "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetNewLanguageLevel() == languageLev, "Actual Addlanguage and expected Addlanguage does not match");
         }
+
         public void VerifyEditLanguage(int rowNumber1, string Excelsheet)
         {
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            string EditNewLan = ExcelLib.ReadData(rowNumber1, "Language");
+            string EditNewLanLev = ExcelLib.ReadData(rowNumber1, "LanguageLevel");
             //Assertion
-            Assert.That(profileObj.GetEditNewLanguage() == ExcelLib.ReadData(rowNumber1, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
-            Assert.That(profileObj.GetEditNewLanguageLevel() == ExcelLib.ReadData(rowNumber1, "LanguageLevel"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetEditNewLanguage() == EditNewLan, "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetEditNewLanguageLevel() == EditNewLanLev, "Actual Addlanguage and expected Addlanguage does not match");
         }
 
         public void VerifyDeleteLanguage(int rowNumber, string Excelsheet)
         {
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            string DelLan = ExcelLib.ReadData(rowNumber, "Language");
             //Assertion
-            Assert.That(profileObj.GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+            Assert.That(profileObj.GetDeleteLanguageIcon() != DelLan, "Actual Addlanguage and expected Addlanguage does not match");
         }
+
+        public void AssertInvalidLang(int rowNumber, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            string errorMes = ExcelLib.ReadData(rowNumber, "Message");
+            //Assertion
+            //Assert.That(profileObj.GetErrorMessage().Equals(errorMes));
+            profileObj.GetErrorMessage().Equals(errorMes);
+        }
+
+       
+       
+
+
     }
 
 

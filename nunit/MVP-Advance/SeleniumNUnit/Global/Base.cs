@@ -26,6 +26,9 @@ namespace SeleniumNUnit.Global
         public static string AutoITScriptPath = System.IO.Directory.GetParent(@"../../../").FullName
             + Path.DirectorySeparatorChar + "TestLibrary/TestData/UploadScript.exe";
 
+        public static string AutoITScriptPath2 = System.IO.Directory.GetParent(@"../../../").FullName
+           + Path.DirectorySeparatorChar + "TestLibrary/TestData/UploadScript2.exe";
+
         public static string ScreenshotPath = System.IO.Directory.GetParent(@"../../../").FullName
             + Path.DirectorySeparatorChar + "TestLibrary/Screenshots/";
         #endregion
@@ -139,8 +142,8 @@ namespace SeleniumNUnit.Global
             }
 
             // Close the driver            
-            driver.Close();
-            driver.Quit();
+            //driver.Close();
+            //driver.Quit();
         }
 
         [OneTimeTearDown]

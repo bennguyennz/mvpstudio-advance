@@ -208,6 +208,12 @@ namespace SeleniumNUnit.Pages
 
         //Check the edited record present or not in the language tab
         private IWebElement editedLanguageTab => driver.FindElement(By.XPath("//div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
+
+       
+        //Error message after save
+        private IWebElement LangErrorMessage => driver.FindElement(By.XPath("/html/body/div[1]"));
+
+        
         #endregion
 
 
@@ -446,7 +452,57 @@ namespace SeleniumNUnit.Pages
 
 
 
-      // Edit share skills 
+        public void InvalidLanguage_1(int rowNumber, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+ 
+            //Identify language Tab and click
+            languageTab.Click();
+
+            wait(2);
+            //Click on Add new to add new Language
+            AddNewLangButton.Click();
+
+            //Click on language level from language options
+            ChooseLanguage.Click();
+           
+            //Click on Add language
+            AddLanguage.Click();
+            wait(2);
+            //Click on Error message
+            LangErrorMessage.Click();
+
+        }
+        
+        public void InvalidLanguage_2(int rowNumber, string Excelsheet)
+        {
+            //Populate excel data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            //Identify language Tab and click
+
+            languageTab.Click();
+
+            wait(2);
+            //Click on Add new to add new Language
+            AddNewLangButton.Click();
+
+            //Click on language level from language options      
+            var selectLanguageDropdown = new SelectElement(ChooseLanguage);
+            selectLanguageDropdown.SelectByValue(ExcelLib.ReadData(rowNumber, "LanguageLevel"));
+
+            //Click on Add language
+            AddLanguage.Click();
+            wait(2);
+            //Click on Error message
+            LangErrorMessage.Click();
+
+        }
+
+        internal string GetErrorMessage()
+        {
+            return LangErrorMessage.Text;
+        }
 
     }
 }
