@@ -9,8 +9,8 @@ Background: I logged into the web portal
 Scenario: Enter Share Skill
 	Given I click button ShareSkill
 	When I enter my skill details
-	Then I view my skill details based on title
-	And My skill listing should be created properly
+	And I view my skill details based on title
+	Then My skill listing should be created properly
 
 @ShareShill
 Scenario: Enter Share Skill - No data
@@ -29,3 +29,10 @@ Scenario: Enter Share Skill - Invalid data 2
 	Given I click button ShareSkill
 	When I enter my skill details with second invalid data set
 	Then I get a warning message for second invalid data
+
+@EditShareSkill
+Scenario: Edit Share Skill 
+   Given I click button manage listing
+   When I edit my skill details
+	And I view my edit Shareskill details based on title
+	Then My edit ShareSkill listing should be edited properly

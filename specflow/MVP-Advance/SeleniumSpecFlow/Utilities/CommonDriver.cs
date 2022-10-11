@@ -66,7 +66,7 @@ namespace SeleniumSpecFlow.Utilities
         [AfterScenario]
         public void TearDown()
         {
-            driver.Close();
+            //driver.Close();
         }
 
 

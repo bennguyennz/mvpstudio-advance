@@ -68,7 +68,7 @@ namespace SeleniumSpecFlow.Utilities
 
         }
 
-        public static void WaiToBeExistent(IWebDriver driver, string locator, string locatorValue, int seconds)
+        public static void WaitToBeExistent(IWebDriver driver, string locator, string locatorValue, int seconds)
         {
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, seconds));
 

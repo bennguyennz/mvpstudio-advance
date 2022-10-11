@@ -95,6 +95,20 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
         private IWebElement Save => driver.FindElement(By.XPath("//input[@value='Save']"));
 
         #endregion
+        #region Edit Share skill
+
+       
+       //Click on Manage Listings Link
+        private IWebElement manageListingsTab => driver.FindElement(By.XPath("//a[@href='/Home/ListingManagement']"));
+        //view the listings
+        private IWebElement viewIcon => driver.FindElement(By.XPath("(//i[@class='eye icon'])[1]"));
+
+        //Edit the listing
+        private IWebElement edit => driver.FindElement(By.XPath("(//i[@class='outline write icon'])[1]"));
+       
+        private IWebElement RemoveTags => driver.FindElement(By.XPath("//div[2]/div/form/div[4]/div[2]//span/a"));
+        private IWebElement RemoveSkillExchangeTags => driver.FindElement(By.XPath("//form[@class='ui form']/div[8]/div[4]/div/div/div/div/span/a"));
+        #endregion
 
         #region Page Objects for VerifyShareSkill
         //Title
@@ -162,6 +176,7 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
 
         public void ClickButtonShareSkill()
         {
+            wait(3);
             btnShareSkill.Click();
             wait(3);
         }
@@ -336,7 +351,8 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             wait(3);
 
             //Run AutoIT-script to execute file uploading
-            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
+            //using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
+            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath2))
             {
                 exeProcess.WaitForExit();
             }
@@ -640,6 +656,262 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
         {
             return CreditAmount.Text;
         }
+
+        public void EditShareSkills(int rowNumber1, int rowNumber2, string Excelsheet)
+        {
+            //Listing excelData = new Listing();
+            //GetExcel(rowNumber, worksheet, out excelData);
+            //string title = excelData.title;
+            ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, Excelsheet);
+           
+            //Read Data from manage listings page
+            string expectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
+
+            wait(4);
+            //Click on button Edit
+            string e_Edit = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[2]";
+            IWebElement btnEdit = driver.FindElement(By.XPath(e_Edit));
+            btnEdit.Click();
+            wait(2);
+
+            //Enter Title 
+            Title.Clear();
+            Title.SendKeys(ExcelLib.ReadData(rowNumber2, "Title"));
+
+            //Enter Description
+            Description.Clear();
+            Description.SendKeys(ExcelLib.ReadData(rowNumber2, "Description"));
+
+            //Select category
+            CategoryDropDown.Click();
+            var selectCategory = new SelectElement(CategoryDropDown);
+            selectCategory.SelectByText(ExcelLib.ReadData(rowNumber2, "Category"));
+            wait(3);
+
+            //Select Subcategory
+            SubCategoryDropDown.Click();
+            var selectSubcategory = new SelectElement(SubCategoryDropDown);
+            selectSubcategory.SelectByText(ExcelLib.ReadData(rowNumber2, "Subcategory"));
+            Thread.Sleep(4000);
+
+            //Clear Tags and click
+            RemoveTags.Click();
+            Tags.Click();
+            wait(3);
+
+            Tags.SendKeys(ExcelLib.ReadData(rowNumber2, "Tags"));
+            Tags.SendKeys(Keys.Return);
+            wait(3);
+
+            //Select Service type
+
+            string expectedServiceType = ExcelLib.ReadData(rowNumber2, "ServiceType");
+            string expectedServiceValue = "0";
+
+            if (expectedServiceType.Equals("One-off service"))
+                expectedServiceValue = "1";
+            else expectedServiceValue = "0";
+            for (int i = 0; i < radioServiceType.Count(); i++)
+            {
+                string actualServiceValue = radioServiceType[i].GetAttribute("Value");
+                if (expectedServiceValue.Equals(actualServiceValue))
+                {
+                    radioServiceType[i].Click();
+                }
+            }
+            wait(3);
+            //Select Location type
+            string expectedLocationType = ExcelLib.ReadData(rowNumber2, "LocationType");
+            string expectedLocationValue = "1";
+
+            if (expectedLocationType.Equals("On-site"))
+                expectedLocationValue = "0";
+            else expectedLocationValue = "1";
+            for (int i = 0; i < radioServiceType.Count(); i++)
+            {
+                string actualLocationValue = radioServiceType[i].GetAttribute("Value");
+                if (expectedLocationValue.Equals(actualLocationValue))
+                {
+                    radioLocationType[i].Click();
+                }
+            }
+
+
+            //Enter Start date
+            StartDateDropDown.Click();
+            string startDate = ExcelLib.ReadData(rowNumber2, "StartDate");
+            StartDateDropDown.SendKeys(startDate);
+            Thread.Sleep(1000);
+
+            //Enter End date
+            string endDate = ExcelLib.ReadData(rowNumber2, "EndDate");
+            EndDateDropDown.Click();
+            EndDateDropDown.SendKeys(endDate);
+            Thread.Sleep(2000);
+
+
+            //Clear days and Enter available Days
+
+            for (int i = 0; i < Days.Count; i++)
+            {
+                bool dayState = Days[i].Selected;
+                if (dayState.Equals(true))
+                {
+                    //Unselected day
+                    Days[i].Click();
+
+                    //Clear StartTime
+                    StartTime[i].SendKeys(Keys.Delete);
+                    StartTime[i].SendKeys(Keys.Tab);
+                    StartTime[i].SendKeys(Keys.Delete);
+                    StartTime[i].SendKeys(Keys.Tab);
+                    StartTime[i].SendKeys(Keys.Delete);
+
+                    //Clear Endtime
+                    EndTime[i].SendKeys(Keys.Delete);
+                    EndTime[i].SendKeys(Keys.Tab);
+                    EndTime[i].SendKeys(Keys.Delete);
+                    EndTime[i].SendKeys(Keys.Tab);
+                    EndTime[i].SendKeys(Keys.Delete);
+                }
+            }
+            wait(1);
+            string expectedDays = ExcelLib.ReadData(rowNumber2, "Days");
+
+            string indexValue = "";
+            switch (expectedDays)
+            {
+
+                case "Sun":
+                    indexValue = "0";
+                    break;
+
+                case "Mon":
+                    indexValue = "1";
+                    break;
+
+                case "Tue":
+                    indexValue = "2";
+                    break;
+
+                case "Wed":
+                    indexValue = "3";
+                    break;
+
+                case "Thu":
+                    indexValue = "4";
+                    break;
+
+                case "Fri":
+                    indexValue = "5";
+                    break;
+                case "Sat":
+                    indexValue = "6";
+                    break;
+                default: break;
+            }
+
+            for (int i = 0; i < Days.Count; i++)
+            {
+                if (indexValue.Equals(Days[i].GetAttribute("index")))
+
+                {
+                    Days[i].Click();
+                    StartTime[i].SendKeys(ExcelLib.ReadData(rowNumber2, "StartTime"));
+
+                    EndTime[i].SendKeys(ExcelLib.ReadData(rowNumber2, "EndTime"));
+                }
+            }
+
+            Thread.Sleep(1000);
+
+            //Skill Trade radio button
+            //Clear skill trade
+            for (int i = 0; i < radioSkillTrade.Count; i++)
+            {
+                string value = radioActive[i].GetAttribute("Value");
+                bool state = radioSkillTrade[i].Selected;
+
+                //Clear skill trade tags
+                if (value.Equals("true") & state.Equals(true))
+                {
+                    for (int j = 0; j < skillExchangeTags.Count; j++)
+                    {
+                        skillExchangeTags[j].Click();
+                    }
+                }
+                //Clear credit amount
+                else if (value.Equals("false") & state.Equals(true))
+                {
+                    CreditAmount.Click();
+                    CreditAmount.Clear();
+                }
+            }
+
+            string expectedSkillTrade = ExcelLib.ReadData(rowNumber2, "SkillTradeOption");
+            string expectedSkillValue = "true";
+
+            if (expectedSkillTrade.Equals("Credit"))
+                expectedSkillValue = "false";
+
+            Thread.Sleep(2000);
+            for (int i = 0; i < radioSkillTrade.Count(); i++)
+            {
+                string actualSkillTradeValue = radioSkillTrade[i].GetAttribute("Value");
+                if (expectedSkillValue.Equals(actualSkillTradeValue))
+                {
+                    //Select Skill Exchange or Credit option
+                    radioSkillTrade[i].Click();
+                    wait(1);
+                    if (expectedSkillTrade.Equals("Skill-exchange"))
+                    //Enter tags for skill exchange
+                    {
+                     
+                        SkillExchange.Click();
+                        SkillExchange.SendKeys(ExcelLib.ReadData(rowNumber2, "SkillExchange"));
+                        SkillExchange.SendKeys(Keys.Return);
+                    }
+                    else
+                    {
+                        //Entering Credit amount
+                        CreditAmount.Click();                      
+                       CreditAmount.SendKeys(ExcelLib.ReadData(rowNumber2, "CreditAmount"));
+                    }
+                }
+            }
+
+            //Click on work samples button
+
+            btnWorkSamples.Click();
+            wait(3);
+            // Run AutoIt Script to Execute file uploading
+            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath2))
+            {
+                exeProcess.WaitForExit();
+            }
+
+            Thread.Sleep(1000);
+
+            //Select Active Option
+            string expectedActiveOption = ExcelLib.ReadData(rowNumber2, "ActiveOption");
+            string expectedActiveValue = "true";
+
+            if (expectedActiveOption.Equals("Hidden"))
+                expectedActiveValue = "false";
+
+            for (int i = 0; i < radioSkillTrade.Count(); i++)
+            {
+                string actualActiveValue = radioSkillTrade[i].GetAttribute("Value");
+                if (expectedActiveValue.Equals(actualActiveValue))
+                    radioSkillTrade[i].Click();
+            }
+
+
+            //Click on save
+            Save.Click();
+            wait(3);
+        }
+     
 
     }
 }

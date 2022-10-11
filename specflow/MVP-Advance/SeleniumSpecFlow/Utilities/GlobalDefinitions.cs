@@ -17,6 +17,8 @@ namespace SeleniumSpecFlow.Utilities
            + Path.DirectorySeparatorChar + "TestLibrary/TestData/TestData.xlsx";
         public static string AutoScriptPath = System.IO.Directory.GetParent(@"../../../").FullName
            + Path.DirectorySeparatorChar + "TestLibrary/TestData/UploadScript.exe";
+        public static string AutoScriptPath2 = System.IO.Directory.GetParent(@"../../../").FullName
+          + Path.DirectorySeparatorChar + "TestLibrary/TestData/UploadScript2.exe";
         #endregion
 
         public static string ExcelPath { get => excelPath; set => excelPath = value; }

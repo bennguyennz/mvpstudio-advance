@@ -22,9 +22,8 @@ namespace SeleniumSpecFlow
         {
             shareSkillObj.EnterShareSkill(2, "ManageListings");
         }
-
-        [Then(@"I view my skill details based on title")]
-        public void ThenIViewMySkillDetailsBasedOnTitle()
+        [When(@"I view my skill details based on title")]
+        public void WhenIViewMySkillDetailsBasedOnTitle()
         {
             shareSkillObj.ViewMySkillDetails(2, "ManageListings");
         }
@@ -287,6 +286,77 @@ namespace SeleniumSpecFlow
                 }
             });
         }
+
+       
+        [Given(@"I click button manage listing")]
+        public void GivenIClickButtonManageListing()
+        {
+            shareSkillObj = new ShareSkill();
+            shareSkillObj.GoToManageListings();
+        }
+
+
+        [When(@"I edit my skill details")]
+        public void WhenIEditMySkillDetails()
+        {
+            shareSkillObj.EditShareSkills(2, 4, "ManageListings");
+        }
+
+        [When(@"I view my edit Shareskill details based on title")]
+        public void WhenIViewMyEditShareskillDetailsBasedOnTitle()
+        {
+            shareSkillObj.ViewMySkillDetails(4, "ManageListings");
+        }
+
+        [Then(@"My edit ShareSkill listing should be edited properly")]
+        public void ThenMyEditShareSkillListingShouldBeEditedProperly()
+        {
+            Listing web = new Listing();
+            Listing excel = new Listing();
+            shareSkillObj.GetWeb(out web);
+            shareSkillObj.GetExcel(4, "ManageListings", out excel);
+            //Assertions
+            Assert.Multiple(() =>
+            {
+
+                //Verify expected Title vs actual Title
+                Assert.AreEqual(excel.title, web.title);
+
+                //Verify expected Description vs actual Description
+                Assert.AreEqual(excel.description, web.description);
+
+                //Verify expected Category vs actual Category
+                Assert.AreEqual(excel.category, web.category);
+
+                //Verify expected Subcategory vs actual Subcategory
+                Assert.AreEqual(excel.subcategory, web.subcategory);
+
+                //Verify expected ServiceType vs actual ServiceType
+                if (excel.serviceType.Equals("One-off service"))
+                    excel.serviceType = "One-off";
+                if (excel.serviceType.Equals("Hourly basis service"))
+                    excel.serviceType = "Hourly";
+                Assert.AreEqual(excel.serviceType, web.serviceType);
+
+                //Verify expected StartDate vs actual StartDate
+                Assert.AreEqual(excel.startDate, web.startDate);
+
+                //Verify expected EndDate vs actual EndDate
+                Assert.AreEqual(excel.endDate, web.endDate);
+
+                //Verify expected LocationType vs actual LocationType
+                if (excel.locationType.Equals("On-site"))
+                    excel.locationType = "On-Site";
+                Assert.AreEqual(excel.locationType, web.locationType);
+
+                //Verify Skills Trade
+                if (excel.skillTrade.Equals("Credit"))
+                    Assert.AreEqual("None Specified", shareSkillObj.GetSkillTrade("Credit"));
+                else
+                    Assert.AreEqual(excel.skillExchange, shareSkillObj.GetSkillTrade("Skill-exchange"));
+            });
+        }
+
 
     }
 }
