@@ -58,7 +58,7 @@
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.3.0, )"
+              "version": "[17.3.2, )"
             },
             "Microsoft.NETCore.App": {
               "target": "Package",
@@ -74,15 +74,15 @@
             },
             "Selenium.Support": {
               "target": "Package",
-              "version": "[4.4.0, )"
+              "version": "[4.5.1, )"
             },
             "Selenium.WebDriver": {
               "target": "Package",
-              "version": "[4.4.0, )"
+              "version": "[4.5.1, )"
             },
             "Selenium.WebDriver.ChromeDriver": {
               "target": "Package",
-              "version": "[104.0.5112.7900, )"
+              "version": "[107.0.5304.6200, )"
             },
             "System.Text.Encoding.CodePages": {
               "target": "Package",

@@ -23,6 +23,9 @@ namespace SeleniumNUnit.Pages
         //Message warning no listing
         private IWebElement warningMessage => driver.FindElement(By.XPath("//h3[contains(text(),'You do not have any service listings!')]"));
 
+        //Wait element
+        private string eTable = "//div[@id='listing-management-section']//table/thead/tr/th[1]";
+
         //Title
         private IList<IWebElement> Titles => driver.FindElements(By.XPath("//div[@id='listing-management-section']//tbody/tr/td[3]"));
 
@@ -57,7 +60,7 @@ namespace SeleniumNUnit.Pages
 
             //Click on ManageListing
             GoToManageListings();
-            wait(2);
+            WaitForElement(driver, By.XPath(eTable), 5);
 
             //Read data
             ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);

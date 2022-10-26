@@ -33,7 +33,6 @@ namespace SeleniumNUnit.Pages
 
         //Entered displayed Tags
         private IList<IWebElement> displayedTags => driver.FindElements(By.XPath("//form[@class='ui form']/div[4]/div[2]/div/div/div/span/a"));
-        //form[@class='ui form']/div[4]/div[2]/div/div/div/span/a
 
         //Service type radio button
         private IList<IWebElement> radioServiceType => driver.FindElements(By.Name("serviceType"));

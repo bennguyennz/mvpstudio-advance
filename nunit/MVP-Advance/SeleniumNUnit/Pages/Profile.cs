@@ -21,7 +21,8 @@ namespace SeleniumNUnit.Pages
         private IWebElement firstName => driver.FindElement(By.Name(e_firstName));
         private IWebElement lastName => driver.FindElement(By.Name("lastName"));
         private IWebElement buttonSave => driver.FindElement(By.XPath("//button[@class='ui teal button']"));
-        private IWebElement fullName => driver.FindElement(By.XPath(e_fullName));
+        private IWebElement fullName => driver.FindElement(By.XPath("//div[@class = 'title']"));
+        
         private IWebElement buttonEditAvailabilityType => driver.FindElement(By.XPath("//div[@class='ui list']/div[2]/div/span/i"));
         private IWebElement availibilityTypeDropdown => driver.FindElement(By.XPath(e_vailabilityTypeDropdown));
         private IWebElement editAvailabilityHour => driver.FindElement(By.XPath("//div[@class='ui list']/div[3]/div/span/i"));
@@ -41,7 +42,7 @@ namespace SeleniumNUnit.Pages
         private string e_message = "//div[@class='ns-box-inner']";
         private string e_buttonEditName = "//div[@class='title']/i[@class='dropdown icon']";
         private string e_firstName = "firstName";
-        private string e_fullName = "//div[@class = 'title']";
+        private string e_fullName = "//div[@class = 'title']/i";
         private string e_vailabilityTypeDropdown = "//select[@name='availabiltyType']";
         private string e_availibilityHourDropdown = "//select[@name='availabiltyHour']";
         private string e_availabilityTargetDropdown = "//select[@name='availabiltyTarget']";
@@ -323,7 +324,7 @@ namespace SeleniumNUnit.Pages
 
         public string GetFullName()
         {
-            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 3);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 5);
             return fullName.Text;
         }
 
