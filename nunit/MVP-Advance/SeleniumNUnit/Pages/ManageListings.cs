@@ -129,27 +129,85 @@ namespace SeleniumNUnit.Pages
         }
 
         
-        internal void EditListing(int rowNumber1, int rowNumber2, string Excelsheet)
+        internal void EditListing(int rowNumber1, int rowNumber2, string worksheet)
         {
             //Get the values from shareskill
             ShareSkill shareSkillObj = new ShareSkill();
-            //Click on manage listings tab
-            Thread.Sleep(2000);
-            manageListingsLink.Click();
 
+            //Click on ManageListing
+            GoToManageListings();
+            wait(2);
             //Populate the Excel sheet
-            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
 
             //Read Data from manage listings page
-            string ExpectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
+            string expectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
 
             wait(3);
-            edit.Click();
+            //Click on button Edit
+            string e_Edit = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[2]";
+            IWebElement btnEdit = driver.FindElement(By.XPath(e_Edit));
+            btnEdit.Click();
             wait(1);
 
-            shareSkillObj.EditShareSkills(rowNumber2, Excelsheet);
+            shareSkillObj.EditShareSkills(rowNumber2, worksheet);
+            wait(2);    
         }
 
-        
+        internal void DeleteListing(int rowNumber, string worksheet)
+        {
+            //Click on ManageListing
+            GoToManageListings();
+            wait(2);
+
+            //Populate the Excel sheet
+            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
+
+            //Read Data from manage listings page
+            string isDelete = ExcelLib.ReadData(rowNumber, "isDelete");
+            string expectedTitle = ExcelLib.ReadData(rowNumber, "Title");
+
+            wait(3);
+            //Click on button Edit
+            string e_Delete = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[3]";
+            IWebElement btnDelete = driver.FindElement(By.XPath(e_Delete));
+            btnDelete.Click();
+            wait(1);
+
+            //Click Yes
+            if (isDelete.Equals("Yes"))
+            {
+                clickActionsButton[1].Click();
+            }
+            else
+            {
+                clickActionsButton[0].Click();
+            }
+            wait(3);
+        }
+
+        internal string FindDeletedTitle(string title)
+        {
+            //verify if there is no listing
+            string actTitle = "null";
+            int titleCount = Titles.Count();
+            if (titleCount.Equals(0))
+            {
+                return actTitle;
+
+            }
+            else
+            {
+                //Verify if title is deleted
+                for (int i = 0; i < titleCount; i++)
+                {
+                    actTitle = Titles[i].Text;
+                    if (title.Equals(actTitle))
+                        break;
+                }
+                return actTitle;
+            }
+        }
+
     }
 }

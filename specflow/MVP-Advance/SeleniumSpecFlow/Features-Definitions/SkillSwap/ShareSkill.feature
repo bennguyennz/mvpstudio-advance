@@ -6,7 +6,7 @@ So that I am able to add, edit or delete my listing details.
 Background: I logged into the web portal
 
 @ShareShill
-Scenario: Enter Share Skill
+Scenario: 1Enter Share Skill
 	Given I click button ShareSkill
 	When I enter my skill details
 	And I view my skill details based on title
@@ -31,8 +31,14 @@ Scenario: Enter Share Skill - Invalid data 2
 	Then I get a warning message for second invalid data
 
 @EditShareSkill
-Scenario: Edit Share Skill 
+Scenario: 2Edit Share Skill 
    Given I click button manage listing
    When I edit my skill details
 	And I view my edit Shareskill details based on title
 	Then My edit ShareSkill listing should be edited properly
+
+@DeleteShareSkill
+Scenario: 3Delete Share Skill
+Given I click button manage listing
+When I delete my skill details
+Then My delete ShareSkill listing should be deleted properly

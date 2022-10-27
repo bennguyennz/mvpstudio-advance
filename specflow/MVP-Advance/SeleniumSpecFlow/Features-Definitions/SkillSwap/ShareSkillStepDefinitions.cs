@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using SeleniumSpecFlow.Pages.SkillSwap;
+using SeleniumSpecFlow.Utilities;
 using System;
 using TechTalk.SpecFlow;
 using static SeleniumSpecFlow.Pages.SkillSwap.ShareSkill;
@@ -356,7 +357,29 @@ namespace SeleniumSpecFlow
                     Assert.AreEqual(excel.skillExchange, shareSkillObj.GetSkillTrade("Skill-exchange"));
             });
         }
+        
+        [When(@"I delete my skill details")]
+        public void WhenIDeleteMySkillDetails()
+        {
+            shareSkillObj.DeleteShareSkills( 4, "ManageListings");
+        }
 
 
+
+        [Then(@"My delete ShareSkill listing should be deleted properly")]
+        public void ThenMyDeleteShareSkillListingShouldBeDeletedProperly()
+        {
+           
+            GlobalDefinitions.ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, "ManageListings");
+            string title = GlobalDefinitions.ExcelLib.ReadData(4, "Title");
+    
+            //Click on Manage Listing
+            shareSkillObj.GoToManageListings();
+
+            //Assertion
+            Assert.AreNotEqual(title, shareSkillObj.FindDeletedTitle(title), "Delete Failed");
+        }
+
+       
     }
 }

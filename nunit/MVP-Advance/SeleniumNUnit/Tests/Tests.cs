@@ -110,7 +110,14 @@ namespace SeleniumNUnit.Tests
             manageListingObj.EditListing(2,4, "ManageListings");
             VerifyListingDetails(4, "ManageListings");
         }
-
+        [Test]
+        public void DeleteListings()
+        {
+            test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+            manageListingObj = new ManageListings();
+            manageListingObj.DeleteListing(4, "ManageListings");
+            VerifyDeleteShareskills(4, "ManageListings");
+        }
 
 
         public void VerifyListingDetails(int rowNumber, string worksheet)
@@ -346,7 +353,13 @@ namespace SeleniumNUnit.Tests
         }
 
        
-       
+       public void VerifyDeleteShareskills(int rowNumber, string Excelsheet)
+       {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
+            string title = ExcelLib.ReadData(rowNumber, "Title");   
+            manageListingObj.GoToManageListings();
+            Assert.AreNotEqual(title,manageListingObj.FindDeletedTitle(title), "Delete Failed");
+       }
 
 
     }

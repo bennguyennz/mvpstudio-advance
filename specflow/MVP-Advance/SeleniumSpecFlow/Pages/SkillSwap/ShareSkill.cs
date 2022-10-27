@@ -108,6 +108,10 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
        
         private IWebElement RemoveTags => driver.FindElement(By.XPath("//div[2]/div/form/div[4]/div[2]//span/a"));
         private IWebElement RemoveSkillExchangeTags => driver.FindElement(By.XPath("//form[@class='ui form']/div[8]/div[4]/div/div/div/div/span/a"));
+
+        //Delete ShareSkill action button
+        //Click on Yes
+        private IWebElement YesButton => driver.FindElement(By.XPath("//div[@class='actions']//button[2]"));
         #endregion
 
         #region Page Objects for VerifyShareSkill
@@ -351,8 +355,7 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             wait(3);
 
             //Run AutoIT-script to execute file uploading
-            //using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
-            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath2))
+            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
             {
                 exeProcess.WaitForExit();
             }
@@ -659,11 +662,11 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
 
         public void EditShareSkills(int rowNumber1, int rowNumber2, string Excelsheet)
         {
-            //Listing excelData = new Listing();
-            //GetExcel(rowNumber, worksheet, out excelData);
-            //string title = excelData.title;
+            Listing excelData = new Listing();
+            GetExcel(rowNumber2, Excelsheet, out excelData);
+         
             ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, Excelsheet);
-           
+
             //Read Data from manage listings page
             string expectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
 
@@ -674,82 +677,45 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             btnEdit.Click();
             wait(2);
 
-            //Enter Title 
+            //Enter Title
             Title.Clear();
-            Title.SendKeys(ExcelLib.ReadData(rowNumber2, "Title"));
+            Title.SendKeys(excelData.title);
 
             //Enter Description
             Description.Clear();
-            Description.SendKeys(ExcelLib.ReadData(rowNumber2, "Description"));
+            Description.SendKeys(excelData.description);
 
             //Select category
             CategoryDropDown.Click();
             var selectCategory = new SelectElement(CategoryDropDown);
-            selectCategory.SelectByText(ExcelLib.ReadData(rowNumber2, "Category"));
-            wait(3);
+            selectCategory.SelectByText(excelData.category);
 
             //Select Subcategory
             SubCategoryDropDown.Click();
             var selectSubcategory = new SelectElement(SubCategoryDropDown);
-            selectSubcategory.SelectByText(ExcelLib.ReadData(rowNumber2, "Subcategory"));
-            Thread.Sleep(4000);
+            selectSubcategory.SelectByText(excelData.subcategory);
 
             //Clear Tags and click
             RemoveTags.Click();
             Tags.Click();
             wait(3);
-
-            Tags.SendKeys(ExcelLib.ReadData(rowNumber2, "Tags"));
+            //Enter tag
+          
+            Tags.SendKeys(excelData.tags);
             Tags.SendKeys(Keys.Return);
-            wait(3);
 
             //Select Service type
+            SelectServiceType(excelData.serviceType);
 
-            string expectedServiceType = ExcelLib.ReadData(rowNumber2, "ServiceType");
-            string expectedServiceValue = "0";
-
-            if (expectedServiceType.Equals("One-off service"))
-                expectedServiceValue = "1";
-            else expectedServiceValue = "0";
-            for (int i = 0; i < radioServiceType.Count(); i++)
-            {
-                string actualServiceValue = radioServiceType[i].GetAttribute("Value");
-                if (expectedServiceValue.Equals(actualServiceValue))
-                {
-                    radioServiceType[i].Click();
-                }
-            }
-            wait(3);
             //Select Location type
-            string expectedLocationType = ExcelLib.ReadData(rowNumber2, "LocationType");
-            string expectedLocationValue = "1";
-
-            if (expectedLocationType.Equals("On-site"))
-                expectedLocationValue = "0";
-            else expectedLocationValue = "1";
-            for (int i = 0; i < radioServiceType.Count(); i++)
-            {
-                string actualLocationValue = radioServiceType[i].GetAttribute("Value");
-                if (expectedLocationValue.Equals(actualLocationValue))
-                {
-                    radioLocationType[i].Click();
-                }
-            }
-
+            SelectLocationType(excelData.locationType);
 
             //Enter Start date
-            StartDateDropDown.Click();
-            string startDate = ExcelLib.ReadData(rowNumber2, "StartDate");
-            StartDateDropDown.SendKeys(startDate);
-            Thread.Sleep(1000);
-
+            StartDateDropDown.SendKeys(excelData.startDate);
             //Enter End date
-            string endDate = ExcelLib.ReadData(rowNumber2, "EndDate");
-            EndDateDropDown.Click();
-            EndDateDropDown.SendKeys(endDate);
-            Thread.Sleep(2000);
-
-
+            EndDateDropDown.SendKeys(excelData.endDate);
+            
+  
             //Clear days and Enter available Days
 
             for (int i = 0; i < Days.Count; i++)
@@ -776,55 +742,9 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                 }
             }
             wait(1);
-            string expectedDays = ExcelLib.ReadData(rowNumber2, "Days");
-
-            string indexValue = "";
-            switch (expectedDays)
-            {
-
-                case "Sun":
-                    indexValue = "0";
-                    break;
-
-                case "Mon":
-                    indexValue = "1";
-                    break;
-
-                case "Tue":
-                    indexValue = "2";
-                    break;
-
-                case "Wed":
-                    indexValue = "3";
-                    break;
-
-                case "Thu":
-                    indexValue = "4";
-                    break;
-
-                case "Fri":
-                    indexValue = "5";
-                    break;
-                case "Sat":
-                    indexValue = "6";
-                    break;
-                default: break;
-            }
-
-            for (int i = 0; i < Days.Count; i++)
-            {
-                if (indexValue.Equals(Days[i].GetAttribute("index")))
-
-                {
-                    Days[i].Click();
-                    StartTime[i].SendKeys(ExcelLib.ReadData(rowNumber2, "StartTime"));
-
-                    EndTime[i].SendKeys(ExcelLib.ReadData(rowNumber2, "EndTime"));
-                }
-            }
-
-            Thread.Sleep(1000);
-
+            //Enter Available days and hours
+            EnterAvailableDaysAndHours(excelData.availableDays, excelData.startTime, excelData.endTime);
+        
             //Skill Trade radio button
             //Clear skill trade
             for (int i = 0; i < radioSkillTrade.Count; i++)
@@ -848,37 +768,8 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                 }
             }
 
-            string expectedSkillTrade = ExcelLib.ReadData(rowNumber2, "SkillTradeOption");
-            string expectedSkillValue = "true";
-
-            if (expectedSkillTrade.Equals("Credit"))
-                expectedSkillValue = "false";
-
-            Thread.Sleep(2000);
-            for (int i = 0; i < radioSkillTrade.Count(); i++)
-            {
-                string actualSkillTradeValue = radioSkillTrade[i].GetAttribute("Value");
-                if (expectedSkillValue.Equals(actualSkillTradeValue))
-                {
-                    //Select Skill Exchange or Credit option
-                    radioSkillTrade[i].Click();
-                    wait(1);
-                    if (expectedSkillTrade.Equals("Skill-exchange"))
-                    //Enter tags for skill exchange
-                    {
-                     
-                        SkillExchange.Click();
-                        SkillExchange.SendKeys(ExcelLib.ReadData(rowNumber2, "SkillExchange"));
-                        SkillExchange.SendKeys(Keys.Return);
-                    }
-                    else
-                    {
-                        //Entering Credit amount
-                        CreditAmount.Click();                      
-                       CreditAmount.SendKeys(ExcelLib.ReadData(rowNumber2, "CreditAmount"));
-                    }
-                }
-            }
+            //Select Skill Trade: "Credeit" or "Skill-exchange"
+            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
 
             //Click on work samples button
 
@@ -889,29 +780,56 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             {
                 exeProcess.WaitForExit();
             }
-
-            Thread.Sleep(1000);
-
-            //Select Active Option
-            string expectedActiveOption = ExcelLib.ReadData(rowNumber2, "ActiveOption");
-            string expectedActiveValue = "true";
-
-            if (expectedActiveOption.Equals("Hidden"))
-                expectedActiveValue = "false";
-
-            for (int i = 0; i < radioSkillTrade.Count(); i++)
-            {
-                string actualActiveValue = radioSkillTrade[i].GetAttribute("Value");
-                if (expectedActiveValue.Equals(actualActiveValue))
-                    radioSkillTrade[i].Click();
-            }
-
-
+            wait(1);
+            //Click Active or Hidden
+            ClickActiveOption(excelData.ActiveOption);
             //Click on save
             Save.Click();
             wait(3);
         }
-     
+
+        internal void DeleteShareSkills(int rowNumber, string Excelsheet)
+        {
+            ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, Excelsheet);
+
+            //Read Data from manage listings page
+            string expectedTitle = ExcelLib.ReadData(rowNumber, "Title");
+
+            wait(4);
+            //Click on button delete
+            string e_delete= "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[3]";
+            IWebElement btnDelete = driver.FindElement(By.XPath(e_delete));
+            btnDelete.Click();
+            wait(2);
+
+            //Click on Yes button         
+            YesButton.Click();
+            wait(2);
+        }
+
+        //Verify delete shareSkills
+        internal string FindDeletedTitle(string title)
+        {
+            //verify if there is no listing
+            string actTitle = "null";
+            int titleCount = Titles.Count();
+            if (titleCount.Equals(0))
+            {
+                return actTitle;
+
+            }
+            else
+            {
+                //Verify if title is deleted
+                for (int i = 0; i < titleCount; i++)
+                {
+                    actTitle = Titles[i].Text;
+                    if (title.Equals(actTitle))
+                        break;
+                }
+                return actTitle;
+            }
+        }
 
     }
 }

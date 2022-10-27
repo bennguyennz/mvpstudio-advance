@@ -81,14 +81,14 @@ namespace SeleniumSpecFlow.Features_Definitions.SkillSwap
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Enter Share Skill")]
+        [NUnit.Framework.DescriptionAttribute("1Enter Share Skill")]
         [NUnit.Framework.CategoryAttribute("ShareShill")]
-        public void EnterShareSkill()
+        public void _1EnterShareSkill()
         {
             string[] tagsOfScenario = new string[] {
                     "ShareShill"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("1Enter Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -224,14 +224,14 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Edit Share Skill")]
+        [NUnit.Framework.DescriptionAttribute("2Edit Share Skill")]
         [NUnit.Framework.CategoryAttribute("EditShareSkill")]
-        public void EditShareSkill()
+        public void _2EditShareSkill()
         {
             string[] tagsOfScenario = new string[] {
                     "EditShareSkill"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("2Edit Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -256,6 +256,41 @@ this.FeatureBackground();
 #line hidden
 #line 38
  testRunner.Then("My edit ShareSkill listing should be edited properly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("3Delete Share Skill")]
+        [NUnit.Framework.CategoryAttribute("DeleteShareSkill")]
+        public void _3DeleteShareSkill()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "DeleteShareSkill"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("3Delete Share Skill", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 41
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 42
+testRunner.Given("I click button manage listing", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 43
+testRunner.When("I delete my skill details", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 44
+testRunner.Then("My delete ShareSkill listing should be deleted properly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
