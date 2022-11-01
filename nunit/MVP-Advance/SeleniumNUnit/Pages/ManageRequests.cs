@@ -10,10 +10,8 @@ using OpenQA.Selenium.Interactions;
 using static SeleniumNUnit.Global.GlobalDefinitions;
 using static SeleniumNUnit.Global.WaitHelpers;
 
-
 namespace SeleniumNUnit.Pages
 {
-
     internal class ManageRequests
     {
         //POM for manage requests
@@ -65,7 +63,7 @@ namespace SeleniumNUnit.Pages
                     btnYes.Click();
                 }
                 else
-                    Assert.Ignore("No skill found");
+                    break;
             }
         }
         public void SwitchAccount(int accNumber)

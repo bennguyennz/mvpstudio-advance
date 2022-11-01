@@ -9,12 +9,15 @@ namespace SeleniumNUnit.Tests
     internal class RequestTests : Global.Base
     {
         ManageRequests manageRequestsObj;
+        public RequestTests()
+        {
+            manageRequestsObj = new ManageRequests();
+        }
 
         [Test]
         public void TC6a_WithdrawRequest()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageRequestsObj = new ManageRequests();
 
             //Send a request from the buyer account
             manageRequestsObj.SendRequest();
@@ -28,7 +31,6 @@ namespace SeleniumNUnit.Tests
         public void TC6b_DeclineRequest()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageRequestsObj = new ManageRequests();
 
             //Send a request from the buyer account
             manageRequestsObj.SendRequest();
@@ -42,7 +44,6 @@ namespace SeleniumNUnit.Tests
         public void TC6c_AcceptRequest()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageRequestsObj = new ManageRequests();
 
             //Send a request from the buyer account
             manageRequestsObj.SendRequest();
@@ -57,7 +58,6 @@ namespace SeleniumNUnit.Tests
         public void TC6d_CompleteRequest()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageRequestsObj = new ManageRequests();
 
             //Send a request from the buyer account
             manageRequestsObj.SendRequest();

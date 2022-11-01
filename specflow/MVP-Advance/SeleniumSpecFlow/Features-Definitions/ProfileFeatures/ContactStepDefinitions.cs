@@ -9,11 +9,14 @@ namespace SeleniumSpecFlow
     public class ContactStepDefinitions
     {
         Contact contactObj;
+        public ContactStepDefinitions()
+        {
+            contactObj = new Contact();
+        }
 
         [Given(@"I edit my contact details '([^']*)' '([^']*)' '([^']*)' '([^']*)' '([^']*)'")]
         public void GivenIEditMyContactDetails(string firstName, string lastName, string availability, string hours, string earnTarget)
         {
-            contactObj = new Contact();
             contactObj.EditMyContactDetails(firstName, lastName, availability, hours, earnTarget);
         }
 
@@ -23,24 +26,24 @@ namespace SeleniumSpecFlow
             //Check message
             string assertMessage = "Availability updated";
             string message = contactObj.GetMessage();
-            Assert.That(message == assertMessage, "Actual message and Expected message do not match.");
+            Assert.AreEqual(assertMessage, message,  "Expected message and Actual message do not match.");
 
             //Check Full Name
             string assertFullName = firstName + " " + lastName;
             string editedFullName = contactObj.GetFullName();
-            Assert.That(editedFullName == assertFullName, "Actual full name and Expected full name do not match");
+            Assert.AreEqual(assertFullName, editedFullName, "Expected full name and Actual full name do not match");
 
             //Check availability
             string editedAvailibilityType = contactObj.GetAvailabilityType();
-            Assert.That(editedAvailibilityType == availabilityType, "Actual availability type and Expected availability type do not match.");
+            Assert.AreEqual(availabilityType, editedAvailibilityType, "Expected availability type and Actual availability type do not match.");
 
             //Check Hours
             string editedHour = contactObj.GetAvailityHour();
-            Assert.That(editedHour == hour, "Actual availability hour and expected availability hour do not match.");
+            Assert.AreEqual(hour, editedHour, "Expected availability hour and Actual availability hour do not match.");
 
             //Check Earn Targe
             string editedEarnTarget = contactObj.GetAvailityTarget();
-            Assert.That(editedEarnTarget == earnTarget, "Actual earn target and Expected earn target do not match.");
+            Assert.AreEqual(earnTarget, editedEarnTarget, "Expected earn target and Actual earn target do not match.");
         }
     }
 }

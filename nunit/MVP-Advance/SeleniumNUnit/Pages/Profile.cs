@@ -211,9 +211,6 @@ namespace SeleniumNUnit.Pages
         private IWebElement editedLanguageTab => driver.FindElement(By.XPath("//div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
         #endregion
 
-
-
-
         internal void EditMyContactDetails(int row, string worksheet)
         {
             //Populate excel data
@@ -230,10 +227,7 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "Full Time":
                     availability = "1";
-                    break;
-                default:
-                    Assert.Fail("Availability Type is not matching");
-                    break;
+                    break;  
             }
             switch (hour)
             {
@@ -246,9 +240,6 @@ namespace SeleniumNUnit.Pages
                 case "As needed":
                     hour = "2";
                     break;
-                default:
-                    Assert.Fail("Hour is not matching");
-                    break;
             }
             switch (earnTarget)
             {
@@ -260,9 +251,6 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "More than $1000 per month":
                     earnTarget = "2";
-                    break;
-                default:
-                    Assert.Fail("Earn Target is not matching");
                     break;
             }
 
@@ -381,7 +369,6 @@ namespace SeleniumNUnit.Pages
 
         }
 
-
         public void editLanguage(int rowNumber, int rowNumber1, string Excelsheet)
         {
             //Populate excel data
@@ -411,8 +398,6 @@ namespace SeleniumNUnit.Pages
             //Click on update language
             wait(2);
             updateLang.Click();
-
-          
         }
 
         public string GetEditNewLanguage()
@@ -435,17 +420,12 @@ namespace SeleniumNUnit.Pages
             wait(2);
             //Click on delete icon
             deleteLangIcon.Click();
-
-            // Assertion          
-            Assert.That(GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
         }
 
         public string GetDeleteLanguageIcon()
         {
             return editedLanguageTab.Text;
         }
-
-
 
       // Edit share skills 
 

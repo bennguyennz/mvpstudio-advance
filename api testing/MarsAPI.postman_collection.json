@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "63f52031-4041-4f13-a0f6-afa91b04e214",
-		"name": "Mars API",
+		"name": "MarsAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17469395"
 	},
@@ -9,6 +9,70 @@
 		{
 			"name": "Language",
 			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"auth_token\", response.token.token);\r",
+									"\r",
+									"pm.test(\"Check Login\", function()\r",
+									"{\r",
+									"    pm.expect(response.isSuccess).to.eql(true);\r",
+									"});\r",
+									"pm.test(\"Check response code\", function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"}\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.collectionVariables.get(\"flag\")>0)\r",
+									"{\r",
+									"    postman.setNextRequest(\"Add language\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rememberMe\": false,\r\n    \"email\": \"binhnguyen130320@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:60968/authentication/authentication/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "60968",
+							"path": [
+								"authentication",
+								"authentication",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Add language",
 					"event": [
@@ -147,8 +211,13 @@
 							"script": {
 								"exec": [
 									"//On each iterration, push language into an array of expected languages\r",
-									"var lang = pm.iterationData.get(\"NewLanguage\");\r",
-									"if(lang== undefined)\r",
+									"var runTest = \"iteration\";\r",
+									"var lang = \"\"\r",
+									"if(runTest== \"iteration\")\r",
+									"{\r",
+									"    lang = pm.iterationData.get(\"NewLanguage\");\r",
+									"}\r",
+									"else\r",
 									"{\r",
 									"    lang = pm.collectionVariables.get(\"NewLanguage\");\r",
 									"}\r",
@@ -178,8 +247,7 @@
 									"pm.test(\"Status code check\", function()\r",
 									"{\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -250,6 +318,17 @@
 									"    pm.expect(jsonData.language).to.be.eql(pm.iterationData.get(\"NewLanguage\"));\r",
 									"});\r",
 									"\r",
+									"var cycle = parseInt(pm.collectionVariables.get(\"cycle\"));\r",
+									"cycle++;\r",
+									"if(cycle==4)\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"cycle\", 0);\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.collectionVariables.set(\"cycle\", cycle);\r",
+									"}\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -293,58 +372,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const response = pm.response.json();\r",
-							"pm.collectionVariables.set(\"auth_token\", response.token.token);\r",
-							"\r",
-							"pm.test(\"Check Login\", function()\r",
-							"{\r",
-							"    pm.expect(response.isSuccess).to.eql(true);\r",
-							"});\r",
-							"pm.test(\"Check response code\", function()\r",
-							"{\r",
-							"    pm.response.to.have.status(200);\r",
-							"}\r",
-							");"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"rememberMe\": false,\r\n    \"email\": \"binhnguyen130320@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:60968/authentication/authentication/signin",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "60968",
-					"path": [
-						"authentication",
-						"authentication",
-						"signin"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [
@@ -393,22 +420,17 @@
 			"type": "string"
 		},
 		{
-			"key": "NewLanguage",
-			"value": "Thai",
-			"type": "string"
-		},
-		{
-			"key": "NewLevel",
-			"value": "Fluent",
-			"type": "string"
-		},
-		{
 			"key": "expLang",
 			"value": "",
 			"type": "string"
 		},
 		{
 			"key": "actLang",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cycle",
 			"value": "",
 			"type": "string"
 		}

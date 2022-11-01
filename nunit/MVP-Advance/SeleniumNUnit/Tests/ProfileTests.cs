@@ -8,14 +8,17 @@ namespace SeleniumNUnit.Tests
 {
     internal class ProfileTests : Global.Base
     {
-        Profile profileObj;
 
+        Profile profileObj;
+        public ProfileTests()
+        {
+            profileObj = new Profile();
+        }
 
         [Test, Order(1)]
         public void TC1_EditAndVerifyContact()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            profileObj = new Profile();
             profileObj.EditMyContactDetails(2, "Profile");
             VerifyContactDetails(2, "Profile");
         }
@@ -24,7 +27,6 @@ namespace SeleniumNUnit.Tests
         public void TC2a_EnterLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            profileObj = new Profile();
             profileObj.addLanguage(2, "Profile");
             VerifyAddLanguage(2, "Profile");
 
@@ -33,7 +35,6 @@ namespace SeleniumNUnit.Tests
         public void TC2b_EditLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            profileObj = new Profile();
             profileObj.editLanguage(2, 3, "Profile");
             VerifyEditLanguage(3, "Profile");
         }
@@ -42,7 +43,6 @@ namespace SeleniumNUnit.Tests
         public void TC2c_DeleteLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            profileObj = new Profile();
             profileObj.deleteLanguage(3, "Profile");
             VerifyDeleteLanguage(3, "Profile");
 

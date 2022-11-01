@@ -11,12 +11,16 @@ namespace SeleniumNUnit.Tests
         ManageListings manageListingObj;
         ShareSkill shareSkillObj;
 
+        public ShareSkillTests()
+        {
+            manageListingObj = new ManageListings();
+            shareSkillObj = new ShareSkill();
+        }
 
         [Test, Order(5)]
         public void TC4a_WhenIEnterListingAndVerifyListing()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageListingObj = new ManageListings();
             manageListingObj.AddListing(2, "ManageListings");
             VerifyListingDetails(2, "ManageListings");
         }
@@ -26,7 +30,6 @@ namespace SeleniumNUnit.Tests
         public void TC5a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(2, "NegativeTC");
             AssertNoData(3, 4, "NegativeTC");//No need test data
         }
@@ -35,7 +38,6 @@ namespace SeleniumNUnit.Tests
         public void TC5c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(6, "NegativeTC");
             AssertInvalidData(6, 7, 8, "NegativeTC");
         }
@@ -43,7 +45,6 @@ namespace SeleniumNUnit.Tests
         public void TC5d_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            manageListingObj = new ManageListings();
             manageListingObj.EnterShareSkill_Invalid(10, "NegativeTC");
             AssertInvalidData(10, 11, 12, "NegativeTC");
         }
@@ -51,17 +52,26 @@ namespace SeleniumNUnit.Tests
         #region Assertions for EnterShareSkills
         public void VerifyListingDetails(int rowNumber, string worksheet)
         {
-            //Click on view Listing
-            manageListingObj = new ManageListings();
-            shareSkillObj = new ShareSkill();
-            manageListingObj.ViewListing(rowNumber, worksheet);
+            //Read data
+            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
+            string title = ExcelLib.ReadData(rowNumber, "Title");
 
+            //Get position of the listing title to be verified
+            string titleIndex = manageListingObj.GetTitleIndex(title);
+            if (titleIndex == "There is no listing record." || titleIndex == "Listing is not found.")
+            {
+                Assert.Fail(titleIndex);
+            }
+
+            //Click on view Listing
+            manageListingObj.ViewListing(titleIndex);
+
+            //struct objects initialisations
             Listing excel = new Listing();
             Listing web = new Listing();
 
-
+            //Get struct values
             shareSkillObj.GetExcel(rowNumber, worksheet, out excel);
-
             shareSkillObj.GetWeb(out web);
 
             //Assertions

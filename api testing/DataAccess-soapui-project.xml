@@ -159,7 +159,9 @@
          <web:dNum>10</web:dNum>
       </web:NumberToDollars>
    </soap:Body>
-</soap:Envelope>]]></con:request><con:assertion type="Valid HTTP Status Codes" id="c2f395c6-e836-47f4-a3c1-7b228cc5bde3" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="SOAP Response" id="19ecc342-5513-46b8-85dc-19e8442c8570" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.dataaccess.com/webservicesserver/NumberConversionSoapType/NumberToDollarsRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>number</con:name><con:value>20</con:value></con:property></con:properties></con:testCase><con:testCase id="21e70828-d68c-4e0e-a696-89bb4809922b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="NumberToWords TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="9ca3976b-3334-4d44-b5e0-413c5a14616a" name="NumberToWords"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>NumberConversionSoapBinding12</con:interface><con:operation>NumberToWords</con:operation><con:request name="NumberToWords" id="f51dfe2c-5ad2-4dcc-b1a9-5b27fa0f431e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://www.dataaccess.com/webservicesserver/numberconversion.wso</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.dataaccess.com/webservicesserver/">
+</soap:Envelope>]]></con:request><con:assertion type="Valid HTTP Status Codes" id="c2f395c6-e836-47f4-a3c1-7b228cc5bde3" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:assertion type="SOAP Response" id="19ecc342-5513-46b8-85dc-19e8442c8570" name="SOAP Response"/><con:assertion type="XPath Match" id="c4de0de3-0596-41bc-a076-9c508dbeed74" name="XPath Match"><con:configuration><path>declare namespace m='http://www.dataaccess.com/webservicesserver/';
+declare namespace soap='http://www.w3.org/2003/05/soap-envelope';
+//m:NumberToDollarsResult</path><content>ten dollars</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.dataaccess.com/webservicesserver/NumberConversionSoapType/NumberToDollarsRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>number</con:name><con:value>20</con:value></con:property></con:properties></con:testCase><con:testCase id="21e70828-d68c-4e0e-a696-89bb4809922b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="NumberToWords TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="9ca3976b-3334-4d44-b5e0-413c5a14616a" name="NumberToWords"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>NumberConversionSoapBinding12</con:interface><con:operation>NumberToWords</con:operation><con:request name="NumberToWords" id="f51dfe2c-5ad2-4dcc-b1a9-5b27fa0f431e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://www.dataaccess.com/webservicesserver/numberconversion.wso</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://www.dataaccess.com/webservicesserver/">
    <soap:Header/>
    <soap:Body>
       <web:NumberToWords>
@@ -183,6 +185,7 @@ def dollarService = testRunner.testCase.testSuite.testCases["NumberToDollars Tes
 def dollarContext = new WsdlTestRunContext(dollarService)
 dollarService.run(testRunner, dollarContext)
 
+//validate result
 def expDollar = "ten dollars"
 def dollarResponse = testRunner.testCase.testSuite.testCases["NumberToDollars TestCase"].testSteps["NumberToDollars"].getPropertyValue("Response")
 def xmlDollarResponse = new XmlHolder(dollarResponse)
@@ -191,7 +194,6 @@ assert expDollar == actDollar, "Expected and actual value do not match"
 
 
 //NumberToWords testcase
-
 def wordRequest = testRunner.testCase.testSuite.testCases["NumberToWords TestCase"].testSteps["NumberToWords"].getPropertyValue("Request")
 def xmlWordRequest = new XmlHolder(wordRequest)
 xmlWordRequest.setNodeValue("//web:ubiNum",number)
@@ -213,4 +215,4 @@ assert actWords== expWords, "Actual result and expected result do not match"
 //Validate http response code
 def wordHeader = testRunner.testCase.testSuite.testCases["NumberToWords TestCase"].testSteps["NumberToWords"].testRequest.response.getResponseHeaders()
 assert wordHeader["#status#"]==['HTTP/1.1 200 OK']
-</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
+</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

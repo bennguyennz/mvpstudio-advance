@@ -1,8 +1,11 @@
 using NUnit.Framework;
+using NUnit.Framework.Internal.Execution;
 using SeleniumSpecFlow.Pages.SkillSwap;
+using SeleniumSpecFlow.Utilities;
 using System;
 using TechTalk.SpecFlow;
 using static SeleniumSpecFlow.Pages.SkillSwap.ShareSkill;
+using static SeleniumSpecFlow.Utilities.GlobalDefinitions;
 
 namespace SeleniumSpecFlow
 {
@@ -10,10 +13,13 @@ namespace SeleniumSpecFlow
     public class ShareSkillStepDefinitions
     {
         ShareSkill shareSkillObj;
+        public ShareSkillStepDefinitions()
+        {
+            shareSkillObj = new ShareSkill();
+        }
         [Given(@"I click button ShareSkill")]
         public void GivenIClickButtonShareSkill()
         {
-            shareSkillObj = new ShareSkill();
             shareSkillObj.ClickButtonShareSkill();
         }
 
@@ -23,10 +29,22 @@ namespace SeleniumSpecFlow
             shareSkillObj.EnterShareSkill(3, "ManageListings");
         }
 
-        [Then(@"I view my skill details based on title")]
-        public void ThenIViewMySkillDetailsBasedOnTitle()
+        [When(@"I view my skill details based on title")]
+        public void WhenIViewMySkillDetailsBasedOnTitle()
         {
-            shareSkillObj.ViewMySkillDetails(3, "ManageListings");
+            //Read data
+            ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, "ManageListings");
+            string title = ExcelLib.ReadData(3, "Title");
+
+            //Get position of the listing title to be verified
+            string titleIndex = shareSkillObj.GetTitleIndex(title);
+            if (titleIndex == "No listing record is found." || titleIndex == "Listing is not found.")
+            {
+                Assert.Fail(titleIndex);
+            }
+
+            //Viewskill based on index
+            shareSkillObj.ViewMySkillDetails(titleIndex);
         }
 
         [Then(@"My skill listing should be created properly")]
@@ -89,7 +107,6 @@ namespace SeleniumSpecFlow
         {
             int excelMessage = 3; int seleniumMessage = 4; string worksheet = "NegativeTC";
 
-            shareSkillObj = new ShareSkill();
             Listing xMessage = new Listing();
             Listing selenium = new Listing();
             Listing portal = new Listing();
@@ -131,7 +148,6 @@ namespace SeleniumSpecFlow
         {
             int testdata = 6; int excelMessage = 7; int seleniumMessage = 8; string worksheet = "NegativeTC";
 
-            shareSkillObj = new ShareSkill();
             Listing test = new Listing();
             Listing xMessage = new Listing();
             Listing selenium = new Listing();
@@ -215,7 +231,6 @@ namespace SeleniumSpecFlow
         {
             int testdata = 10; int excelMessage = 11; int seleniumMessage = 12; string worksheet = "NegativeTC";
 
-            shareSkillObj = new ShareSkill();
             Listing test = new Listing();
             Listing xMessage = new Listing();
             Listing selenium = new Listing();

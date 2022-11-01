@@ -83,7 +83,7 @@ namespace SeleniumSpecFlow.Features_Definitions.ProfileFeatures
         [NUnit.Framework.DescriptionAttribute("1-Add profile contact details")]
         [NUnit.Framework.CategoryAttribute("Profile")]
         [NUnit.Framework.TestCaseAttribute("Binh", "Nguyen", "Part Time", "Less than 30hours a week", "Less than $500 per month", null)]
-        [NUnit.Framework.TestCaseAttribute("Binh", "Nguyeen", "Full Time", "More than 30hours a week", "Between $500 and $1000 per month", null)]
+        [NUnit.Framework.TestCaseAttribute("Ben", "Nguyeen", "Full Time", "More than 30hours a week", "Between $500 and $1000 per month", null)]
         [NUnit.Framework.TestCaseAttribute("Binh", "Nguyen", "Full Time", "As needed", "More than $1000 per month", null)]
         public void _1_AddProfileContactDetails(string firstName, string lastName, string availability, string hours, string earnTarget, string[] exampleTags)
         {

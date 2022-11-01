@@ -42,12 +42,16 @@ namespace SeleniumNUnit.Pages
         private IWebElement btnSave => driver.FindElement(By.XPath("//input[@value='Save']"));
         #endregion
 
+        //Object initilization
         ShareSkill shareSkillObj;
+        public ManageListings()
+        {
+            shareSkillObj = new ShareSkill();
+        }
 
         //Add a skill
         internal void AddListing(int rowNumber, string worksheet)
         {
-            shareSkillObj = new ShareSkill();
             btnShareSkill.Click();
             wait(2);
             shareSkillObj.EnterShareSkill(rowNumber, worksheet);
@@ -55,19 +59,13 @@ namespace SeleniumNUnit.Pages
         }
 
         //Verify add & edit
-        internal void ViewListing(int rowNumber, string worksheet)
+        internal void ViewListing(string titleIndex)
         {
-
-            //Click on ManageListing
-            GoToManageListings();
+            //Wait for table to display
             WaitForElement(driver, By.XPath(eTable), 5);
 
-            //Read data
-            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
-            string expectedTitle = ExcelLib.ReadData(rowNumber, "Title");
-
             //Click on button View
-            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[1]";
+            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + titleIndex + "]/td[8]/div/button[1]";
             IWebElement btnView = driver.FindElement(By.XPath(e_View));
             btnView.Click();
 
@@ -76,7 +74,6 @@ namespace SeleniumNUnit.Pages
 
         internal void EnterShareSkill_Invalid(int testData, string worksheet)
         {
-            shareSkillObj = new ShareSkill();
             //Click on button ShareSkill
             btnShareSkill.Click();
             wait(1);
@@ -89,12 +86,15 @@ namespace SeleniumNUnit.Pages
         //Functions to check title is existing and return title's position in manage listing
         internal string GetTitleIndex(string expectedTitle)
         {
+            //Click Manage Listing
+            manageListingsLink.Click();
+
             //Check if there is no listing's title
             string recordIndex = "";
             int titleCount = Titles.Count();
             if (titleCount.Equals(0))
             {
-                Assert.Ignore("There is no listing record.");
+                return "There is no listing record.";
             }
             else
             {
@@ -111,24 +111,11 @@ namespace SeleniumNUnit.Pages
                 //If title-to-delete is not found
                 if (recordIndex.Equals(""))
                 {
-                    Assert.Ignore("Listing '" + expectedTitle + "' is not found.");
+                    string errorMessage = "Listing is not found.";
+                    return errorMessage;
                 }
             }
             return recordIndex;
-        }
-
-        //Click on manage listing
-        internal void GoToManageListings()
-        {
-            try
-            {
-                //Click Manage Listing
-                manageListingsLink.Click();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Manage Listing link is not found.", ex.Message);
-            }
         }
     }
 }

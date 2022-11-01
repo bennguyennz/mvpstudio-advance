@@ -146,6 +146,7 @@ namespace SeleniumNUnit.Pages
         private string e_message = "//div[@class='ns-box-inner']";
 
         #endregion
+
         public void EnterShareSkill(int rowNumber, string worksheet)
         {
             //Initial a struct object and assign values
@@ -259,9 +260,6 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "Sat":
                     indexValue = "6";
-                    break;
-                default:
-                    Assert.Ignore("Day is invalid.");
                     break;
             }
 

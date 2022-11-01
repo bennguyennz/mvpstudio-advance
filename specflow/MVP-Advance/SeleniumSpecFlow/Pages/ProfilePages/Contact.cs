@@ -61,9 +61,6 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
                 case "Full Time":
                     availability = "1";
                     break;
-                default:
-                    Assert.Fail("Availability Type is not matching");
-                    break;
             }
             switch (hour)
             {
@@ -75,9 +72,6 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
                     break;
                 case "As needed":
                     hour = "2";
-                    break;
-                default:
-                    Assert.Fail("Hour is not matching");
                     break;
             }
             switch (earnTarget)
@@ -91,19 +85,16 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
                 case "More than $1000 per month":
                     earnTarget = "2";
                     break;
-                default:
-                    Assert.Fail("Earn Target is not matching");
-                    break;
             }
 
             //wait for dropdown icon to be clickable
-            WaitHelpers.WaitToBeClickable(driver, "XPath", e_buttonEditName, 3);
+            WaitHelpers.WaitToBeClickable(driver, "XPath", e_buttonEditName, 10);
 
             //Click on dropdown icon before Full name
             editNameDropdown.Click();
 
             //Edit first name
-            WaitHelpers.WaitToBeClickable(driver, "Name", e_firstName, 3);
+            WaitHelpers.WaitToBeClickable(driver, "Name", e_firstName, 10);
 
             firstName.Click();
             firstName.Clear();
@@ -114,18 +105,19 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
             lastName.Clear();
             lastName.SendKeys(strLastName);
 
+            wait(10);
             //click Save
             buttonSave.Click();
 
             //Wait for Save completed and Name appears.
-            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 3);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 10);
 
             //Click edit Availibility Type
             Actions action = new Actions(driver);
             action.MoveToElement(buttonEditAvailabilityType).Click().Build().Perform();
 
             //Select type
-            WaitHelpers.WaitToBeVisible(driver, "XPath", e_vailabilityTypeDropdown, 3);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", e_vailabilityTypeDropdown, 10);
             var availabilityType = new SelectElement(availibilityTypeDropdown);
             availabilityType.SelectByValue(availability);
 
