@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "6211c34b-f7a3-4ce0-ac47-9c76a1463b79",
+		"name": "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17469395"
+	},
+	"item": [
+		{
+			"name": "ListOfContinentsByName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonObject = xml2Json(pm.response.text());\r",
+							"\r",
+							"const actContinents = [];\r",
+							"const expContinents = [\"Africa\", \"Antarctica\", \"Asia\", \"Europe\", \"Ocenania\", \"The Americas\"];\r",
+							"const continentObj = jsonObject[\"soap:Envelope\"][\"soap:Body\"][\"m:ListOfContinentsByNameResponse\"][\"m:ListOfContinentsByNameResult\"][\"m:tContinent\"];\r",
+							"\r",
+							"pm.test(\"Status code to be 200\", function()\r",
+							"{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validate continents names\",function()\r",
+							"{\r",
+							"    const actResult = continentObj[0][\"m:sName\"];\r",
+							"    continentObj.map(continentObj => actContinents.push(continentObj[\"m:sName\"]));\r",
+							"    pm.expect(expContinents).to.be.eql(actContinents);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					},
+					{
+						"key": "Content-Length",
+						"value": "length",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <ListOfContinentsByName xmlns=\"http://www.oorsprong.org/websamples.countryinfo\">\r\n    </ListOfContinentsByName>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/websamples.countryinfo/CountryInfoService.wso",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"websamples.countryinfo",
+						"CountryInfoService.wso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CurrencyName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonObject = xml2Json(pm.response.text());\r",
+							"\r",
+							"const cur = jsonObject[\"soap:Envelope\"][\"soap:Body\"][\"m:CurrencyNameResponse\"][\"m:CurrencyNameResult\"];\r",
+							"\r",
+							"pm.test(\"Status code to be 200\", function()\r",
+							"{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validate currency\", function()\r",
+							"{\r",
+							"    pm.expect(pm.collectionVariables.get(\"expCur\")).to.be.eql(cur);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					},
+					{
+						"key": "Content-Length",
+						"value": "length",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <CurrencyName xmlns=\"http://www.oorsprong.org/websamples.countryinfo\">\r\n      <sCurrencyISOCode>{{currency}}</sCurrencyISOCode>\r\n    </CurrencyName>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/websamples.countryinfo/CountryInfoService.wso",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"websamples.countryinfo",
+						"CountryInfoService.wso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CapitalCity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonObject = xml2Json(pm.response.text());\r",
+							"\r",
+							"const actCapital = jsonObject[\"soap:Envelope\"][\"soap:Body\"][\"m:CapitalCityResponse\"][\"m:CapitalCityResult\"];\r",
+							"\r",
+							"pm.test(\"Status code to be 200\", function()\r",
+							"{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate country and capital\",function()\r",
+							"{\r",
+							"    pm.expect(pm.collectionVariables.get(\"expCapital\")).to.be.eql(actCapital);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const countries = [\"AU\", \"BD\", \"VN\", \"AT\", \"NZ\", \"BR\", \"CL\", \"CN\", \"CO\"];\r",
+							"\r",
+							"//randomly select a country to add to collection variables\r",
+							"const country = countries[_.random(countries.length -1)];\r",
+							"pm.collectionVariables.set(\"country\", country);\r",
+							"console.log(country);\r",
+							"var capital;\r",
+							"switch(country)\r",
+							"{\r",
+							"    case \"AU\": capital=\"Canbera\";\r",
+							"        break;\r",
+							"    case \"VN\": capital=\"Hanoi\";\r",
+							"        break;\r",
+							"    case \"NZ\": capital=\"Wellington\";\r",
+							"        break;\r",
+							"    case \"BD\": capital=\"Dhaka\";\r",
+							"        break;\r",
+							"    case \"AT\": capital=\"Vienna\";\r",
+							"        break;\r",
+							"    case \"BR\": capital=\"Brasilia\";\r",
+							"        break;\r",
+							"    case \"CL\": capital=\"Santiago\";\r",
+							"        break;\r",
+							"    case \"CN\": capital=\"Beijing\";\r",
+							"        break;\r",
+							"    case \"CO\": capital=\"Bogota\";\r",
+							"        break;\r",
+							"    default: \"Country is not found\";\r",
+							"};\r",
+							"console.log(capital);\r",
+							"pm.collectionVariables.set(\"expCapital\", capital);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/soap+xml; charset=utf-8",
+						"type": "text"
+					},
+					{
+						"key": "Content-Length",
+						"value": "length",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soap12:Envelope xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\r\n  <soap12:Body>\r\n    <CapitalCity xmlns=\"http://www.oorsprong.org/websamples.countryinfo\">\r\n      <sCountryISOCode>{{country}}</sCountryISOCode>\r\n    </CapitalCity>\r\n  </soap12:Body>\r\n</soap12:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/websamples.countryinfo/CountryInfoService.wso",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"websamples.countryinfo",
+						"CountryInfoService.wso"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://webservices.oorsprong.org",
+			"type": "string"
+		},
+		{
+			"key": "currency",
+			"value": "VND",
+			"type": "string"
+		},
+		{
+			"key": "expCur",
+			"value": "Dong",
+			"type": "string"
+		},
+		{
+			"key": "countryCode",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "expCapital",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "country",
+			"value": ""
+		}
+	]
+}

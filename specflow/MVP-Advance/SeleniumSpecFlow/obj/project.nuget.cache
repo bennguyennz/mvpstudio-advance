@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OTUWYNxdEiDvIMqEQ3/r2xDN1B4DEOSjmQM50pCZFj8X/Gkf30PGXo+T/rHlACz8FiaorFwh04dXyVsa5eL8FQ==",
+  "dgSpecHash": "R45SB8f2dNm9BE02Z4Yanin/5e6IWi2y8Lez67C6TBd4rfNOyxKnFB3tydB9latZ7d1HoCtbTD+YlqeYbCLogw==",
   "success": true,
   "projectFilePath": "D:\\workspace\\mvpstudio-advance\\specflow\\MVP-Advance\\SeleniumSpecFlow\\SeleniumSpecFlow.csproj",
   "expectedPackageFiles": [
@@ -113,7 +113,7 @@
     "C:\\Users\\windows\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\selenium.support\\4.4.0\\selenium.support.4.4.0.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\selenium.webdriver\\4.4.0\\selenium.webdriver.4.4.0.nupkg.sha512",
-    "C:\\Users\\windows\\.nuget\\packages\\selenium.webdriver.chromedriver\\104.0.5112.7900\\selenium.webdriver.chromedriver.104.0.5112.7900.nupkg.sha512",
+    "C:\\Users\\windows\\.nuget\\packages\\selenium.webdriver.chromedriver\\106.0.5249.6100\\selenium.webdriver.chromedriver.106.0.5249.6100.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\sharpcompress\\0.23.0\\sharpcompress.0.23.0.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\specflow\\3.9.74\\specflow.3.9.74.nupkg.sha512",
     "C:\\Users\\windows\\.nuget\\packages\\specflow.internal.json\\1.0.8\\specflow.internal.json.1.0.8.nupkg.sha512",

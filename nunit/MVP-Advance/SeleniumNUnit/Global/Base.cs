@@ -22,7 +22,10 @@ namespace SeleniumNUnit.Global
 
         public static string excelPath = System.IO.Directory.GetParent(@"../../../").FullName
             + Path.DirectorySeparatorChar + "TestLibrary/TestData/TestData.xlsx";
-        public static string AutoITScriptPath = @""; //Setup your AutoIT path
+
+        public static string AutoITScriptPath = System.IO.Directory.GetParent(@"../../../").FullName
+            + Path.DirectorySeparatorChar + "TestLibrary/TestData/UploadScript.exe";
+
         public static string ScreenshotPath = System.IO.Directory.GetParent(@"../../../").FullName
             + Path.DirectorySeparatorChar + "TestLibrary/Screenshots/";
         #endregion
@@ -79,7 +82,7 @@ namespace SeleniumNUnit.Global
             if (IsLogin == "true")
             {
                 SignIn obj = new SignIn();
-                obj.LoginSteps();
+                obj.LoginSteps(2); //Excel row
             }
             else
             {

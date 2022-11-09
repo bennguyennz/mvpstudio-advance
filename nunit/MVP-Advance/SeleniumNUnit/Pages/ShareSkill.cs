@@ -1,10 +1,15 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumNUnit.Global;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SeleniumNUnit.Global.GlobalDefinitions;
+using static SeleniumNUnit.Global.WaitHelpers;
 
 namespace SeleniumNUnit.Pages
 {
@@ -28,7 +33,6 @@ namespace SeleniumNUnit.Pages
 
         //Entered displayed Tags
         private IList<IWebElement> displayedTags => driver.FindElements(By.XPath("//form[@class='ui form']/div[4]/div[2]/div/div/div/span/a"));
-        //form[@class='ui form']/div[4]/div[2]/div/div/div/span/a
 
         //Service type radio button
         private IList<IWebElement> radioServiceType => driver.FindElements(By.Name("serviceType"));
@@ -142,10 +146,406 @@ namespace SeleniumNUnit.Pages
         private string e_message = "//div[@class='ns-box-inner']";
 
         #endregion
+
         public void EnterShareSkill(int rowNumber, string worksheet)
         {
+            //Initial a struct object and assign values
+            Listing excelData = new Listing();
+            GetExcel(rowNumber, worksheet, out excelData);
 
+            //Enter Title 
+            string title = excelData.title;
+            Title.SendKeys(title);
+
+            //Enter Description
+            Description.SendKeys(excelData.description);
+
+            //Select category
+            var selectCategory = new SelectElement(CategoryDropDown);
+            selectCategory.SelectByText(excelData.category);
+
+            //Select Subcategory
+            var selectSubcategory = new SelectElement(SubCategoryDropDown);
+            selectSubcategory.SelectByText(excelData.subcategory);
+
+            //Enter tag
+            Tags.Click();
+            Tags.SendKeys(excelData.tags);
+            Tags.SendKeys(Keys.Return);
+
+            //Select Service type
+            SelectServiceType(excelData.serviceType);
+
+            //Select Location type
+            SelectLocationType(excelData.locationType);
+
+            //Enter Start date
+            StartDateDropDown.SendKeys(excelData.startDate);
+
+            //Enter End date
+            EndDateDropDown.SendKeys(excelData.endDate);
+
+            //Enter Available days and hours
+            EnterAvailableDaysAndHours((excelData.availableDays), (excelData.startTime), (excelData.endTime));
+
+            //Select Skill Trade: "Credeit" or "Skill-exchange"
+            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
+
+            //Click button Upload Work Samples
+            UploadWorkSamples();
+
+            //Click Active or Hidden
+            ClickActiveOption(excelData.ActiveOption);
+
+            //Click on Save
+            Save.Click();
+        }
+        #region Sub-methods for EnterShareSkill
+        //Select Service type
+        internal void SelectServiceType(string serviceTypeText)
+        {
+            string elementValue = "0";
+            if (serviceTypeText.Equals("One-off service"))
+                elementValue = "1";
+
+            for (int i = 0; i < radioServiceType.Count(); i++)
+            {
+                string actualElementValue = radioServiceType[i].GetAttribute("Value");
+                if (elementValue.Equals(actualElementValue))
+                    radioServiceType[i].Click();
+            }
         }
 
+        //Select Location type
+        internal void SelectLocationType(string locationTypeText)
+        {
+            //Select Location type
+            string elementValue = "0";
+            if (locationTypeText.Equals("Online"))
+                elementValue = "1";
+
+            for (int i = 0; i < radioLocationType.Count(); i++)
+            {
+                string actualElementValue = radioLocationType[i].GetAttribute("Value");
+                if (elementValue.Equals(actualElementValue))
+                    radioLocationType[i].Click();
+            }
+        }
+
+        //Enter Available days and hours
+        internal void EnterAvailableDaysAndHours(string availableDaysText, string startTimeText, string endTimeText)
+        {
+            //Enter available Days array = 
+            string indexValue = "";
+
+            switch (availableDaysText)
+            {
+                case "Sun":
+                    indexValue = "0";
+                    break;
+                case "Mon":
+                    indexValue = "1";
+                    break;
+                case "Tue":
+                    indexValue = "2";
+                    break;
+                case "Wed":
+                    indexValue = "3";
+                    break;
+                case "Thu":
+                    indexValue = "4";
+                    break;
+                case "Fri":
+                    indexValue = "5";
+                    break;
+                case "Sat":
+                    indexValue = "6";
+                    break;
+            }
+
+            for (int i = 0; i < Days.Count; i++)
+            {
+                if (indexValue.Equals(Days[i].GetAttribute("index")))
+                {
+                    Days[i].Click();
+
+                    StartTime[i].SendKeys(startTimeText);
+                    EndTime[i].SendKeys(endTimeText);
+                }
+            }
+        }
+
+        //Select Skill trade
+        internal void SelectSkillTrade(string skillTradeText, string skillExchangeText, string creditText)
+        {
+            //Select "Skill Trade" options
+            string elementValue = "true";
+
+            if (skillTradeText.Equals("Credit"))
+                elementValue = "false";
+
+            for (int i = 0; i < radioSkillTrade.Count(); i++)
+            {
+                string actualElementValue = radioSkillTrade[i].GetAttribute("value");
+                if (elementValue.Equals(actualElementValue))
+                {
+                    //Select "Skill exchange" or "Credit"
+                    radioSkillTrade[i].Click();
+                    wait(1);
+
+                    if (skillTradeText.Equals("Skill-exchange"))
+                    {
+                        //Enter tags for Skill-exchange
+                        SkillExchange.Click();
+                        SkillExchange.SendKeys(skillExchangeText);
+                        SkillExchange.SendKeys(Keys.Return);
+                    }
+                    else
+                    {
+                        //Enter Credit amount
+                        CreditAmount.SendKeys(creditText);
+                    }
+                }
+            }
+        }
+
+        //Upload Work samples
+        internal void UploadWorkSamples()
+        {
+            btnWorkSamples.Click();
+            wait(3);
+
+            //Run AutoIT-script to execute file uploading
+            using (Process exeProcess = Process.Start(Base.AutoITScriptPath))
+            {
+                exeProcess.WaitForExit();
+            }
+        }
+
+        //Click Active or Hidden
+        internal void ClickActiveOption(string ActiveOptionText)
+        {
+            string elementValue = "true";
+            if (ActiveOptionText.Equals("Hidden"))
+                elementValue = "false";
+
+            for (int i = 0; i < radioActive.Count(); i++)
+            {
+                string actualElementValue = radioActive[i].GetAttribute("Value");
+                if (elementValue.Equals(actualElementValue))
+                    radioActive[i].Click();
+            }
+        }
+        #endregion
+
+        //Negative test
+        internal void EnterShareSkill_InvalidData(int testData, string worksheet)
+        {
+            ShareSkill shareSkillObj = new ShareSkill();
+            Listing test = new Listing();
+            shareSkillObj.GetExcel(testData, worksheet, out test);
+
+            //Enter no data
+            if (test.isClickSaveFirst == "Yes")
+            {
+                Save.Click();
+            }
+            //Enter invalid data
+            else if (test.isClickSaveFirst == "No")
+            {
+                //Enter invalid data, depending on excel
+                EnterDataOnConditions(test.title, test.description, test.tags, test.startDate, test.endDate,
+                    test.skillTrade, test.skillExchange, test.credit, test.category, test.subcategory);
+
+                //Click Save button
+                Save.Click();
+            }
+        }
+
+        #region Sub-methods for EnterShareSkill_InvalidData
+        internal void EnterDataOnConditions(string titleText, string descriptionText, string tagsText,
+            string startDateText, string endDateText, string skillTradeText, string skillExchangeText,
+            string creditAmountText, string categoryText, string subCategoryText)
+        {
+            //Enter title
+            if (titleText != "Ignore")
+            {
+                Title.SendKeys(titleText);
+            }
+
+            //Enter Description
+            if (descriptionText != "Ignore")
+            {
+                Description.SendKeys(descriptionText);
+            }
+
+            //Select category 
+            var selectCategory = new SelectElement(CategoryDropDown);
+            if (categoryText != "Ignore")
+            {
+                selectCategory.SelectByText(categoryText);
+            }
+
+            if (subCategoryText == "Ignore")
+            {
+                //Select Subcategory
+                var selectSubcategory = new SelectElement(SubCategoryDropDown);
+                selectSubcategory.SelectByText(subCategoryText);
+            }
+
+            //Enter tags
+            if (tagsText != "Ignore")
+            {
+                Tags.Click();
+                Tags.SendKeys(tagsText);
+                Tags.SendKeys(Keys.Return);
+            }
+
+            //Enter Start date
+            if (startDateText != "Ignore")
+            {
+                StartDateDropDown.SendKeys(startDateText);
+            }
+
+            //Enter End date
+            if (endDateText != "Ignore")
+            {
+                EndDateDropDown.SendKeys(endDateText);
+            }
+
+            //Select "Skill Trade" options
+            if (skillTradeText != "Ignore")
+            {
+                SelectSkillTrade(skillTradeText, skillExchangeText, creditAmountText);
+            }
+        }
+        #endregion
+
+        #region struct and sub-methods for assertions
+        internal struct Listing
+        {
+            public string title;
+            public string description;
+            public string category;
+            public string subcategory;
+            public string startDate;
+            public string endDate;
+            public string serviceType;
+            public string locationType;
+            public string skillTrade;
+            public string skillExchange;
+            public string tags;
+            public string availableDays;
+            public string startTime;
+            public string endTime;
+            public string credit;
+            public string ActiveOption;
+            public string isClickSaveFirst;
+        }
+        internal void GetExcel(int rowNumber, string worksheet, out Listing excelData)
+        {
+            ExcelLib.PopulateInCollection(Base.ExcelPath, worksheet);
+
+            excelData.title = ExcelLib.ReadData(rowNumber, "Title");
+            excelData.description = ExcelLib.ReadData(rowNumber, "Description");
+            excelData.category = ExcelLib.ReadData(rowNumber, "Category");
+            excelData.subcategory = ExcelLib.ReadData(rowNumber, "Subcategory");
+            excelData.startDate = ExcelLib.ReadData(rowNumber, "StartDate");
+            excelData.endDate = ExcelLib.ReadData(rowNumber, "EndDate");
+            excelData.serviceType = ExcelLib.ReadData(rowNumber, "ServiceType");
+            excelData.locationType = ExcelLib.ReadData(rowNumber, "LocationType");
+            excelData.skillTrade = ExcelLib.ReadData(rowNumber, "SkillTradeOption");
+            excelData.skillExchange = ExcelLib.ReadData(rowNumber, "SkillExchange");
+            excelData.tags = ExcelLib.ReadData(rowNumber, "Tags");
+            excelData.availableDays = ExcelLib.ReadData(rowNumber, "Days");
+            excelData.startTime = ExcelLib.ReadData(rowNumber, "StartTime");
+            excelData.endTime = ExcelLib.ReadData(rowNumber, "EndTime");
+            excelData.credit = ExcelLib.ReadData(rowNumber, "CreditAmount");
+            excelData.ActiveOption = ExcelLib.ReadData(rowNumber, "ActiveOption");
+            excelData.isClickSaveFirst = ExcelLib.ReadData(rowNumber, "isClickSaveFirst");
+
+        }
+        internal void GetWeb(out Listing webData)
+        {
+            webData.title = actualTitle.Text;
+            webData.description = actualDescription.Text;
+            webData.category = actualCategory.Text;
+            webData.subcategory = actualSubcategory.Text;
+            webData.startDate = actualStartDate.Text;
+            webData.endDate = actualEndDate.Text;
+            webData.serviceType = actualServiceType.Text;
+            webData.locationType = actualLocationType.Text;
+
+            webData.skillTrade = "dummy";
+            webData.skillExchange = "dummy";
+            webData.tags = "dummy";
+            webData.availableDays = "dummy";
+            webData.startTime = "dummy";
+            webData.endTime = "dummy";
+            webData.credit = "dummy";
+            webData.ActiveOption = "dummy";
+            webData.isClickSaveFirst = "dummy";
+        }
+        internal void GetPortalMessage(out Listing portal)
+        {
+            portal.title = errorTitle.Text;
+            portal.description = errorDescription.Text;
+            portal.tags = errorTags.Text;
+
+            portal.category = "dummy";
+            portal.subcategory = "dummy";
+            portal.startDate = "dummy";
+            portal.endDate = "dummy";
+            portal.serviceType = "dummy";
+            portal.locationType = "dummy";
+            portal.availableDays = "dummy";
+            portal.startTime = "dummy";
+            portal.endTime = "dummy";
+            portal.skillTrade = "dummy";
+            portal.skillExchange = "dummy";
+            portal.credit = "dummy";
+            portal.ActiveOption = "dummy";
+            portal.isClickSaveFirst = "dummy";
+        }
+        #endregion
+
+        internal string GetSkillTrade(string skillTradeOption)
+        {
+            if (skillTradeOption == "Credit")
+                return actualSkillsTrade.Text;
+            else
+                return actualSkillExchange.Text;
+        }
+        internal string GetMessage()
+        {
+            //Check confirmation message
+            WaitForElement(driver, By.XPath(e_message), 5);
+            return message.Text;
+        }
+
+        internal string GetDateErrorMessage1()
+        {
+            return errorStartDate2.Text;
+        }
+        internal string GetDateErrorMessage2()
+        {
+            return errorStartDate1.Text;
+        }
+        internal string GetCategoryError()
+        {
+            return errorCategory.Text;
+        }
+        internal string GetSubcategoryError()
+        {
+            return errorSubcategory.Text;
+        }
+        internal string GetSkillExchangeError()
+        {
+            return errorSkillExchangeTags.Text;
+        }
+        internal string GetCredit()
+        {
+            return CreditAmount.Text;
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SeleniumNUnit.Global.GlobalDefinitions;
+using static SeleniumNUnit.Global.WaitHelpers;
 
 namespace SeleniumNUnit.Pages
 {
@@ -25,7 +26,7 @@ namespace SeleniumNUnit.Pages
         private IWebElement LoginBtn => driver.FindElement(By.XPath("//button[contains(text(),'Login')]"));
         #endregion
 
-        public void LoginSteps()
+        public void LoginSteps(int row)
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(Base.ExcelPath, "SignIn");
@@ -34,10 +35,10 @@ namespace SeleniumNUnit.Pages
             SignIntab.Click();
 
             //Enter email
-            Email.SendKeys(ExcelLib.ReadData(2, "Username"));
+            Email.SendKeys(ExcelLib.ReadData(row, "Username"));
 
             //Enter password
-            Password.SendKeys(ExcelLib.ReadData(2, "Password"));
+            Password.SendKeys(ExcelLib.ReadData(row, "Password"));
 
             //Click Login button
             LoginBtn.Click();

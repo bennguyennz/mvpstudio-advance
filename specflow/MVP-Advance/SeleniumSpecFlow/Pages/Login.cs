@@ -18,7 +18,7 @@ namespace SeleniumSpecFlow.Pages
         private IWebElement LoginBtn => driver.FindElement(By.XPath("//BUTTON[@class='fluid ui teal button'][text()='Login']"));
         #endregion
 
-        public void LogInSteps()
+        public void LogInSteps(int row)
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(ExcelPath, "SignIn");
@@ -27,14 +27,14 @@ namespace SeleniumSpecFlow.Pages
             SignInBtn.Click();
 
             //Enter email
-            Email.SendKeys(ExcelLib.ReadData(2, "Username"));
+            Email.SendKeys(ExcelLib.ReadData(row, "Username"));
 
             //Enter password
-            Password.SendKeys(ExcelLib.ReadData(2, "Password"));
+            Password.SendKeys(ExcelLib.ReadData(row, "Password"));
 
             //Click Login button
             LoginBtn.Click();
-            Thread.Sleep(3);
+
         }
     }
 }
