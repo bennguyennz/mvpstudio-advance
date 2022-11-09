@@ -5,7 +5,7 @@ So that I am able to add, edit or delete my certification records.
 
 Background: I logged into the web portal
 
-@Certifications
+@Profile
 Scenario Outline: 1-Add a certification
 	Given I click on tab Certifications
 	When I click button Add_New
@@ -17,7 +17,7 @@ Scenario Outline: 1-Add a certification
 	| ISTQB CTFL   | ISTQB NZ   | 2022 |
 	| Test Analyst | MVP Studio | 2021 |
 
-@Certifications
+@Profile
 Scenario Outline: 2-Edit a certification
 	Given I click on tab Certifications
 	When I click button Edit '<Certificate1>'
@@ -28,7 +28,7 @@ Scenario Outline: 2-Edit a certification
 	| Certificate1 | Certificate2                     | From             | Year |
 	| Test Analyst | Professional Expert Test Analyst | Industry Connect | 2022 |
 
-@Certifications
+@Profile
 Scenario Outline: 3-Delete a certification
 	Given I click on tab Certifications
 	When I click button Delete '<Certificate>'

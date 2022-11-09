@@ -77,32 +77,27 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
         }
         public string GetMessage()
         {
-            WaitHelpers.WaitToBeVisible(driver, "XPath", e_message, 10);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", e_message, 5);
             return message.Text;
         }
 
         public string GetCertificate(string certificate)
         {
-            string findCertificate = "null";
-            int titleCount = certificates.Count();
-            if (titleCount.Equals(0))
-                return "No certificate is found";
-            else
+            try
             {
+                wait(5);
+                int titleCount = certificates.Count();
                 for (int i = 0; i < titleCount; i++)
                 {
                     if (certificates[i].Text.Equals(certificate))
-                    {
-                        findCertificate = certificates[i].Text;
-                        break;
-                    }
+                        return certificates[i].Text;
                 }
-                if (findCertificate.Equals("null"))
-                {
-                    return "Certificate not found";
-                }
+                return "Certificate not found";
             }
-            return findCertificate;
+            catch (Exception)
+            {
+                return "Certificate not found";
+            }
         }
 
         public string GetCertificationFrom()
@@ -133,21 +128,20 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
             }
         }
 
-        public void ClickEdit(string certifcate1)
+        public void ClickEdit(string certificateIndex)
         {
-
-                string e_Edit = "//div[@data-tab='fourth']//tbody[" + GetCertificateIndex(certifcate1) + "]/tr/td[4]/span[1]";
+                string e_Edit = "//div[@data-tab='fourth']//tbody[" + certificateIndex + "]/tr/td[4]/span[1]";
                 IWebElement btnEdit = driver.FindElement(By.XPath(e_Edit));
                 btnEdit.Click();
 
         }
 
-        public int GetCertificateIndex(string certificate)
+        public string GetCertificateIndex(string certificate)
         {
             int index = 0;
             int titleCount = certificates.Count();
             if (titleCount.Equals(0))
-                Assert.Ignore("There is no certificate record.");
+                return "There is no certificate record.";
             else
             {
                 for (int i = 0; i < titleCount; i++)
@@ -160,10 +154,11 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
                 }
                 if (index.Equals(0))
                 {
-                    Assert.Ignore("Certificate " + certificate + "is not found.");
+                    string message = "Certificate is not found.";
+                    return message;
                 }
             }
-            return index;
+            return index.ToString();
         }
 
         public void EditCertificate(string certificate2, string from, string year)
@@ -186,10 +181,9 @@ namespace SeleniumSpecFlow.Pages.ProfilePages
 
         }
 
-        public void ClickDelete(string certificate)
+        public void ClickDelete(string certificateIndex)
         {
-
-            string e_Delete = "//div[@data-tab='fourth']//tbody[" + GetCertificateIndex(certificate) + "]/tr/td[4]/span[2]";
+            string e_Delete = "//div[@data-tab='fourth']//tbody[" + certificateIndex + "]/tr/td[4]/span[2]";
             IWebElement btnDelete = driver.FindElement(By.XPath(e_Delete));
             btnDelete.Click();
         }

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SeleniumSpecFlow.Pages.SkillSwap.ShareSkill;
 using static SeleniumSpecFlow.Utilities.CommonDriver;
 using static SeleniumSpecFlow.Utilities.GlobalDefinitions;
 using static SeleniumSpecFlow.Utilities.WaitHelpers;
@@ -154,9 +155,11 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
         //Skill-Exchange tag
         private IWebElement errorSkillExchangeTags => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[8]/div[4]/div[2]"));
 
-        //Message
+        //Wait Element
         private IWebElement message => driver.FindElement(By.XPath(e_message));
         private string e_message = "//div[@class='ns-box-inner']";
+
+        private string listingTitle = "//span[@class='skill-title']";
 
         #endregion
 
@@ -278,9 +281,6 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                 case "Sat":
                     indexValue = "6";
                     break;
-                default:
-                    Assert.Ignore("Day is invalid.");
-                    break;
             }
 
             for (int i = 0; i < Days.Count; i++)
@@ -357,55 +357,33 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             }
         }
 
-        internal void ViewMySkillDetails(int rowNumber, string worksheet)
+        internal void ViewMySkillDetails(string titleIndex)
         {
-            Listing excelData = new Listing();
-            GetExcel(rowNumber, worksheet, out excelData);
-            string title = excelData.title;
-
-            //Click on ManageListing
-            GoToManageListings();
-            wait(2);
-
             //Click on button View
-            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(title) + "]/td[8]/div/button[1]";
+            string e_View = "//div[@id='listing-management-section']//tbody/tr[" + titleIndex + "]/td[8]/div/button[1]";
             IWebElement btnView = driver.FindElement(By.XPath(e_View));
             btnView.Click();
-            wait(2);
+            WaitHelpers.WaitForElement(driver, By.XPath(listingTitle),3);
         }
 
-
-        //Click on manage listing
-        internal void GoToManageListings()
+        internal string GetTitleIndex(string title)
         {
+            //Click on ManageListing
+            manageListingsLink.Click();
+            wait(5);
             try
             {
-                //Click Manage Listing
-                manageListingsLink.Click();
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail("Manage Listing link is not found.", ex.Message);
-            }
-        }
-
-        internal string GetTitleIndex(string expectedTitle)
-        {
-            //Check if there is no listing's title
-            string recordIndex = "";
-            int titleCount = Titles.Count();
-            if (titleCount.Equals(0))
-            {
-                Assert.Ignore("There is no listing record.");
-            }
-            else
-            {
-
+                string recordIndex = "";
+                int titleCount = Titles.Count();
+                if (titleCount == 0)
+                {
+                    return "No listing record is found.";
+                }
                 //Find title: Break loop when finding a title. Output: recordIndex
                 for (int i = 0; i < titleCount; i++)
                 {
                     string actualTitle = Titles[i].Text;
-                    if (actualTitle.Equals(expectedTitle))
+                    if (actualTitle.Equals(title))
                     {
                         recordIndex = (i + 1).ToString();
                         break;
@@ -414,10 +392,16 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                 //If title-to-delete is not found
                 if (recordIndex.Equals(""))
                 {
-                    Assert.Ignore("Listing '" + expectedTitle + "' is not found.");
+                   
+                   return "Listing is not found.";
                 }
+                return recordIndex;
+
             }
-            return recordIndex;
+            catch (Exception)
+            {
+                return "No listing record is found.";
+            }
         }
 
         #region struct and sub-methods for assertions

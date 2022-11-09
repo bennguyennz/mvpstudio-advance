@@ -42,6 +42,10 @@ bld/
 **/.vs/
 **/Competition/bin/
 **/Competition/obj/
+**/SeleniumNUnit/bin/
+**/SeleniumNUnit/obj/
+**/SeleniumSpecFlow/bin/
+**/SeleniumSpecFlow/obj/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/

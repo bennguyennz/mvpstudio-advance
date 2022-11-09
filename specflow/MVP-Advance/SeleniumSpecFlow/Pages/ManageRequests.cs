@@ -31,7 +31,7 @@ namespace SeleniumSpecFlow.Pages
         private IList<IWebElement> assertReceivedTitles => driver.FindElements(By.XPath("//div[@id='received-request-section']//tbody/tr/td[2]/a"));
         private string categoryColumn = "//th[contains(text(),'Category')]";
         #endregion
-        public void SendRequest()
+        public int SendRequest()
         {
             //Populate excel data
             ExcelLib.PopulateInCollection(ExcelPath, "ManageRequests");
@@ -44,7 +44,7 @@ namespace SeleniumSpecFlow.Pages
             //Enter skill into Search skill textbox
             tbxSearchSkills.SendKeys(skill);
             tbxSearchSkills.SendKeys(Keys.Enter);
-            wait(3);
+            wait(7);
 
             //Look for the matching skill and click on it.
             for (int i = 0; i < titles.Count(); i++)
@@ -52,21 +52,22 @@ namespace SeleniumSpecFlow.Pages
                 if (titles[i].Text.Equals(skill))
                 {
                     titles[i].Click();
-                    wait(3);
+                    wait(7);
 
                     //Enter message
                     messageRequest.SendKeys(message);
 
                     //Click on request button
                     btnRequest.Click();
-                    wait(3);
+                    wait(7);
 
                     //Confirm
                     btnYes.Click();
                 }
                 else
-                    Assert.Ignore("No skill found");
+                    return -1;
             }
+            return 1;
         }
 
         public void SwitchAccount(int accNumber)
@@ -76,7 +77,7 @@ namespace SeleniumSpecFlow.Pages
 
             //SignOut initial account to login a different account to make a request
             btnSignOut.Click();
-            wait(3);
+            wait(10);
             logInObj.LogInSteps(accNumber);
         }
 
@@ -88,13 +89,13 @@ namespace SeleniumSpecFlow.Pages
             //Mousehover 
             Actions action = new Actions(driver);
             action.MoveToElement(manageRequests).Perform();
-            wait(3);
+            wait(10);
 
             //Click "Sent Rquests" option
             ddwnSentRequests.Click();
 
             //Wait for table to be displayed
-            WaitHelpers.WaitToBeVisible(driver, "XPath", categoryColumn, 10);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", categoryColumn, 5);
         }
 
         public void ClickReceivedRequests()
@@ -105,7 +106,7 @@ namespace SeleniumSpecFlow.Pages
             //Mousehover 
             Actions action = new Actions(driver);
             action.MoveToElement(manageRequests).Perform();
-            wait(3);
+            wait(10);
 
             //Click "Received Rquests" option
             ddwnReceivedRequests.Click();
@@ -158,6 +159,7 @@ namespace SeleniumSpecFlow.Pages
             IWebElement btnAccept = driver.FindElement(By.XPath(index));
             btnAccept.Click();
             driver.Navigate().Refresh();
+            wait(3);
         }
 
         public void CompleteReceivedRequest()
@@ -168,12 +170,12 @@ namespace SeleniumSpecFlow.Pages
 
             //Get skill index in Sent Requests table
             string index = "//div[@id='received-request-section']//tbody/tr[" + GetReceivedSkillIndex(skill) + "]/td[8]/button";
-            WaitHelpers.WaitToBeClickable(driver, "XPath", index, 5);
+            WaitHelpers.WaitToBeClickable(driver, "XPath", index, 10);
 
             //Click button "Complete"
             IWebElement btnComplete = driver.FindElement(By.XPath(index));
             btnComplete.Click();
-            Thread.Sleep(3);
+            Thread.Sleep(4);
         }
 
         public void CompleteSentRequest()
@@ -185,7 +187,7 @@ namespace SeleniumSpecFlow.Pages
             //Get skill index in Sent Requests table
             string index = "//div[@id='sent-request-section']//tbody/tr[" + GetSentSkillIndex(skill) + "]/td[8]/button";
 
-            WaitHelpers.WaitToBeClickable(driver, "XPath", index, 5);
+            WaitHelpers.WaitToBeClickable(driver, "XPath", index, 10);
             //Click button "Complete"
             IWebElement btnComplete = driver.FindElement(By.XPath(index));
             btnComplete.Click();

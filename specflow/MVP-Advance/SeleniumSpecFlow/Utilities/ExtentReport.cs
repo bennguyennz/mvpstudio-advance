@@ -58,9 +58,9 @@ namespace SeleniumSpecFlow.Utilities
             }
             else if (context.TestError != null)
             {
-                string base64 = GlobalDefinitions.GetScreenshot();
+                string Inspect_Bug = GlobalDefinitions.GetScreenshot();
                 step.Log(Status.Fail, context.StepContext.StepInfo.Text,
-                    MediaEntityBuilder.CreateScreenCaptureFromBase64String(base64).Build());
+                    MediaEntityBuilder.CreateScreenCaptureFromBase64String(Inspect_Bug).Build());
                 CommonDriver.driver.Quit();
             }
         }

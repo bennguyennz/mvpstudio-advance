@@ -33,7 +33,6 @@ namespace SeleniumNUnit.Pages
 
         //Entered displayed Tags
         private IList<IWebElement> displayedTags => driver.FindElements(By.XPath("//form[@class='ui form']/div[4]/div[2]/div/div/div/span/a"));
-        //form[@class='ui form']/div[4]/div[2]/div/div/div/span/a
 
         //Service type radio button
         private IList<IWebElement> radioServiceType => driver.FindElements(By.Name("serviceType"));
@@ -147,6 +146,7 @@ namespace SeleniumNUnit.Pages
         private string e_message = "//div[@class='ns-box-inner']";
 
         #endregion
+
         public void EnterShareSkill(int rowNumber, string worksheet)
         {
             //Initial a struct object and assign values
@@ -260,9 +260,6 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "Sat":
                     indexValue = "6";
-                    break;
-                default:
-                    Assert.Ignore("Day is invalid.");
                     break;
             }
 

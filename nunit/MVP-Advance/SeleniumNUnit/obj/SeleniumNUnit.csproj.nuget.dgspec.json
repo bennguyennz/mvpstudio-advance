@@ -58,7 +58,7 @@
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.3.0, )"
+              "version": "[17.3.2, )"
             },
             "Microsoft.NETCore.App": {
               "target": "Package",
@@ -74,15 +74,15 @@
             },
             "Selenium.Support": {
               "target": "Package",
-              "version": "[4.4.0, )"
+              "version": "[4.5.1, )"
             },
             "Selenium.WebDriver": {
               "target": "Package",
-              "version": "[4.4.0, )"
+              "version": "[4.5.1, )"
             },
             "Selenium.WebDriver.ChromeDriver": {
               "target": "Package",
-              "version": "[104.0.5112.7900, )"
+              "version": "[107.0.5304.6200, )"
             },
             "System.Text.Encoding.CodePages": {
               "target": "Package",
@@ -95,7 +95,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -104,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -82,13 +82,13 @@ namespace SeleniumSpecFlow.Features_Definitions.ProfileFeatures
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("1-Add a certification")]
-        [NUnit.Framework.CategoryAttribute("Certifications")]
+        [NUnit.Framework.CategoryAttribute("Profile")]
         [NUnit.Framework.TestCaseAttribute("ISTQB CTFL", "ISTQB NZ", "2022", null)]
         [NUnit.Framework.TestCaseAttribute("Test Analyst", "MVP Studio", "2021", null)]
         public void _1_AddACertification(string certificate, string from, string year, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "Certifications"};
+                    "Profile"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -130,12 +130,12 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("2-Edit a certification")]
-        [NUnit.Framework.CategoryAttribute("Certifications")]
+        [NUnit.Framework.CategoryAttribute("Profile")]
         [NUnit.Framework.TestCaseAttribute("Test Analyst", "Professional Expert Test Analyst", "Industry Connect", "2022", null)]
         public void _2_EditACertification(string certificate1, string certificate2, string from, string year, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "Certifications"};
+                    "Profile"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -178,13 +178,13 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("3-Delete a certification")]
-        [NUnit.Framework.CategoryAttribute("Certifications")]
+        [NUnit.Framework.CategoryAttribute("Profile")]
         [NUnit.Framework.TestCaseAttribute("ISTQB CTFL", "ISTQB NZ", "2022", null)]
         [NUnit.Framework.TestCaseAttribute("Professional Expert Test Analyst", "Industry Connect", "2022", null)]
         public void _3_DeleteACertification(string certificate, string from, string year, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "Certifications"};
+                    "Profile"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));

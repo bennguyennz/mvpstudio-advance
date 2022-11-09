@@ -21,7 +21,8 @@ namespace SeleniumNUnit.Pages
         private IWebElement firstName => driver.FindElement(By.Name(e_firstName));
         private IWebElement lastName => driver.FindElement(By.Name("lastName"));
         private IWebElement buttonSave => driver.FindElement(By.XPath("//button[@class='ui teal button']"));
-        private IWebElement fullName => driver.FindElement(By.XPath(e_fullName));
+        private IWebElement fullName => driver.FindElement(By.XPath("//div[@class = 'title']"));
+        
         private IWebElement buttonEditAvailabilityType => driver.FindElement(By.XPath("//div[@class='ui list']/div[2]/div/span/i"));
         private IWebElement availibilityTypeDropdown => driver.FindElement(By.XPath(e_vailabilityTypeDropdown));
         private IWebElement editAvailabilityHour => driver.FindElement(By.XPath("//div[@class='ui list']/div[3]/div/span/i"));
@@ -41,7 +42,7 @@ namespace SeleniumNUnit.Pages
         private string e_message = "//div[@class='ns-box-inner']";
         private string e_buttonEditName = "//div[@class='title']/i[@class='dropdown icon']";
         private string e_firstName = "firstName";
-        private string e_fullName = "//div[@class = 'title']";
+        private string e_fullName = "//div[@class = 'title']/i";
         private string e_vailabilityTypeDropdown = "//select[@name='availabiltyType']";
         private string e_availibilityHourDropdown = "//select[@name='availabiltyHour']";
         private string e_availabilityTargetDropdown = "//select[@name='availabiltyTarget']";
@@ -210,9 +211,6 @@ namespace SeleniumNUnit.Pages
         private IWebElement editedLanguageTab => driver.FindElement(By.XPath("//div/section[2]/div/div/div/div[3]/form/div[1]/a[1]"));
         #endregion
 
-
-
-
         internal void EditMyContactDetails(int row, string worksheet)
         {
             //Populate excel data
@@ -229,10 +227,7 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "Full Time":
                     availability = "1";
-                    break;
-                default:
-                    Assert.Fail("Availability Type is not matching");
-                    break;
+                    break;  
             }
             switch (hour)
             {
@@ -245,9 +240,6 @@ namespace SeleniumNUnit.Pages
                 case "As needed":
                     hour = "2";
                     break;
-                default:
-                    Assert.Fail("Hour is not matching");
-                    break;
             }
             switch (earnTarget)
             {
@@ -259,9 +251,6 @@ namespace SeleniumNUnit.Pages
                     break;
                 case "More than $1000 per month":
                     earnTarget = "2";
-                    break;
-                default:
-                    Assert.Fail("Earn Target is not matching");
                     break;
             }
 
@@ -323,7 +312,7 @@ namespace SeleniumNUnit.Pages
 
         public string GetFullName()
         {
-            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 3);
+            WaitHelpers.WaitToBeVisible(driver, "XPath", e_fullName, 5);
             return fullName.Text;
         }
 
@@ -380,7 +369,6 @@ namespace SeleniumNUnit.Pages
 
         }
 
-
         public void editLanguage(int rowNumber, int rowNumber1, string Excelsheet)
         {
             //Populate excel data
@@ -410,8 +398,6 @@ namespace SeleniumNUnit.Pages
             //Click on update language
             wait(2);
             updateLang.Click();
-
-          
         }
 
         public string GetEditNewLanguage()
@@ -434,17 +420,12 @@ namespace SeleniumNUnit.Pages
             wait(2);
             //Click on delete icon
             deleteLangIcon.Click();
-
-            // Assertion          
-            Assert.That(GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
         }
 
         public string GetDeleteLanguageIcon()
         {
             return editedLanguageTab.Text;
         }
-
-
 
       // Edit share skills 
 
