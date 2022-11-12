@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "2e1308ff-c767-4ffe-9013-6ce3083f1fe3",
+		"name": "dog.ceoAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21249307"
+	},
+	"item": [
+		{
+			"name": "get all dogs list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"   \r",
+							"    //name check\r",
+							"     pm.expect(jsonData.message.cattledog).to.eql([\"australian\"]);\r",
+							"    pm.expect(jsonData.message.springer).to.eql([\"english\"]);\r",
+							"    pm.expect(jsonData.message.chow).to.eql([]);\r",
+							"    pm.expect(jsonData.message.hound).to.eql([\"afghan\",\"basset\",\"blood\",\"english\",\"ibizan\",\"plott\",\"walker\"]);\r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/list/all",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"list",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Random image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"random_image\", response.message);\r",
+							"\r",
+							"var randomImage = pm.collectionVariables.get(\"random_image\");\r",
+							"console.log(randomImage);\r",
+							"pm.test(\"message response check\", function()\r",
+							"{\r",
+							"        var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.eql(randomImage);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"   \r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"  \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/image/random",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"image",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get By bread image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"   \r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"     pm.expect(jsonData.message).to.eql([\"https://images.dog.ceo/breeds/frise-bichon/1.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/2.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/3.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/4.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/5.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/6.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/7.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/jh-ezio-1.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/jh-ezio-2.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/jh-ezio-3.jpg\",\"https://images.dog.ceo/breeds/frise-bichon/stevebaxter_bichon_frise.jpg\"\r",
+							"    ])\r",
+							"   \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/frise/images",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"frise",
+						"images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all subBreeds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"   \r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"     pm.expect(jsonData.message).to.eql([\"american\",\"australian\",\"bedlington\",\"border\",\"cairn\",\"dandie\",\"fox\",\"irish\",\"kerryblue\",\"lakeland\",\"norfolk\",\"norwich\",\"patterdale\",\"russell\",\"scottish\",\"sealyham\",\"silky\",\r",
+							"        \"tibetan\",\"toy\",\"welsh\",\"westhighland\",\"wheaten\",\"yorkshire\"]);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/terrier/list",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"terrier",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Random subBread image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"random_subBread\", response.message);\r",
+							"\r",
+							"var randomSubBread = pm.collectionVariables.get(\"random_subBread\");\r",
+							"console.log(randomSubBread);\r",
+							"pm.test(\"message response check\", function()\r",
+							"{\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.eql(randomSubBread);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/collie/images/random",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"collie",
+						"images",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "browse breeds list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set(\"random_subBreadImage\", response.message);\r",
+							"\r",
+							"var randomSubBreadImage = pm.collectionVariables.get(\"random_subBreadImage\");\r",
+							"console.log(randomSubBreadImage);\r",
+							"pm.test(\"message response check\", function()\r",
+							"{\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.eql(randomSubBreadImage);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check key-value pairs in the response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    //status check\r",
+							"     pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breed/cattledog/images/random",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breed",
+						"cattledog",
+						"images",
+						"random"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "random_image",
+			"value": ""
+		},
+		{
+			"key": "random_subBread",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "random_subBreadImage",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

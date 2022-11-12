@@ -441,8 +441,7 @@ namespace SeleniumNUnit.Pages
             //Click on delete icon
             deleteLangIcon.Click();
 
-            // Assertion          
-            Assert.That(GetDeleteLanguageIcon() != ExcelLib.ReadData(rowNumber, "Language"), "Actual Addlanguage and expected Addlanguage does not match");
+           
         }
 
         public string GetDeleteLanguageIcon()
