@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "520c0c5f-6f2b-4689-9a33-4cd40a4bdf78",
-		"name": "Mars API",
+		"name": "MarsAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "21249307"
 	},
@@ -105,7 +105,7 @@
 									"pm.test(\"Check confirmation message\", function()\r",
 									"{\r",
 									"    pm.expect(jsonData.success).to.be.eql(true);\r",
-									"    //assertions on ID\r",
+									"   \r",
 									"});\r",
 									"\r",
 									"\r",
@@ -171,11 +171,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"//const response = pm.response.json();\r",
-									"//console.log(response);\r",
-									"//var skl= pm.iterationData.get(\"NewSkills\");\r",
-									"// Expected skill\r",
-									"const Test = \"collection\"\r",
+									"\r",
+									"const Test = \"iteration\"\r",
 									"var skill = \"\";\r",
 									"if(Test != \"iteration\")\r",
 									"{\r",
@@ -295,7 +292,7 @@
 									"});\r",
 									"pm.test(\"Validate deleted Skills\", function()\r",
 									"{\r",
-									"    pm.expect(jsonData.language).to.be.eql(pm.iterationData.get(\"NewSkills\"));\r",
+									"    pm.expect(jsonData.skill).to.be.eql(pm.iterationData.get(\"NewSkills\"));\r",
 									"});\r",
 									""
 								],
@@ -338,68 +335,68 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"auth_token\", response.token.token);\r",
+									"\r",
+									"pm.test(\"Check Login\", function()\r",
+									"{\r",
+									"    pm.expect(response.isSuccess).to.eql(true);\r",
+									"});\r",
+									"pm.test(\"Check response code\", function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"}\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rememberMe\": false,\r\n    \"email\": \"binhnguyen130320@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:60968/authentication/authentication/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "60968",
+							"path": [
+								"authentication",
+								"authentication",
+								"signin"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Sign In",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
-		},
-		{
-			"name": "login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"const response = pm.response.json();\r",
-							"pm.collectionVariables.set(\"auth_token\", response.token.token);\r",
-							"\r",
-							"pm.test(\"Check Login\", function()\r",
-							"{\r",
-							"    pm.expect(response.isSuccess).to.eql(true);\r",
-							"});\r",
-							"pm.test(\"Check response code\", function()\r",
-							"{\r",
-							"    pm.response.to.have.status(200);\r",
-							"}\r",
-							");"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"rememberMe\": false,\r\n    \"email\": \"binhnguyen130320@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:60968/authentication/authentication/signin",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "60968",
-					"path": [
-						"authentication",
-						"authentication",
-						"signin"
-					],
-					"query": [
-						{
-							"key": "type",
-							"value": "Sign In",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [

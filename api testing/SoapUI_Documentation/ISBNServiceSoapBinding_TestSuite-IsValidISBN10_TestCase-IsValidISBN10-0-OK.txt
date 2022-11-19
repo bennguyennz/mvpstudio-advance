@@ -1,0 +1,49 @@
+Status: OK
+Time Taken: 1546
+Size: 330
+Timestamp: Sat Nov 19 21:32:18 AEDT 2022
+TestStep: IsValidISBN10
+
+----------------- Messages ------------------------------
+
+----------------- Properties ------------------------------
+Endpoint: http://webservices.daehosting.com/services/isbnservice.wso
+Encoding: UTF-8
+
+---------------- Request ---------------------------
+Request Headers: SOAPAction : ""
+Connection : Keep-Alive
+User-Agent : Apache-HttpClient/4.5.5 (Java/16.0.1)
+Host : webservices.daehosting.com
+Accept-Encoding : gzip,deflate
+Content-Length : 316
+Content-Type : text/xml;charset=UTF-8
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:isbn="http://webservices.daehosting.com/ISBN">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <isbn:IsValidISBN10>
+         <isbn:sISBN>99921-58-10-7</isbn:sISBN>
+      </isbn:IsValidISBN10>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+---------------- Response --------------------------
+Response Headers: Cache-Control : private, max-age=0
+Server : Microsoft-IIS/10.0
+Permissions-Policy : interest-cohort=()
+Vary : Accept-Encoding
+Web-Service : DataFlex 18.2
+#status# : HTTP/1.1 200 OK
+Date : Sat, 19 Nov 2022 10:32:19 GMT
+Content-Type : text/xml; charset=utf-8
+
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <m:IsValidISBN10Response xmlns:m="http://webservices.daehosting.com/ISBN">
+         <m:IsValidISBN10Result>true</m:IsValidISBN10Result>
+      </m:IsValidISBN10Response>
+   </soap:Body>
+</soap:Envelope>
