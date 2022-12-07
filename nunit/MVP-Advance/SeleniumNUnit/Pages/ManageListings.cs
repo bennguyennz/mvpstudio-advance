@@ -148,8 +148,12 @@ namespace SeleniumNUnit.Pages
             string e_Edit = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[2]";
             IWebElement btnEdit = driver.FindElement(By.XPath(e_Edit));
             btnEdit.Click();
-            wait(1);
+            wait(2);
 
+            //Clear the data for Edit
+            shareSkillObj.ClearData();
+            
+            //Edit the data 
             shareSkillObj.EditShareSkills(rowNumber2, worksheet);
             wait(2);    
         }
@@ -194,7 +198,6 @@ namespace SeleniumNUnit.Pages
             if (titleCount.Equals(0))
             {
                 return actTitle;
-
             }
             else
             {

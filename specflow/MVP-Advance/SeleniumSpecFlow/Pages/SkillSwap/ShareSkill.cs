@@ -355,7 +355,8 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             wait(3);
 
             //Run AutoIT-script to execute file uploading
-            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
+            //using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath))
+            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath2))
             {
                 exeProcess.WaitForExit();
             }
@@ -662,60 +663,53 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
 
         public void EditShareSkills(int rowNumber1, int rowNumber2, string Excelsheet)
         {
+            //Initial a struct object and assign values
             Listing excelData = new Listing();
             GetExcel(rowNumber2, Excelsheet, out excelData);
-         
+            
+            //Populate the excel data
             ExcelLib.PopulateInCollection(GlobalDefinitions.ExcelPath, Excelsheet);
+            wait(3);
 
             //Read Data from manage listings page
             string expectedTitle = ExcelLib.ReadData(rowNumber1, "Title");
-
+            
             wait(4);
             //Click on button Edit
             string e_Edit = "//div[@id='listing-management-section']//tbody/tr[" + GetTitleIndex(expectedTitle) + "]/td[8]/div/button[2]";
             IWebElement btnEdit = driver.FindElement(By.XPath(e_Edit));
             btnEdit.Click();
             wait(2);
+            Thread.Sleep(2000);
 
-            //Enter Title
-            Title.Clear();
-            Title.SendKeys(excelData.title);
+            //Clear data for Edit
+            ClearData();
 
-            //Enter Description
-            Description.Clear();
-            Description.SendKeys(excelData.description);
+            //Edit the data using EnterShareSkill code
+            EnterShareSkill(rowNumber2, Excelsheet);
+        }
 
-            //Select category
-            CategoryDropDown.Click();
-            var selectCategory = new SelectElement(CategoryDropDown);
-            selectCategory.SelectByText(excelData.category);
+        //Sub method for Edit Shareskills
+        internal void ClearData()
+        {
+            //Clear title
+            Title.Click();
+            Title.SendKeys(Keys.Control + "A");
+            Title.SendKeys(Keys.Delete);
 
-            //Select Subcategory
-            SubCategoryDropDown.Click();
-            var selectSubcategory = new SelectElement(SubCategoryDropDown);
-            selectSubcategory.SelectByText(excelData.subcategory);
+            //Clear description
+            Description.Click();
+            Description.SendKeys(Keys.Control + "A");
+            Description.SendKeys(Keys.Delete);
 
-            //Clear Tags and click
-            RemoveTags.Click();
-            Tags.Click();
-            wait(3);
-            //Enter tag
-          
-            Tags.SendKeys(excelData.tags);
-            Tags.SendKeys(Keys.Return);
+            //Clear tags
+            int countTags = displayedTags.Count();
+            for (int i = 0; i < countTags; i++)
+            {
+                if (countTags > 0)
+                    displayedTags[i].Click();
+            }
 
-            //Select Service type
-            SelectServiceType(excelData.serviceType);
-
-            //Select Location type
-            SelectLocationType(excelData.locationType);
-
-            //Enter Start date
-            StartDateDropDown.SendKeys(excelData.startDate);
-            //Enter End date
-            EndDateDropDown.SendKeys(excelData.endDate);
-            
-  
             //Clear days and Enter available Days
 
             for (int i = 0; i < Days.Count; i++)
@@ -741,11 +735,7 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                     EndTime[i].SendKeys(Keys.Delete);
                 }
             }
-            wait(1);
-            //Enter Available days and hours
-            EnterAvailableDaysAndHours(excelData.availableDays, excelData.startTime, excelData.endTime);
-        
-            //Skill Trade radio button
+
             //Clear skill trade
             for (int i = 0; i < radioSkillTrade.Count; i++)
             {
@@ -767,25 +757,6 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
                     CreditAmount.Clear();
                 }
             }
-
-            //Select Skill Trade: "Credeit" or "Skill-exchange"
-            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
-
-            //Click on work samples button
-
-            btnWorkSamples.Click();
-            wait(3);
-            // Run AutoIt Script to Execute file uploading
-            using (Process exeProcess = Process.Start(GlobalDefinitions.AutoScriptPath2))
-            {
-                exeProcess.WaitForExit();
-            }
-            wait(1);
-            //Click Active or Hidden
-            ClickActiveOption(excelData.ActiveOption);
-            //Click on save
-            Save.Click();
-            wait(3);
         }
 
         internal void DeleteShareSkills(int rowNumber, string Excelsheet)
@@ -816,7 +787,6 @@ namespace SeleniumSpecFlow.Pages.SkillSwap
             if (titleCount.Equals(0))
             {
                 return actTitle;
-
             }
             else
             {

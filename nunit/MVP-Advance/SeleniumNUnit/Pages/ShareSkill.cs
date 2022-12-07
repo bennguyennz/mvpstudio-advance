@@ -323,7 +323,7 @@ namespace SeleniumNUnit.Pages
             wait(3);
 
             //Run AutoIT-script to execute file uploading
-            using (Process exeProcess = Process.Start(Base.AutoITScriptPath))
+            using (Process exeProcess = Process.Start(Base.AutoITScriptPath2))
           
             {
                 exeProcess.WaitForExit();
@@ -557,51 +557,37 @@ namespace SeleniumNUnit.Pages
         }
 
 
-        public void EditShareSkills( int rowNumber2, string Excelsheet)
+        internal void EditShareSkills( int rowNumber2, string Excelsheet)
         {
             Listing excelData = new Listing();
             GetExcel(rowNumber2, Excelsheet, out excelData);           
             wait(4);
 
-            //Enter Title
-            string title = excelData.title;
-            Title.Clear();
-            Title.SendKeys(title);
+            EnterShareSkill(rowNumber2, Excelsheet);
+        }
 
-            //Enter Description
-            Description.Clear();
-            Description.SendKeys(excelData.description);
+        //Sub method for Edit Shareskills
+        internal void ClearData()
+        {
+            //Clear title
+            Title.Click();
+            Title.SendKeys(Keys.Control + "A");
+            Title.SendKeys(Keys.Delete);
 
-            //Select category
-            CategoryDropDown.Click();
-            var selectCategory = new SelectElement(CategoryDropDown);
-            selectCategory.SelectByText(excelData.category);
+            //Clear description
+            Description.Click();
+            Description.SendKeys(Keys.Control + "A");
+            Description.SendKeys(Keys.Delete);
 
-            //Select Subcategory
-            SubCategoryDropDown.Click();
-            var selectSubcategory = new SelectElement(SubCategoryDropDown);
-            selectSubcategory.SelectByText(excelData.subcategory);
-
-            //Clear Tags and click
-            RemoveTags.Click();
-            Tags.Click();
+            //Clear tags
+            int countTags = displayedTags.Count();
+            for (int i = 0; i < countTags; i++)
+            {
+                if (countTags > 0)
+                    displayedTags[i].Click();
+            }
+            
             wait(3);
-            //Enter tag
-
-            Tags.SendKeys(excelData.tags);
-            Tags.SendKeys(Keys.Return);
-
-            //Select Service type
-            SelectServiceType(excelData.serviceType);
-
-            //Select Location type
-            SelectLocationType(excelData.locationType);
-
-            //Enter Start date
-            StartDateDropDown.SendKeys(excelData.startDate);
-            //Enter End date
-            EndDateDropDown.SendKeys(excelData.endDate);
-
 
             //Clear days and Enter available Days
 
@@ -628,11 +614,7 @@ namespace SeleniumNUnit.Pages
                     EndTime[i].SendKeys(Keys.Delete);
                 }
             }
-            wait(1);
-            //Enter Available days and hours
-            EnterAvailableDaysAndHours(excelData.availableDays, excelData.startTime, excelData.endTime);
 
-            //Skill Trade radio button
             //Clear skill trade
             for (int i = 0; i < radioSkillTrade.Count; i++)
             {
@@ -654,25 +636,6 @@ namespace SeleniumNUnit.Pages
                     CreditAmount.Clear();
                 }
             }
-
-            //Select Skill Trade: "Credeit" or "Skill-exchange"
-            SelectSkillTrade(excelData.skillTrade, excelData.skillExchange, excelData.credit);
-
-            //Click on work samples button
-
-            btnWorkSamples.Click();
-            wait(3);
-            // Run AutoIt Script to Execute file uploading
-            using (Process exeProcess = Process.Start(Base.AutoITScriptPath2))
-            {
-                exeProcess.WaitForExit();
-            }
-            wait(1);
-            //Click Active or Hidden
-            ClickActiveOption(excelData.ActiveOption);
-            //Click on save
-            Save.Click();
-            wait(3);
         }
     }
 }

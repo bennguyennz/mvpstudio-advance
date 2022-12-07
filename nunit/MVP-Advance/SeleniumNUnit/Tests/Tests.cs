@@ -14,7 +14,7 @@ namespace SeleniumNUnit.Tests
 
 
         [Test, Order(1)]
-        public void TC2_WhenIEditContactAndVerifyContact()
+        public void TC1_WhenIEditContactAndVerifyContact()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -23,7 +23,7 @@ namespace SeleniumNUnit.Tests
         }
 
         [Test, Order(2)]
-        public void EnterLanguage()
+        public void TC2a_EnterLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -32,7 +32,7 @@ namespace SeleniumNUnit.Tests
 
         }
         [Test, Order(3)]
-        public void EditLanguage()
+        public void TC2b_EditLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -40,7 +40,7 @@ namespace SeleniumNUnit.Tests
             VerifyEditLanguage(3, "Profile");
         }
         [Test, Order(4)]
-        public void deleteLanguage()
+        public void TC2c_deleteLanguage()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -50,7 +50,7 @@ namespace SeleniumNUnit.Tests
         }
 
         [Test, Order(5)]
-        public void TC1_WhenIEnterListingAndVerifyListing()
+        public void TC4a_WhenIEnterListingAndVerifyListing()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -60,7 +60,7 @@ namespace SeleniumNUnit.Tests
 
 
         [Test, Order(6)]
-        public void TC4a_WhenIEnterNoDataThenIAssert()
+        public void TC5a_WhenIEnterNoDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -69,7 +69,7 @@ namespace SeleniumNUnit.Tests
         }
 
         [Test, Order(7)]
-        public void TC3b_WhenIAddInvalidDataThenIAssert()
+        public void TC5b_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -77,7 +77,7 @@ namespace SeleniumNUnit.Tests
             AssertInvalidData(6, 7, 8, "NegativeTC"); //need test data
         }
         [Test, Order(8)]
-        public void TC3c_WhenIAddInvalidDataThenIAssert()
+        public void TC5c_WhenIAddInvalidDataThenIAssert()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -86,7 +86,7 @@ namespace SeleniumNUnit.Tests
         }
 
         [Test]
-        public void InvalidLang_1()
+        public void TC3a_AddLanguage_NoData()//Negative test, no data
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -95,7 +95,7 @@ namespace SeleniumNUnit.Tests
         }
 
         [Test]
-        public void InvalidLang_2()
+        public void TC3b_AddLanguage_NoLanguageData() //negative test, 
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             profileObj = new Profile();
@@ -103,7 +103,7 @@ namespace SeleniumNUnit.Tests
             AssertInvalidLang(4, "LangNegTest");
         }
         [Test]
-        public void editListings()
+        public void TC4b_EditListingsAndVerifyListings()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -111,7 +111,7 @@ namespace SeleniumNUnit.Tests
             VerifyListingDetails(4, "ManageListings");
         }
         [Test]
-        public void DeleteListings()
+        public void TC4C_DeleteListingsAndVerifyListings()
         {
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
             manageListingObj = new ManageListings();
@@ -348,7 +348,6 @@ namespace SeleniumNUnit.Tests
             ExcelLib.PopulateInCollection(Base.ExcelPath, Excelsheet);
             string errorMes = ExcelLib.ReadData(rowNumber, "Message");
             //Assertion
-            //Assert.That(profileObj.GetErrorMessage().Equals(errorMes));
             profileObj.GetErrorMessage().Equals(errorMes);
         }
 
