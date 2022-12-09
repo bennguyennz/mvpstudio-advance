@@ -1,5 +1,5 @@
-﻿Language,Level,NewLanguage,NewLevel,Skills,SkillsLevel,NewSkills,NewSkillsLevel
-English,Basic,German,Fluent,Agile,Beginner,SpecFlow,Intermediate
-Vietnamese,Fluent,French,Native/Bilingual,Postman,Intermediate,Nunit,Beginner
-Indian,Basic,Italian,Fluent,Jmeter,Expert,DDD,Intermediate
-Hindi,Basic,Japanese,Conversational,API,Beginner,POM,Expert
+﻿Language,Level,NewLanguage,NewLevel,Skills,SkillsLevel,NewSkills,NewSkillsLevel,InvalidSkills,InvalidSkillLevel,InvalidNewSkills,InvalidNewSkillLevel
+English,Basic,German,Fluent,Agile,Beginner,SpecFlow,Intermediate,,Beginner,Drawing,
+Vietnamese,Fluent,French,Native/Bilingual,Postman,Intermediate,Nunit,Beginner,Painting,,,
+Indian,Basic,Italian,Fluent,Jmeter,Expert,DDD,Intermediate,Singing,,,Intermediate
+Hindi,Basic,Japanese,Conversational,API,Beginner,POM,Expert,,Expert,Writing,

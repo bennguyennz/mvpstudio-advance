@@ -1058,6 +1058,376 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Add Skills with Invalid values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"console.log(jsonData.id);\r",
+									"pm.collectionVariables.set(\"InvalidSkillId\", jsonData.id);\r",
+									"pm.test(\"Status code check\", function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message check\", function()\r",
+									"{\r",
+									"    pm.expect(jsonData.success).to.be.eql(true);   \r",
+									"});\r",
+									"\r",
+									"//Check response time \r",
+									"pm.test(\"Response time is below less than 500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"//log request headers\r",
+									"console.log(request)\r",
+									"console.log('request.method ' + request.method)\r",
+									"console.log('request.url ' + request.url)\r",
+									"\r",
+									"\r",
+									"//Request Headers validation\r",
+									"pm.test(\"Verify request headers are present \", () => {\r",
+									"    pm.request.to.have.header(\"Host\");\r",
+									"    pm.request.to.have.header(\"Content-Length\");\r",
+									"     pm.request.to.have.header(\"Connection\");\r",
+									"      pm.request.to.have.header(\"Postman-Token\");\r",
+									"});\r",
+									"\r",
+									"//Response Headers validation\r",
+									"pm.test(\"Verify response headers are present \", () => {\r",
+									"    pm.response.to.have.header(\"Date\");\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.response.to.have.header(\"Server\");\r",
+									"    pm.response.to.have.header(\"Transfer-Encoding\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type value is correct\", function () {\r",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"    pm.response.to.be.header(\"Server\", \"Kestrel\");\r",
+									"     pm.expect(pm.response.headers.get('Transfer-Encoding')).to.eql('chunked');\r",
+									"});\r",
+									"\r",
+									"//Schema validation\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"id\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"id\"\r",
+									"  ]\r",
+									" };\r",
+									" \r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Skill\": \"{{InvalidSkills}}\",\r\n     \"ExperienceLevel\": \"{{InvalidSkillLevel}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Url}}/profile/profile/addSkill",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"profile",
+								"profile",
+								"addSkill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Skills with Invalid values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"console.log(jsonData.id);\r",
+									"pm.collectionVariables.set(\"skillId\", jsonData.id);\r",
+									"pm.test(\"Status code check\", function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message check\", function()\r",
+									"{\r",
+									"    pm.expect(jsonData.success).to.be.eql(true);   \r",
+									"});\r",
+									"\r",
+									"//Check response time \r",
+									"pm.test(\"Response time is below less than 500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"//log request headers\r",
+									"console.log(request)\r",
+									"console.log('request.method ' + request.method)\r",
+									"console.log('request.url ' + request.url)\r",
+									"\r",
+									"\r",
+									"//Request Headers validation\r",
+									"pm.test(\"Verify request headers are present \", () => {\r",
+									"    pm.request.to.have.header(\"Host\");\r",
+									"    pm.request.to.have.header(\"Content-Length\");\r",
+									"     pm.request.to.have.header(\"Connection\");\r",
+									"      pm.request.to.have.header(\"Postman-Token\");\r",
+									"});\r",
+									"\r",
+									"//Response Headers validation\r",
+									"pm.test(\"Verify response headers are present \", () => {\r",
+									"    pm.response.to.have.header(\"Date\");\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.response.to.have.header(\"Server\");\r",
+									"    pm.response.to.have.header(\"Transfer-Encoding\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type value is correct\", function () {\r",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"    pm.response.to.be.header(\"Server\", \"Kestrel\");\r",
+									"     pm.expect(pm.response.headers.get('Transfer-Encoding')).to.eql('chunked');\r",
+									"});\r",
+									"\r",
+									"//Schema validation\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"id\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"id\"\r",
+									"  ]\r",
+									" };\r",
+									" \r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"PersonSkillId\": \"{{InvalidSkillId}}\",\r\n    \"Skill\": \"{{InvalidNewSkills}}\",\r\n    \"ExperienceLevel\": \"{{InvalidNewSkillLevel}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Url}}/profile/profile/updateSkill",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"profile",
+								"profile",
+								"updateSkill"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Invalid Skills",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"//validate response message\r",
+									"pm.test(\"Check delete message\", function()\r",
+									"{\r",
+									"    pm.expect(jsonData.success).to.be.eql(true);\r",
+									"});\r",
+									"\r",
+									"//validate response code\r",
+									"pm.test(\"Check reponse code\", function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//Validate deleted skills\r",
+									"pm.test(\"Validate deleted Skills\", function()\r",
+									"{\r",
+									"    pm.expect(jsonData.skill).to.be.eql(pm.iterationData.get(\"InvalidNewSkills\"));\r",
+									"});\r",
+									"\r",
+									"//Check response time \r",
+									"pm.test(\"Response time is below less than 500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"//Log request headers\r",
+									"console.log(request)\r",
+									"console.log('request.method ' + request.method)\r",
+									"console.log('request.url ' + request.url)\r",
+									"\r",
+									"//Request Headers validation\r",
+									"pm.test(\"Verify request headers are present \", () => {\r",
+									"    pm.request.to.have.header(\"Host\");\r",
+									"    pm.request.to.have.header(\"Content-Length\");\r",
+									"     pm.request.to.have.header(\"Connection\");\r",
+									"      pm.request.to.have.header(\"Postman-Token\");\r",
+									"});\r",
+									"\r",
+									"//Response Headers validation\r",
+									"pm.test(\"Verify response headers are present \", () => {\r",
+									"    pm.response.to.have.header(\"Date\");\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.response.to.have.header(\"Server\");\r",
+									"     pm.response.to.have.header(\"Transfer-Encoding\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type value is correct\", function () {\r",
+									"   pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"    pm.response.to.be.header(\"Server\", \"Kestrel\");\r",
+									"     pm.expect(pm.response.headers.get('Transfer-Encoding')).to.eql('chunked');\r",
+									"});\r",
+									"\r",
+									"//Schema validation\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"skill\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"skill\"\r",
+									"  ]\r",
+									"};\r",
+									" pm.test(\"Validate schema\", () => {\r",
+									"pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"PersonSkillId\": \"{{InvalidSkillId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Url}}/profile/profile/deleteSkill",
+							"host": [
+								"{{Url}}"
+							],
+							"path": [
+								"profile",
+								"profile",
+								"deleteSkill"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -1124,6 +1494,10 @@
 			"key": "actSkl",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "InvalidSkillId",
+			"value": ""
 		}
 	]
 }
